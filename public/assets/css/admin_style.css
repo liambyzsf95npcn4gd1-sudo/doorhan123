@@ -1,0 +1,207 @@
+/* =================================
+   DoorHan Admin Panel Styles
+   ================================= */
+
+/* --- Root Variables (from public site) --- */
+:root {
+    --primary-color: #1E3A8A; /* DoorHan Blue */
+    --secondary-color: #F59E0B; /* DoorHan Orange */
+    --dark-orange: #D97706;
+    --text-color: #333;
+    --text-light: #64748B;
+    --white-color: #FFFFFF;
+    --bg-light: #F3F4F6;
+    --border-color: #E5E7EB;
+}
+
+/* --- General --- */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--text-color);
+    background-color: var(--bg-light);
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+a:hover {
+    color: var(--secondary-color);
+    text-decoration: underline;
+}
+
+/* --- Layout (Header, Main, Footer) --- */
+header {
+    background-color: var(--primary-color);
+    color: var(--white-color);
+    padding: 20px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+header h1 {
+    color: var(--white-color);
+    font-size: 24px;
+    margin: 0;
+}
+
+nav ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+}
+
+nav li {
+    margin-left: 20px;
+}
+
+nav a {
+    color: var(--white-color);
+    font-weight: 600;
+    font-size: 16px;
+    text-decoration: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    transition: background-color 0.2s ease;
+}
+
+nav a:hover, nav a.active {
+    background-color: rgba(255,255,255, 0.15);
+    text-decoration: none;
+}
+
+main {
+    max-width: 1400px;
+    margin: 30px auto;
+    padding: 30px 40px;
+    background-color: var(--white-color);
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    margin-top: 30px;
+    color: var(--text-light);
+    font-size: 14px;
+}
+
+/* --- Buttons --- */
+.btn {
+    display: inline-block;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+}
+.btn-primary {
+    background-color: var(--secondary-color);
+    color: var(--white-color);
+}
+.btn-primary:hover {
+    background-color: var(--dark-orange);
+    color: var(--white-color);
+    text-decoration: none;
+}
+.btn-secondary {
+    background-color: var(--border-color);
+    color: var(--text-color);
+}
+.btn-secondary:hover {
+    background-color: #d1d5db;
+    text-decoration: none;
+}
+.btn-danger {
+    background-color: #DC2626;
+    color: var(--white-color);
+}
+.btn-danger:hover {
+    background-color: #B91C1C;
+    text-decoration: none;
+}
+
+/* --- Tables (for listings) --- */
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+.admin-table th,
+.admin-table td {
+    padding: 12px 15px;
+    border: 1px solid var(--border-color);
+    text-align: left;
+}
+.admin-table th {
+    background-color: var(--bg-light);
+    font-size: 14px;
+    text-transform: uppercase;
+    color: var(--text-light);
+}
+.admin-table tr:nth-child(even) {
+    background-color: #fdfdfd;
+}
+.admin-table tr:hover {
+    background-color: var(--bg-light);
+}
+.admin-table .actions a {
+    margin-right: 10px;
+}
+
+/* --- Forms (for add/edit) --- */
+.form-group {
+    margin-bottom: 20px;
+}
+.form-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="password"],
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 16px;
+    box-sizing: border-box; /* Important */
+}
+.form-group textarea {
+    min-height: 150px;
+    resize: vertical;
+}
+
+/* --- Flash Messages --- */
+.flash-message {
+    padding: 15px 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.flash-message.success {
+    background-color: #D1FAE5;
+    color: #065F46;
+    border: 1px solid #6EE7B7;
+}
+.flash-message.error {
+    background-color: #FEE2E2;
+    color: #991B1B;
+    border: 1px solid #FCA5A5;
+}
+/* Лишняя скобка УДАЛЕНА */

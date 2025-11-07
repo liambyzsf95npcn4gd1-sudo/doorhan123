@@ -1,0 +1,5 @@
+config/config.php
+logs/
+.idea/
+.vscode/
+npm_output.log
