@@ -260,6 +260,12 @@ class PublicController {
         $settingsModel = new Settings();
         $data['settings'] = $settingsModel->getAllSettings();
 
+        // Fetch chatbot settings
+        $db = Database::getInstance()->getConnection();
+        $stmt_chatbot = $db->prepare("SELECT * FROM chatbot_settings WHERE id = 1");
+        $stmt_chatbot->execute();
+        $data['chatbot_settings'] = $stmt_chatbot->fetch(PDO::FETCH_ASSOC);
+
         extract($data);
         require_once ROOT_PATH . '/templates/' . $view . '.php';
     }

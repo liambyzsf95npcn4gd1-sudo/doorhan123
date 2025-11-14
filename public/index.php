@@ -29,19 +29,18 @@ session_set_cookie_params([
 session_start();
 
 // --- Основные файлы и автозагрузка ---
-require_once ROOT_PATH . '/core/Database.php';
-require_once ROOT_PATH . '/core/Router.php';
-require_once ROOT_PATH . '/core/Flash.php';
-require_once ROOT_PATH . '/controllers/PublicController.php';
-require_once ROOT_PATH . '/controllers/AdminController.php';
-require_once ROOT_PATH . '/models/Navigation.php';
-require_once ROOT_PATH . '/models/Settings.php';
-
-// Автозагрузка моделей
 spl_autoload_register(function ($class_name) {
-    $file = ROOT_PATH . '/models/' . $class_name . '.php';
-    if (file_exists($file)) {
-        require_once $file;
+    $paths = [
+        ROOT_PATH . '/core/' . $class_name . '.php',
+        ROOT_PATH . '/controllers/' . $class_name . '.php',
+        ROOT_PATH . '/models/' . $class_name . '.php',
+    ];
+
+    foreach ($paths as $file) {
+        if (file_exists($file)) {
+            require_once $file;
+            return;
+        }
     }
 });
 
@@ -88,6 +87,10 @@ $router->add('/admin/messages/view/{id}', 'AdminController', 'view_message');
 $router->add('/admin/messages/delete/{id}', 'AdminController', 'delete_message');
 $router->add('/admin/messages/export', 'AdminController', 'export_messages');
 $router->add('/admin/settings', 'AdminController', 'settings');
+
+// Chatbot API route
+$router->add('/api/chatbot', 'ChatbotController', 'handleRequest');
+
 // ... другие маршруты админ-панели ...
 // --- Корректное определение URI для поддиректорий ---
 

@@ -10,10 +10,15 @@ TRUNCATE TABLE `products`;
 TRUNCATE TABLE `categories`;
 TRUNCATE TABLE `posts`;
 TRUNCATE TABLE `settings`;
+TRUNCATE TABLE `chatbot_settings`;
 TRUNCATE TABLE `users`;
 TRUNCATE TABLE `navigation_items`;
 TRUNCATE TABLE `pages`;
 SET FOREIGN_KEY_CHECKS = 1;
+
+-- Chatbot settings
+INSERT INTO `chatbot_settings` (`id`, `is_enabled`, `chatbot_name`, `welcome_message`) VALUES
+(1, 1, 'DoorHan Bot', 'Welcome to DoorHan! How can I help you?');
 
 -- Categories
 INSERT INTO `categories` (`id`, `parent_id`, `name`, `slug`, `description`, `seo_title`, `meta_description`) VALUES

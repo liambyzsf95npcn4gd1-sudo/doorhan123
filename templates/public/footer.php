@@ -50,5 +50,29 @@
 
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
     <script src="<?php echo SITE_URL; ?>/assets/js/main.js"></script>
+
+    <?php if (!empty($chatbot_settings['is_enabled'])): ?>
+    <!-- Chatbot -->
+    <link rel="stylesheet" href="<?php echo SITE_URL; ?>/assets/css/chatbot.css">
+    <div id="chatbot-container">
+        <div id="chatbot-button" style="background-color: <?php echo htmlspecialchars($chatbot_settings['button_color'] ?? '#007bff'); ?>;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-message-square"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+        </div>
+        <div id="chatbot-window">
+            <div id="chatbot-header" style="background-color: <?php echo htmlspecialchars($chatbot_settings['button_color'] ?? '#007bff'); ?>;">
+                <span><?php echo htmlspecialchars($chatbot_settings['chatbot_name'] ?? 'Chatbot'); ?></span>
+                <button id="chatbot-close">&times;</button>
+            </div>
+            <div id="chatbot-messages">
+                <div class="message bot"><?php echo htmlspecialchars($chatbot_settings['welcome_message'] ?? 'Hello! How can I help you?'); ?></div>
+            </div>
+            <div id="chatbot-input-container">
+                <input type="text" id="chatbot-input" placeholder="Type a message...">
+                <button id="chatbot-send">Send</button>
+            </div>
+        </div>
+    </div>
+    <script src="<?php echo SITE_URL; ?>/assets/js/chatbot.js"></script>
+    <?php endif; ?>
 </body>
 </html>
