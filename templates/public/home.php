@@ -163,6 +163,18 @@
                     <p>All our products come with a standard warranty. The warranty period varies depending on the product. Please contact us for more details.</p>
                 </div>
             </div>
+            <div class="accordion-item">
+                <button class="accordion-header">How can I get a quote?</button>
+                <div class="accordion-content">
+                    <p>You can request a quote by contacting us through our website or by calling our sales team. We are always ready to help you with your queries.</p>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <button class="accordion-header">Are your products certified?</button>
+                <div class="accordion-content">
+                    <p>Yes, all our products are certified and comply with international quality standards. We are committed to providing our customers with safe and reliable products.</p>
+                </div>
+            </div>
         </div>
     </div>
 </section>

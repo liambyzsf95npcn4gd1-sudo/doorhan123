@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const cookieBanner = document.getElementById('cookie-consent-banner');
     const cookieButton = document.getElementById('cookie-consent-button');
 
-    if (cookieBanner) {
+    if (cookieBanner && cookieButton) {
         if (!localStorage.getItem('cookieConsent')) {
             cookieBanner.style.display = 'block';
         }

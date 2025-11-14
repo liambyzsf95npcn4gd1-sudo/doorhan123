@@ -227,6 +227,9 @@ img {
 .hero-content {
     color: var(--white-color);
     max-width: 600px;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    border-radius: 10px;
 }
 
 .hero-content h1 {
