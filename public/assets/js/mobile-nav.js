@@ -1,9 +1,11 @@
 document.addEventListener('DOMContentLoaded', function() {
     const mobileNavToggle = document.querySelector('.mobile-nav-toggle');
     const mainNav = document.querySelector('.main-nav');
+    const body = document.querySelector('body');
 
     mobileNavToggle.addEventListener('click', function() {
         mainNav.classList.toggle('active');
+        body.classList.toggle('mobile-nav-active');
     });
 
     const dropdownToggles = document.querySelectorAll('.main-nav .has-dropdown > a');

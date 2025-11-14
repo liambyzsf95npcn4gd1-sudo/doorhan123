@@ -40,4 +40,21 @@ class Category {
         $stmt = $this->db->prepare("DELETE FROM categories WHERE id = ?");
         return $stmt->execute([$id]);
     }
+
+    public function getSubcategories($categoryId) {
+        $stmt = $this->db->prepare("SELECT * FROM categories WHERE parent_id = ?");
+        $stmt->execute([$categoryId]);
+        return $stmt->fetchAll();
+    }
+
+    public function getProductsByCategoryId($categoryId) {
+        $stmt = $this->db->prepare("
+            SELECT p.*
+            FROM products p
+            JOIN product_categories pc ON p.id = pc.product_id
+            WHERE pc.category_id = ? AND p.status = 'active'
+        ");
+        $stmt->execute([$categoryId]);
+        return $stmt->fetchAll();
+    }
 }

@@ -15,7 +15,8 @@ class PublicController {
 
         $this->view('public/home', [
             'featured_products' => $featuredProducts, // [ИСПРАВЛЕНО] (было featuredProducts)
-            'latest_posts' => $latestNews      // [ИСПРАВЛЕНО] (было latestNews)
+            'latest_posts' => $latestNews,      // [ИСПРАВЛЕНО] (было latestNews)
+            'seo_title' => 'DoorHan International'
         ]);
     }
 
@@ -25,26 +26,47 @@ class PublicController {
     public function about() {
         $pageModel = new Page();
         $page = $pageModel->getBySlug('about');
-        $this->view('public/page', ['page' => $page]);
+        $this->view('public/page', [
+            'page' => $page,
+            'seo_title' => $page['seo_title'] ?? 'About Us',
+            'meta_description' => $page['meta_description'] ?? ''
+        ]);
     }
 
     /**
      * Отображение списка товаров
      */
     public function products() {
-        $productModel = new Product();
-        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-        $limit = 12; // Products per page
-        $offset = ($page - 1) * $limit;
-
-        $products = $productModel->getAllActive($limit, $offset);
-        $totalProducts = $productModel->countAllActive();
-        $totalPages = ceil($totalProducts / $limit);
-
+        $categoryModel = new Category();
+        $categories = $categoryModel->getAll(); // Get all categories
         $this->view('public/products', [
+            'categories' => $categories,
+            'seo_title' => 'Our Products'
+        ]);
+    }
+
+    /**
+     * Отображение страницы одной категории
+     * @param array $params
+     */
+    public function category($params) {
+        $categoryModel = new Category();
+        $category = $categoryModel->getBySlug($params['slug']);
+
+        if (!$category) {
+            // Handle category not found, maybe show a 404 page
+            header("HTTP/1.0 404 Not Found");
+            $this->view('public/404'); // Assuming you have a 404 template
+            return;
+        }
+
+        $products = $categoryModel->getProductsByCategoryId($category['id']);
+
+        $this->view('public/category', [
+            'category' => $category,
             'products' => $products,
-            'currentPage' => $page,
-            'totalPages' => $totalPages
+            'seo_title' => $category['seo_title'] ?? $category['name'],
+            'meta_description' => $category['meta_description'] ?? ''
         ]);
     }
 
@@ -55,7 +77,11 @@ class PublicController {
     public function product($params) {
         $productModel = new Product();
         $product = $productModel->getBySlug($params['slug']);
-        $this->view('public/product', ['product' => $product]);
+        $this->view('public/product', [
+            'product' => $product,
+            'seo_title' => $product['seo_title'] ?? $product['name'],
+            'meta_description' => $product['meta_description'] ?? ''
+        ]);
     }
 
     /**

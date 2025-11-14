@@ -175,11 +175,12 @@ footer {
 .form-group textarea,
 .form-group select {
     width: 100%;
-    padding: 12px;
+    padding: 15px;
     border: 1px solid var(--border-color);
     border-radius: 8px;
     font-size: 16px;
     box-sizing: border-box; /* Important */
+    max-width: 600px; /* Limit max width for very wide screens */
 }
 .form-group textarea {
     min-height: 150px;

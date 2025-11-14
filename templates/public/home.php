@@ -141,22 +141,50 @@
     </div>
 </section>
 
-<section class="contact-teaser-section section-padding bg-light">
-    <div class="container text-center">
-        <h2>Have a Question?</h2>
-        <p>Our team is ready to help. Contact us for a quote or any inquiries.</p>
-        <a href="<?php echo SITE_URL; ?>/contact" class="btn btn-primary">Contact Us</a>
+<section class="questions-section section-padding bg-light">
+    <div class="container">
+        <h2 class="text-center">Frequently Asked Questions</h2>
+        <div class="accordion">
+            <div class="accordion-item">
+                <button class="accordion-header">What types of doors do you offer?</button>
+                <div class="accordion-content">
+                    <p>We offer a wide range of doors, including sectional doors, roller shutters, sliding gates, industrial doors, and garage doors. We also provide automation solutions for all our products.</p>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <button class="accordion-header">Do you provide installation services?</button>
+                <div class="accordion-content">
+                    <p>Yes, we have a network of certified dealers who can provide professional installation services. Contact us to find a dealer near you.</p>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <button class="accordion-header">What is the warranty on your products?</button>
+                <div class="accordion-content">
+                    <p>All our products come with a standard warranty. The warranty period varies depending on the product. Please contact us for more details.</p>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
 
-<section class="partners-section section-padding"> <div class="container">
-        <h2 class="text-center">Our Factories</h2> <div class="swiper-container factories-slider">
-            <div class="swiper-wrapper">
-                <div class="swiper-slide"><img src="<?php echo SITE_URL; ?>/assets/img/partner1.png" alt="Factory 1"></div>
-                <div class="swiper-slide"><img src="<?php echo SITE_URL; ?>/assets/img/partner2.png" alt="Factory 2"></div>
-                <div class="swiper-slide"><img src="<?php echo SITE_URL; ?>/assets/img/partner3.png" alt="Factory 3"></div>
-                <div class="swiper-slide"><img src="<?php echo SITE_URL; ?>/assets/img/partner4.png" alt="Factory 4"></div>
-                <div class="swiper-slide"><img src="<?php echo SITE_URL; ?>/assets/img/partner5.png" alt="Factory 5"></div>
+<section class="factories-section section-padding">
+    <div class="container">
+        <h2 class="text-center">Our Factories</h2>
+        <div class="grid-3-col">
+            <div class="card text-center">
+                <img src="<?php echo SITE_URL; ?>/assets/img/dubai.jpg" alt="Dubai Factory" class="factory-img">
+                <h3>Dubai</h3>
+                <p>Our state-of-the-art factory in Dubai produces a wide range of products for the Middle East and Africa.</p>
+            </div>
+            <div class="card text-center">
+                <img src="<?php echo SITE_URL; ?>/assets/img/czech.jpg" alt="Czech Factory" class="factory-img">
+                <h3>Czech Republic</h3>
+                <p>Our factory in the Czech Republic is a key hub for our European operations, producing high-quality doors and components.</p>
+            </div>
+            <div class="card text-center">
+                <img src="<?php echo SITE_URL; ?>/assets/img/china.jpg" alt="China Factory" class="factory-img">
+                <h3>China</h3>
+                <p>Our factory in China is a major production center, manufacturing a wide range of products for the Asian market.</p>
             </div>
         </div>
     </div>
