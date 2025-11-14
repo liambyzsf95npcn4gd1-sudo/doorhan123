@@ -12,12 +12,12 @@
             <?php if (!empty($categories)): ?>
                 <?php foreach ($categories as $category): ?>
                     <div class="card product-card category-card">
-                        <a href="<?php echo SITE_URL; ?>/category/<?php echo htmlspecialchars($category['slug']); ?>">
+                        <a href="<?php echo SITE_URL; ?>/products/category/<?php echo htmlspecialchars($category['slug']); ?>">
                             <img src="<?php echo SITE_URL; ?>/assets/img/<?php echo htmlspecialchars($category['image'] ?? 'category-placeholder.jpg'); ?>" alt="<?php echo htmlspecialchars($category['name']); ?>">
                             <h3><?php echo htmlspecialchars($category['name']); ?></h3>
                         </a>
                         <p><?php echo htmlspecialchars($category['meta_description'] ?? ''); ?></p>
-                        <a href="<?php echo SITE_URL; ?>/category/<?php echo htmlspecialchars($category['slug']); ?>" class="btn btn-secondary">View More</a>
+                        <a href="<?php echo SITE_URL; ?>/products/category/<?php echo htmlspecialchars($category['slug']); ?>" class="btn btn-secondary">View More</a>
                     </div>
                 <?php endforeach; ?>
             <?php else: ?>

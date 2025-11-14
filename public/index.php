@@ -52,6 +52,7 @@ $router = new Router();
 $router->add('/', 'PublicController', 'home');
 $router->add('/about', 'PublicController', 'about');
 $router->add('/products', 'PublicController', 'products');
+$router->add('/products/category/{slug}', 'PublicController', 'category');
 $router->add('/products/{slug}', 'PublicController', 'product');
 $router->add('/factories', 'PublicController', 'factories');
 $router->add('/solutions', 'PublicController', 'solutions');
@@ -59,6 +60,11 @@ $router->add('/news', 'PublicController', 'news');
 $router->add('/news/{slug}', 'PublicController', 'post');
 $router->add('/contact', 'PublicController', 'contact');
 $router->add('/sitemap.xml', 'PublicController', 'sitemap');
+$router->add('/privacy-policy', 'PublicController', 'page', ['slug' => 'privacy-policy']);
+
+// Общий маршрут для статических страниц должен быть последним
+$router->add('/{slug}', 'PublicController', 'page');
+
 
 // Маршруты для админ-панели
 $router->add('/admin', 'AdminController', 'dashboard');

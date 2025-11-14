@@ -14,9 +14,10 @@ class PublicController {
         $latestNews = $postModel->getAllPublished(3);
 
         $this->view('public/home', [
-            'featured_products' => $featuredProducts, // [ИСПРАВЛЕНО] (было featuredProducts)
-            'latest_posts' => $latestNews,      // [ИСПРАВЛЕНО] (было latestNews)
-            'seo_title' => 'DoorHan International'
+            'featured_products' => $featuredProducts,
+            'latest_posts' => $latestNews,
+            'seo_title' => 'DoorHan International - Leading Manufacturer of Doors and Gates',
+            'meta_description' => 'DoorHan is a leading global manufacturer of gates, doors, and automation systems. We offer innovative and reliable solutions for your home and business.'
         ]);
     }
 
@@ -24,11 +25,26 @@ class PublicController {
      * Отображение страницы "О нас"
      */
     public function about() {
+        $this->page(['slug' => 'about']);
+    }
+
+    /**
+     * Отображение статической страницы по ее слагу
+     * @param array $params
+     */
+    public function page($params) {
         $pageModel = new Page();
-        $page = $pageModel->getBySlug('about');
+        $page = $pageModel->getBySlug($params['slug']);
+
+        if (!$page) {
+            header("HTTP/1.0 404 Not Found");
+            $this->view('public/404');
+            return;
+        }
+
         $this->view('public/page', [
             'page' => $page,
-            'seo_title' => $page['seo_title'] ?? 'About Us',
+            'seo_title' => $page['seo_title'] ?? $page['title'],
             'meta_description' => $page['meta_description'] ?? ''
         ]);
     }
@@ -41,7 +57,8 @@ class PublicController {
         $categories = $categoryModel->getAll(); // Get all categories
         $this->view('public/products', [
             'categories' => $categories,
-            'seo_title' => 'Our Products'
+            'seo_title' => 'All Product Categories | DoorHan',
+            'meta_description' => 'Browse our wide range of products, including sectional doors, roller shutters, high-speed doors, and more. Find the perfect solution for your needs.'
         ]);
     }
 
@@ -88,18 +105,14 @@ class PublicController {
      * Отображение страницы "Производство"
      */
     public function factories() {
-        $pageModel = new Page();
-        $page = $pageModel->getBySlug('factories');
-        $this->view('public/page', ['page' => $page]);
+        $this->page(['slug' => 'factories']);
     }
 
     /**
      * Отображение страницы "Решения"
      */
     public function solutions() {
-        $pageModel = new Page();
-        $page = $pageModel->getBySlug('solutions');
-        $this->view('public/page', ['page' => $page]);
+        $this->page(['slug' => 'solutions']);
     }
 
     /**
@@ -118,7 +131,9 @@ class PublicController {
         $this->view('public/news', [
             'posts' => $posts,
             'currentPage' => $page,
-            'totalPages' => $totalPages
+            'totalPages' => $totalPages,
+            'seo_title' => 'Latest News and Updates | DoorHan',
+            'meta_description' => 'Stay up-to-date with the latest news, events, and product announcements from DoorHan.'
         ]);
     }
 
@@ -187,7 +202,9 @@ class PublicController {
         $this->view('public/contact', [
             'success' => $success ?? null,
             'error' => $error ?? null,
-            'csrf_token' => $_SESSION['csrf_token']
+            'csrf_token' => $_SESSION['csrf_token'],
+            'seo_title' => 'Contact Us | DoorHan',
+            'meta_description' => 'Get in touch with DoorHan. We are here to help you with any questions you may have about our products and services.'
         ]);
     }
 
