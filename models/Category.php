@@ -26,14 +26,14 @@ class Category {
         return $stmt->fetch();
     }
 
-    public function create($name, $slug, $parent_id, $seo_title, $meta_description) {
-        $stmt = $this->db->prepare("INSERT INTO categories (name, slug, parent_id, seo_title, meta_description) VALUES (?, ?, ?, ?, ?)");
-        return $stmt->execute([$name, $slug, $parent_id, $seo_title, $meta_description]);
+    public function create($name, $slug, $parent_id, $description, $seo_title, $meta_description) {
+        $stmt = $this->db->prepare("INSERT INTO categories (name, slug, parent_id, description, seo_title, meta_description) VALUES (?, ?, ?, ?, ?, ?)");
+        return $stmt->execute([$name, $slug, $parent_id, $description, $seo_title, $meta_description]);
     }
 
-    public function update($id, $name, $slug, $parent_id, $seo_title, $meta_description) {
-        $stmt = $this->db->prepare("UPDATE categories SET name = ?, slug = ?, parent_id = ?, seo_title = ?, meta_description = ? WHERE id = ?");
-        return $stmt->execute([$name, $slug, $parent_id, $seo_title, $meta_description, $id]);
+    public function update($id, $name, $slug, $parent_id, $description, $seo_title, $meta_description) {
+        $stmt = $this->db->prepare("UPDATE categories SET name = ?, slug = ?, parent_id = ?, description = ?, seo_title = ?, meta_description = ? WHERE id = ?");
+        return $stmt->execute([$name, $slug, $parent_id, $description, $seo_title, $meta_description, $id]);
     }
 
     public function delete($id) {

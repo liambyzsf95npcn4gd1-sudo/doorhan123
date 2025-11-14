@@ -193,7 +193,7 @@ class AdminController {
             }
             $categoryModel = new Category();
             // Set parent_id to NULL as it's no longer used from the form
-            if ($categoryModel->create($_POST['name'], $_POST['slug'], NULL, $_POST['seo_title'], $_POST['meta_description'])) {
+            if ($categoryModel->create($_POST['name'], $_POST['slug'], NULL, $_POST['description'], $_POST['seo_title'], $_POST['meta_description'])) {
                 Flash::set('Категория успешно создана');
             } else {
                 Flash::set('Ошибка при создании категории', 'error');
@@ -214,7 +214,7 @@ class AdminController {
                 die('Ошибка валидации CSRF-токена');
             }
             // Set parent_id to NULL as it's no longer used from the form
-            if ($categoryModel->update($params['id'], $_POST['name'], $_POST['slug'], NULL, $_POST['seo_title'], $_POST['meta_description'])) {
+            if ($categoryModel->update($params['id'], $_POST['name'], $_POST['slug'], NULL, $_POST['description'], $_POST['seo_title'], $_POST['meta_description'])) {
                 Flash::set('Категория успешно обновлена');
             } else {
                 Flash::set('Ошибка при обновлении категории', 'error');

@@ -11,6 +11,10 @@
         <input type="text" name="slug" id="slug" value="<?php echo htmlspecialchars($category['slug'] ?? '', ENT_QUOTES, 'UTF-8'); ?>" required>
     </div>
     <div>
+        <label for="description">Description</label>
+        <textarea name="description" id="description"><?php echo htmlspecialchars($category['description'] ?? '', ENT_QUOTES, 'UTF-8'); ?></textarea>
+    </div>
+    <div>
         <label for="seo_title">SEO Title</label>
         <input type="text" name="seo_title" id="seo_title" value="<?php echo htmlspecialchars($category['seo_title'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
     </div>

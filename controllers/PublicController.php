@@ -25,27 +25,19 @@ class PublicController {
      * Отображение страницы "О нас"
      */
     public function about() {
-        $this->page(['slug' => 'about']);
+        $this->view('public/about', [
+            'seo_title' => 'About Us | DoorHan',
+            'meta_description' => 'Learn more about DoorHan, a leading global manufacturer of gates, doors, and automation systems.'
+        ]);
     }
 
     /**
-     * Отображение статической страницы по ее слагу
-     * @param array $params
+     * Отображение страницы "Политика конфиденциальности"
      */
-    public function page($params) {
-        $pageModel = new Page();
-        $page = $pageModel->getBySlug($params['slug']);
-
-        if (!$page) {
-            header("HTTP/1.0 404 Not Found");
-            $this->view('public/404');
-            return;
-        }
-
-        $this->view('public/page', [
-            'page' => $page,
-            'seo_title' => $page['seo_title'] ?? $page['title'],
-            'meta_description' => $page['meta_description'] ?? ''
+    public function privacyPolicy() {
+        $this->view('public/privacy-policy', [
+            'seo_title' => 'Privacy Policy | DoorHan',
+            'meta_description' => 'Read our Privacy Policy to understand how we collect and use your data.'
         ]);
     }
 
@@ -105,14 +97,20 @@ class PublicController {
      * Отображение страницы "Производство"
      */
     public function factories() {
-        $this->page(['slug' => 'factories']);
+        $this->view('public/factories', [
+            'seo_title' => 'Factories | DoorHan',
+            'meta_description' => 'Learn more about our state-of-the-art manufacturing facilities.'
+        ]);
     }
 
     /**
      * Отображение страницы "Решения"
      */
     public function solutions() {
-        $this->page(['slug' => 'solutions']);
+        $this->view('public/solutions', [
+            'seo_title' => 'Solutions | DoorHan',
+            'meta_description' => 'Discover our innovative solutions for residential, commercial, and industrial applications.'
+        ]);
     }
 
     /**

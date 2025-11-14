@@ -8,6 +8,7 @@ CREATE TABLE `categories` (
   `parent_id` int(11) DEFAULT NULL,
   `name` varchar(255) NOT NULL,
   `slug` varchar(255) NOT NULL,
+  `description` text,
   `seo_title` varchar(255) DEFAULT NULL,
   `meta_description` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),

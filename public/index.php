@@ -60,10 +60,7 @@ $router->add('/news', 'PublicController', 'news');
 $router->add('/news/{slug}', 'PublicController', 'post');
 $router->add('/contact', 'PublicController', 'contact');
 $router->add('/sitemap.xml', 'PublicController', 'sitemap');
-$router->add('/privacy-policy', 'PublicController', 'page', ['slug' => 'privacy-policy']);
-
-// Общий маршрут для статических страниц должен быть последним
-$router->add('/{slug}', 'PublicController', 'page');
+$router->add('/privacy-policy', 'PublicController', 'privacyPolicy');
 
 
 // Маршруты для админ-панели

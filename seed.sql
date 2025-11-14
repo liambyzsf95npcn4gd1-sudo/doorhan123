@@ -12,15 +12,16 @@ TRUNCATE TABLE `posts`;
 TRUNCATE TABLE `settings`;
 TRUNCATE TABLE `users`;
 TRUNCATE TABLE `navigation_items`;
+TRUNCATE TABLE `pages`;
 SET FOREIGN_KEY_CHECKS = 1;
 
 -- Categories
-INSERT INTO `categories` (`id`, `parent_id`, `name`, `slug`, `seo_title`, `meta_description`) VALUES
-(1, NULL, 'Sectional Doors', 'sectional-doors', 'Sectional Garage Doors | DoorHan', 'Modern and efficient sectional garage doors that provide excellent insulation and security.'),
-(2, NULL, 'Roller Shutter Doors', 'roller-shutter-doors', 'Roller Shutter Garage Doors | DoorHan', 'Space-saving and durable roller shutter doors, ideal for garages with limited headroom.'),
-(3, NULL, 'High Speed Doors', 'high-speed-doors', 'High-Speed Industrial Doors | DoorHan', 'Optimize your workflow with our fast and reliable high-speed industrial doors.'),
-(4, NULL, 'Folding Doors', 'folding-doors', 'Industrial Folding Doors | DoorHan', 'Versatile and robust folding doors for large openings in industrial facilities.'),
-(5, NULL, 'Sliding Gates', 'sliding-gates', 'Sliding Gates | DoorHan', 'Automatic sliding gates for secure and convenient access to your property.');
+INSERT INTO `categories` (`id`, `parent_id`, `name`, `slug`, `description`, `seo_title`, `meta_description`) VALUES
+(1, NULL, 'Sectional Doors', 'sectional-doors', '', 'Sectional Garage Doors | DoorHan', 'Modern and efficient sectional garage doors that provide excellent insulation and security.'),
+(2, NULL, 'Roller Shutter Doors', 'roller-shutter-doors', '', 'Roller Shutter Garage Doors | DoorHan', 'Space-saving and durable roller shutter doors, ideal for garages with limited headroom.'),
+(3, NULL, 'High Speed Doors', 'high-speed-doors', '', 'High-Speed Industrial Doors | DoorHan', 'Optimize your workflow with our fast and reliable high-speed industrial doors.'),
+(4, NULL, 'Folding Doors', 'folding-doors', '', 'Industrial Folding Doors | DoorHan', 'Versatile and robust folding doors for large openings in industrial facilities.'),
+(5, NULL, 'Sliding Gates', 'sliding-gates', '', 'Sliding Gates | DoorHan', 'Automatic sliding gates for secure and convenient access to your property.');
 
 -- Products
 INSERT INTO `products` (`id`, `name`, `slug`, `content`, `status`, `seo_title`, `meta_description`) VALUES
