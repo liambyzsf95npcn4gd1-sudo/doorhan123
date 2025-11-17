@@ -64,6 +64,7 @@
         <select name="chatbot_model" id="chatbot_model">
             <option value="gemini-pro" <?php echo (($chatbot_settings['model'] ?? '') === 'gemini-pro') ? 'selected' : ''; ?>>gemini-pro</option>
             <option value="gemini-2.5-flash" <?php echo (($chatbot_settings['model'] ?? '') === 'gemini-2.5-flash') ? 'selected' : ''; ?>>gemini-2.5-flash</option>
+            <option value="gemini-2.0-flash" <?php echo (($chatbot_settings['model'] ?? '') === 'gemini-2.0-flash') ? 'selected' : ''; ?>>gemini-2.0-flash</option>
         </select>
 
         <label for="chatbot_name">Имя чат-бота</label>

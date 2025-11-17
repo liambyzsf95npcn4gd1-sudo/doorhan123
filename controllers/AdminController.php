@@ -487,8 +487,9 @@ class AdminController {
                 WHERE id = 1";
 
                 $stmt = $db->prepare($sql);
+                $apiKey = trim($_POST['chatbot_api_key']);
                 $stmt->execute([
-                    ':api_key' => $_POST['chatbot_api_key'] ?? '',
+                    ':api_key' => empty($apiKey) ? null : $apiKey,
                     ':model' => $_POST['chatbot_model'],
                     ':chatbot_name' => $_POST['chatbot_name'],
                     ':welcome_message' => $_POST['chatbot_welcome_message'],

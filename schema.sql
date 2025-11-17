@@ -125,7 +125,7 @@ CREATE TABLE `navigation_items` (
 CREATE TABLE `chatbot_settings` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `api_key` varchar(255) DEFAULT NULL,
-  `model` varchar(255) DEFAULT 'gemini-2.5-flash',
+  `model` varchar(255) DEFAULT 'gemini-2.0-flash',
   `chatbot_name` varchar(255) DEFAULT 'Chatbot',
   `welcome_message` text,
   `bot_rules` text,

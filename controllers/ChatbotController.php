@@ -44,7 +44,7 @@ class ChatbotController {
             return "Chatbot is not configured.";
         }
 
-        $model = $settings['model'] ?? 'gemini-2.5-flash';
+        $model = $settings['model'] ?? 'gemini-2.0-flash';
         $apiUrl = 'https://generativelanguage.googleapis.com/v1/models/' . $model . ':generateContent?key=' . $settings['api_key'];
         $apiKey = $settings['api_key'];
 
