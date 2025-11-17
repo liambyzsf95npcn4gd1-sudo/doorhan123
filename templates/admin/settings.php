@@ -57,8 +57,13 @@
         <label for="chatbot_is_enabled">Чат-бот включен</label>
         <input type="checkbox" name="chatbot_is_enabled" id="chatbot_is_enabled" <?php echo !empty($chatbot_settings['is_enabled']) ? 'checked' : ''; ?>>
 
-        <label for="chatbot_api_key">API ключ</label>
+        <label for="chatbot_api_key">API ключ Gemini</label>
         <input type="text" name="chatbot_api_key" id="chatbot_api_key" value="<?php echo htmlspecialchars($chatbot_settings['api_key'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
+
+        <label for="chatbot_model">Модель Gemini</label>
+        <select name="chatbot_model" id="chatbot_model">
+            <option value="gemini-pro" <?php echo (($chatbot_settings['model'] ?? '') === 'gemini-pro') ? 'selected' : ''; ?>>gemini-pro</option>
+        </select>
 
         <label for="chatbot_name">Имя чат-бота</label>
         <input type="text" name="chatbot_name" id="chatbot_name" value="<?php echo htmlspecialchars($chatbot_settings['chatbot_name'] ?? 'Chatbot', ENT_QUOTES, 'UTF-8'); ?>">

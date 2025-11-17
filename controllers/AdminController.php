@@ -471,6 +471,7 @@ class AdminController {
             } elseif ($form_type === 'chatbot') {
                 $sql = "UPDATE chatbot_settings SET
                     api_key = :api_key,
+                    model = :model,
                     chatbot_name = :chatbot_name,
                     welcome_message = :welcome_message,
                     bot_rules = :bot_rules,
@@ -488,6 +489,7 @@ class AdminController {
                 $stmt = $db->prepare($sql);
                 $stmt->execute([
                     ':api_key' => $_POST['chatbot_api_key'] ?? '',
+                    ':model' => $_POST['chatbot_model'],
                     ':chatbot_name' => $_POST['chatbot_name'],
                     ':welcome_message' => $_POST['chatbot_welcome_message'],
                     ':bot_rules' => $_POST['chatbot_bot_rules'],

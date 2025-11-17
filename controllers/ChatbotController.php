@@ -44,27 +44,24 @@ class ChatbotController {
             return "Chatbot is not configured.";
         }
 
-        $apiUrl = 'https://api.openai.com/v1/chat/completions'; // Placeholder
+        $apiUrl = 'https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=' . $settings['api_key'];
         $apiKey = $settings['api_key'];
 
         $data = [
-            'model' => 'gpt-3.5-turbo', // Placeholder
-            'messages' => [
+            'contents' => [
                 [
-                    'role' => 'system',
-                    'content' => $settings['bot_rules'] ?? 'You are a helpful assistant.'
-                ],
-                [
-                    'role' => 'user',
-                    'content' => $message
+                    'parts' => [
+                        [
+                            'text' => $message
+                        ]
+                    ]
                 ]
             ]
         ];
 
         $options = [
             'http' => [
-                'header'  => "Content-type: application/json\r\n" .
-                             "Authorization: Bearer " . $apiKey . "\r\n",
+                'header'  => "Content-Type: application/json\r\n",
                 'method'  => 'POST',
                 'content' => json_encode($data),
             ],
@@ -78,6 +75,6 @@ class ChatbotController {
         }
 
         $response = json_decode($result, true);
-        return $response['choices'][0]['message']['content'] ?? 'No response from AI.';
+        return $response['candidates'][0]['content']['parts'][0]['text'] ?? 'No response from AI.';
     }
 }
