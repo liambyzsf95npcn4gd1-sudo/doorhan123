@@ -8,11 +8,11 @@ define('DB_PASS', '');
 define('DB_NAME', 'doorhan');
 
 // Другие настройки
-define('SITE_URL', 'http://localhost'); // URL сайта
+define('SITE_URL', 'http://localhost/doorhan/public'); // URL сайта
 define('ADMIN_EMAIL', 'admin@example.com'); // Email администратора
 
 // Режим отладки
-define('DEBUG', false); // Установите в false для production
+define('DEBUG', true); // Установите в false для production
 
 if (DEBUG) {
     ini_set('display_errors', 1);

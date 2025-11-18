@@ -192,18 +192,17 @@ class AdminController {
                 die('Ошибка валидации CSRF-токена');
             }
             $categoryModel = new Category();
-            if ($categoryModel->create($_POST['name'], $_POST['slug'], $_POST['parent_id'], $_POST['seo_title'], $_POST['meta_description'])) {
+            // Set parent_id to NULL as it's no longer used from the form
+            if ($categoryModel->create($_POST['name'], $_POST['slug'], NULL, $_POST['description'], $_POST['seo_title'], $_POST['meta_description'])) {
                 Flash::set('Категория успешно создана');
             } else {
                 Flash::set('Ошибка при создании категории', 'error');
             }
             // ИСПРАВЛЕНО:
-            header('Location: ' . SITE_URL . '/admin/categories');
+            header('Location: '. SITE_URL . '/admin/categories');
             exit;
         }
-        $categoryModel = new Category();
-        $categories = $categoryModel->getAll();
-        $this->view('admin/categories/form', ['categories' => $categories, 'csrf_token' => $_SESSION['csrf_token']]);
+        $this->view('admin/categories/form', ['csrf_token' => $_SESSION['csrf_token']]);
     }
 
     public function edit_category($params) {
@@ -214,7 +213,8 @@ class AdminController {
             if (!hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
                 die('Ошибка валидации CSRF-токена');
             }
-            if ($categoryModel->update($params['id'], $_POST['name'], $_POST['slug'], $_POST['parent_id'], $_POST['seo_title'], $_POST['meta_description'])) {
+            // Set parent_id to NULL as it's no longer used from the form
+            if ($categoryModel->update($params['id'], $_POST['name'], $_POST['slug'], NULL, $_POST['description'], $_POST['seo_title'], $_POST['meta_description'])) {
                 Flash::set('Категория успешно обновлена');
             } else {
                 Flash::set('Ошибка при обновлении категории', 'error');
@@ -223,8 +223,7 @@ class AdminController {
             header('Location: ' . SITE_URL . '/admin/categories');
             exit;
         }
-        $categories = $categoryModel->getAll();
-        $this->view('admin/categories/form', ['category' => $category, 'categories' => $categories, 'csrf_token' => $_SESSION['csrf_token']]);
+        $this->view('admin/categories/form', ['category' => $category, 'csrf_token' => $_SESSION['csrf_token']]);
     }
 
     public function delete_category($params) {
@@ -252,41 +251,60 @@ class AdminController {
 
     public function create_product() {
         $this->checkAuth();
+        $categoryModel = new Category();
+        $categories = $categoryModel->getAll();
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (!hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
                 die('Ошибка валидации CSRF-токена');
             }
             $productModel = new Product();
-            if ($productModel->create($_POST['name'], $_POST['slug'], $_POST['content'], $_POST['status'], $_POST['seo_title'], $_POST['meta_description'])) {
+            $productId = $productModel->create($_POST['name'], $_POST['slug'], $_POST['content'], $_POST['status'], $_POST['seo_title'], $_POST['meta_description']);
+
+            if ($productId) {
+                if (isset($_POST['categories']) && is_array($_POST['categories'])) {
+                    $productModel->setCategories($productId, $_POST['categories']);
+                }
                 Flash::set('Товар успешно создан');
             } else {
                 Flash::set('Ошибка при создании товара', 'error');
             }
-            // ИСПРАВЛЕНО:
             header('Location: ' . SITE_URL . '/admin/products');
             exit;
         }
-        $this->view('admin/products/form', ['csrf_token' => $_SESSION['csrf_token']]);
+        $this->view('admin/products/form', ['categories' => $categories, 'csrf_token' => $_SESSION['csrf_token']]);
     }
 
     public function edit_product($params) {
         $this->checkAuth();
         $productModel = new Product();
         $product = $productModel->getById($params['id']);
+        $categoryModel = new Category();
+        $categories = $categoryModel->getAll();
+        $product_categories = $productModel->getCategoryIds($params['id']);
+
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (!hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
                 die('Ошибка валидации CSRF-токена');
             }
             if ($productModel->update($params['id'], $_POST['name'], $_POST['slug'], $_POST['content'], $_POST['status'], $_POST['seo_title'], $_POST['meta_description'])) {
+                if (isset($_POST['categories']) && is_array($_POST['categories'])) {
+                    $productModel->setCategories($params['id'], $_POST['categories']);
+                }
                 Flash::set('Товар успешно обновлен');
             } else {
                 Flash::set('Ошибка при обновлении товара', 'error');
             }
-            // ИСПРАВЛЕНО:
             header('Location: ' . SITE_URL . '/admin/products');
             exit;
         }
-        $this->view('admin/products/form', ['product' => $product, 'csrf_token' => $_SESSION['csrf_token']]);
+        $this->view('admin/products/form', [
+            'product' => $product,
+            'categories' => $categories,
+            'product_categories' => $product_categories,
+            'csrf_token' => $_SESSION['csrf_token']
+        ]);
     }
 
     public function delete_product($params) {

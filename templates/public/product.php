@@ -32,7 +32,6 @@
         <div class="product-tabs">
             <ul class="nav nav-tabs">
                 <li class="active"><a data-toggle="tab" href="#specifications">Specifications</a></li>
-                <li><a data-toggle="tab" href="#video">Video</a></li>
             </ul>
             <div class="tab-content">
                 <div id="specifications" class="tab-pane active">
@@ -55,12 +54,6 @@
                             <td>Polyurethane foam</td>
                         </tr>
                     </table>
-                </div>
-                <div id="video" class="tab-pane">
-                    <h3>Product Video</h3>
-                    <div class="video-embed">
-                        <iframe width="560" height="315" src="https://www.youtube.com/embed/y_64yF-y-yA" frameborder="0" allowfullscreen></iframe>
-                    </div>
                 </div>
             </div>
         </div>

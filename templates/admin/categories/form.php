@@ -11,15 +11,8 @@
         <input type="text" name="slug" id="slug" value="<?php echo htmlspecialchars($category['slug'] ?? '', ENT_QUOTES, 'UTF-8'); ?>" required>
     </div>
     <div>
-        <label for="parent_id">Родительская категория</label>
-        <select name="parent_id" id="parent_id">
-            <option value="">-- нет --</option>
-            <?php foreach ($categories as $cat): ?>
-                <option value="<?php echo $cat['id']; ?>" <?php echo (isset($category) && $category['parent_id'] == $cat['id']) ? 'selected' : ''; ?>>
-                    <?php echo htmlspecialchars($cat['name'], ENT_QUOTES, 'UTF-8'); ?>
-                </option>
-            <?php endforeach; ?>
-        </select>
+        <label for="description">Description</label>
+        <textarea name="description" id="description"><?php echo htmlspecialchars($category['description'] ?? '', ENT_QUOTES, 'UTF-8'); ?></textarea>
     </div>
     <div>
         <label for="seo_title">SEO Title</label>

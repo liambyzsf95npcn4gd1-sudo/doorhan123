@@ -56,4 +56,38 @@ document.addEventListener('DOMContentLoaded', function () {
             prevEl: '.swiper-button-prev',
         },
     });
+
+    const accordionItems = document.querySelectorAll('.accordion-item');
+
+    accordionItems.forEach(item => {
+        const header = item.querySelector('.accordion-header');
+        const content = item.querySelector('.accordion-content');
+
+        header.addEventListener('click', () => {
+            // Toggle the 'active' class on the accordion item
+            item.classList.toggle('active');
+
+            // Toggle the content's max-height
+            if (content.style.maxHeight) {
+                content.style.maxHeight = null;
+            } else {
+                content.style.maxHeight = content.scrollHeight + 'px';
+            }
+        });
+    });
+
+    // Cookie Consent
+    const cookieBanner = document.getElementById('cookie-consent-banner');
+    const cookieButton = document.getElementById('cookie-consent-button');
+
+    if (cookieBanner && cookieButton) {
+        if (!localStorage.getItem('cookieConsent')) {
+            cookieBanner.style.display = 'block';
+        }
+
+        cookieButton.addEventListener('click', () => {
+            localStorage.setItem('cookieConsent', 'true');
+            cookieBanner.style.display = 'none';
+        });
+    }
 });

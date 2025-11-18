@@ -14,8 +14,10 @@ class PublicController {
         $latestNews = $postModel->getAllPublished(3);
 
         $this->view('public/home', [
-            'featured_products' => $featuredProducts, // [ИСПРАВЛЕНО] (было featuredProducts)
-            'latest_posts' => $latestNews      // [ИСПРАВЛЕНО] (было latestNews)
+            'featured_products' => $featuredProducts,
+            'latest_posts' => $latestNews,
+            'seo_title' => 'DoorHan International - Leading Manufacturer of Doors and Gates',
+            'meta_description' => 'DoorHan is a leading global manufacturer of gates, doors, and automation systems. We offer innovative and reliable solutions for your home and business.'
         ]);
     }
 
@@ -23,28 +25,57 @@ class PublicController {
      * Отображение страницы "О нас"
      */
     public function about() {
-        $pageModel = new Page();
-        $page = $pageModel->getBySlug('about');
-        $this->view('public/page', ['page' => $page]);
+        $this->view('public/about', [
+            'seo_title' => 'About Us | DoorHan',
+            'meta_description' => 'Learn more about DoorHan, a leading global manufacturer of gates, doors, and automation systems.'
+        ]);
+    }
+
+    /**
+     * Отображение страницы "Политика конфиденциальности"
+     */
+    public function privacyPolicy() {
+        $this->view('public/privacy-policy', [
+            'seo_title' => 'Privacy Policy | DoorHan',
+            'meta_description' => 'Read our Privacy Policy to understand how we collect and use your data.'
+        ]);
     }
 
     /**
      * Отображение списка товаров
      */
     public function products() {
-        $productModel = new Product();
-        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-        $limit = 12; // Products per page
-        $offset = ($page - 1) * $limit;
-
-        $products = $productModel->getAllActive($limit, $offset);
-        $totalProducts = $productModel->countAllActive();
-        $totalPages = ceil($totalProducts / $limit);
-
+        $categoryModel = new Category();
+        $categories = $categoryModel->getAll(); // Get all categories
         $this->view('public/products', [
+            'categories' => $categories,
+            'seo_title' => 'All Product Categories | DoorHan',
+            'meta_description' => 'Browse our wide range of products, including sectional doors, roller shutters, high-speed doors, and more. Find the perfect solution for your needs.'
+        ]);
+    }
+
+    /**
+     * Отображение страницы одной категории
+     * @param array $params
+     */
+    public function category($params) {
+        $categoryModel = new Category();
+        $category = $categoryModel->getBySlug($params['slug']);
+
+        if (!$category) {
+            // Handle category not found, maybe show a 404 page
+            header("HTTP/1.0 404 Not Found");
+            $this->view('public/404'); // Assuming you have a 404 template
+            return;
+        }
+
+        $products = $categoryModel->getProductsByCategoryId($category['id']);
+
+        $this->view('public/category', [
+            'category' => $category,
             'products' => $products,
-            'currentPage' => $page,
-            'totalPages' => $totalPages
+            'seo_title' => $category['seo_title'] ?? $category['name'],
+            'meta_description' => $category['meta_description'] ?? ''
         ]);
     }
 
@@ -55,25 +86,31 @@ class PublicController {
     public function product($params) {
         $productModel = new Product();
         $product = $productModel->getBySlug($params['slug']);
-        $this->view('public/product', ['product' => $product]);
+        $this->view('public/product', [
+            'product' => $product,
+            'seo_title' => $product['seo_title'] ?? $product['name'],
+            'meta_description' => $product['meta_description'] ?? ''
+        ]);
     }
 
     /**
      * Отображение страницы "Производство"
      */
     public function factories() {
-        $pageModel = new Page();
-        $page = $pageModel->getBySlug('factories');
-        $this->view('public/page', ['page' => $page]);
+        $this->view('public/factories', [
+            'seo_title' => 'Factories | DoorHan',
+            'meta_description' => 'Learn more about our state-of-the-art manufacturing facilities.'
+        ]);
     }
 
     /**
      * Отображение страницы "Решения"
      */
     public function solutions() {
-        $pageModel = new Page();
-        $page = $pageModel->getBySlug('solutions');
-        $this->view('public/page', ['page' => $page]);
+        $this->view('public/solutions', [
+            'seo_title' => 'Solutions | DoorHan',
+            'meta_description' => 'Discover our innovative solutions for residential, commercial, and industrial applications.'
+        ]);
     }
 
     /**
@@ -92,7 +129,9 @@ class PublicController {
         $this->view('public/news', [
             'posts' => $posts,
             'currentPage' => $page,
-            'totalPages' => $totalPages
+            'totalPages' => $totalPages,
+            'seo_title' => 'Latest News and Updates | DoorHan',
+            'meta_description' => 'Stay up-to-date with the latest news, events, and product announcements from DoorHan.'
         ]);
     }
 
@@ -161,7 +200,9 @@ class PublicController {
         $this->view('public/contact', [
             'success' => $success ?? null,
             'error' => $error ?? null,
-            'csrf_token' => $_SESSION['csrf_token']
+            'csrf_token' => $_SESSION['csrf_token'],
+            'seo_title' => 'Contact Us | DoorHan',
+            'meta_description' => 'Get in touch with DoorHan. We are here to help you with any questions you may have about our products and services.'
         ]);
     }
 

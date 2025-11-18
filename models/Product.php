@@ -48,7 +48,10 @@ class Product {
 
     public function create($name, $slug, $content, $status, $seo_title, $meta_description) {
         $stmt = $this->db->prepare("INSERT INTO products (name, slug, content, status, seo_title, meta_description) VALUES (?, ?, ?, ?, ?, ?)");
-        return $stmt->execute([$name, $slug, $content, $status, $seo_title, $meta_description]);
+        if ($stmt->execute([$name, $slug, $content, $status, $seo_title, $meta_description])) {
+            return $this->db->lastInsertId();
+        }
+        return false;
     }
 
     public function update($id, $name, $slug, $content, $status, $seo_title, $meta_description) {
@@ -59,5 +62,23 @@ class Product {
     public function delete($id) {
         $stmt = $this->db->prepare("DELETE FROM products WHERE id = ?");
         return $stmt->execute([$id]);
+    }
+
+    public function setCategories($productId, $categoryIds) {
+        // First, remove existing categories for this product
+        $stmt = $this->db->prepare("DELETE FROM product_categories WHERE product_id = ?");
+        $stmt->execute([$productId]);
+
+        // Then, add the new categories
+        $stmt = $this->db->prepare("INSERT INTO product_categories (product_id, category_id) VALUES (?, ?)");
+        foreach ($categoryIds as $categoryId) {
+            $stmt->execute([$productId, $categoryId]);
+        }
+    }
+
+    public function getCategoryIds($productId) {
+        $stmt = $this->db->prepare("SELECT category_id FROM product_categories WHERE product_id = ?");
+        $stmt->execute([$productId]);
+        return $stmt->fetchAll(PDO::FETCH_COLUMN);
     }
 }

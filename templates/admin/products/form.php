@@ -22,6 +22,16 @@
         </select>
     </div>
     <div>
+        <label for="categories">Категории</label>
+        <select name="categories[]" id="categories" multiple required>
+            <?php foreach ($categories as $category): ?>
+                <option value="<?php echo $category['id']; ?>" <?php echo (isset($product_categories) && in_array($category['id'], $product_categories)) ? 'selected' : ''; ?>>
+                    <?php echo htmlspecialchars($category['name'], ENT_QUOTES, 'UTF-8'); ?>
+                </option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+    <div>
         <label for="seo_title">SEO Title</label>
         <input type="text" name="seo_title" id="seo_title" value="<?php echo htmlspecialchars($product['seo_title'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
     </div>

@@ -14,7 +14,7 @@
                         <li><a href="<?php echo SITE_URL; ?>/news">News</a></li>
                         <li><a href="<?php echo SITE_URL; ?>/about">About</a></li>
                         <li><a href="<?php echo SITE_URL; ?>/contact">Contact</a></li>
-                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="<?php echo SITE_URL; ?>/privacy-policy">Privacy Policy</a></li>
                     </ul>
                 </div>
                 <div class="footer-col">
@@ -42,6 +42,12 @@
             </div>
         </div>
     </footer>
+
+    <div id="cookie-consent-banner" class="cookie-consent-banner">
+        <p>We use cookies to ensure you get the best experience on our website. <a href="<?php echo SITE_URL; ?>/privacy-policy">Learn more</a>.</p>
+        <button id="cookie-consent-button" class="btn btn-primary">Got it!</button>
+    </div>
+
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
     <script src="<?php echo SITE_URL; ?>/assets/js/main.js"></script>
 </body>
