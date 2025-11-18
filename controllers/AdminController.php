@@ -437,85 +437,26 @@ class AdminController {
     public function settings() {
         $this->checkAuth();
         $db = Database::getInstance()->getConnection();
-
-        // Загрузка основных настроек
         $stmt = $db->prepare("SELECT `key`, `value` FROM settings");
         $stmt->execute();
         $settings = $stmt->fetchAll(PDO::FETCH_KEY_PAIR);
-
-        // Загрузка настроек чат-бота
-        $stmt_chatbot = $db->prepare("SELECT * FROM chatbot_settings WHERE id = 1");
-        $stmt_chatbot->execute();
-        $chatbot_settings = $stmt_chatbot->fetch(PDO::FETCH_ASSOC);
-        if (!$chatbot_settings) {
-            // Если настроек нет, создаем запись по умолчанию
-            $db->exec("INSERT INTO chatbot_settings (id) VALUES (1)");
-            $stmt_chatbot->execute();
-            $chatbot_settings = $stmt_chatbot->fetch(PDO::FETCH_ASSOC);
-        }
-
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (!hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
                 die('Ошибка валидации CSRF-токена');
             }
 
-            $form_type = $_POST['form_type'] ?? '';
+            $stmt = $db->prepare("UPDATE settings SET value = ? WHERE `key` = ?");
+            $stmt->execute([$_POST['site_title'], 'site_title']);
+            $stmt->execute([$_POST['contact_email'], 'contact_email']);
 
-            if ($form_type === 'general') {
-                $stmt = $db->prepare("UPDATE settings SET value = ? WHERE `key` = ?");
-                $stmt->execute([$_POST['site_title'], 'site_title']);
-                $stmt->execute([$_POST['contact_email'], 'contact_email']);
-                Flash::set('Основные настройки успешно сохранены');
-
-            } elseif ($form_type === 'chatbot') {
-                $sql = "UPDATE chatbot_settings SET
-                    api_key = :api_key,
-                    model = :model,
-                    chatbot_name = :chatbot_name,
-                    welcome_message = :welcome_message,
-                    bot_rules = :bot_rules,
-                    allow_db_source = :allow_db_source,
-                    allow_pdf_source = :allow_pdf_source,
-                    message_length_mode = :message_length_mode,
-                    fallback_email = :fallback_email,
-                    is_enabled = :is_enabled,
-                    button_color = :button_color,
-                    button_position = :button_position,
-                    button_size = :button_size,
-                    chat_window_styles = :chat_window_styles
-                WHERE id = 1";
-
-                $stmt = $db->prepare($sql);
-                $apiKey = trim($_POST['chatbot_api_key']);
-                $stmt->execute([
-                    ':api_key' => empty($apiKey) ? null : $apiKey,
-                    ':model' => $_POST['chatbot_model'],
-                    ':chatbot_name' => $_POST['chatbot_name'],
-                    ':welcome_message' => $_POST['chatbot_welcome_message'],
-                    ':bot_rules' => $_POST['chatbot_bot_rules'],
-                    ':allow_db_source' => isset($_POST['chatbot_allow_db_source']) ? 1 : 0,
-                    ':allow_pdf_source' => isset($_POST['chatbot_allow_pdf_source']) ? 1 : 0,
-                    ':message_length_mode' => $_POST['chatbot_message_length_mode'],
-                    ':fallback_email' => $_POST['chatbot_fallback_email'],
-                    ':is_enabled' => isset($_POST['chatbot_is_enabled']) ? 1 : 0,
-                    ':button_color' => $_POST['chatbot_button_color'],
-                    ':button_position' => $_POST['chatbot_button_position'],
-                    ':button_size' => $_POST['chatbot_button_size'],
-                    ':chat_window_styles' => $_POST['chatbot_chat_window_styles']
-                ]);
-                 Flash::set('Настройки чат-бота успешно сохранены');
-            }
-
+            Flash::set('Настройки успешно сохранены');
+            // ИСПРАВЛЕНО:
             header('Location: ' . SITE_URL . '/admin/settings');
             exit;
         }
 
-        $this->view('admin/settings', [
-            'settings' => $settings,
-            'chatbot_settings' => $chatbot_settings,
-            'csrf_token' => $_SESSION['csrf_token']
-        ]);
+        $this->view('admin/settings', ['settings' => $settings, 'csrf_token' => $_SESSION['csrf_token']]);
     }
 
     /**

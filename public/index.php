@@ -88,9 +88,6 @@ $router->add('/admin/messages/delete/{id}', 'AdminController', 'delete_message')
 $router->add('/admin/messages/export', 'AdminController', 'export_messages');
 $router->add('/admin/settings', 'AdminController', 'settings');
 
-// Chatbot API route
-$router->add('/api/chatbot', 'ChatbotController', 'handleRequest');
-
 // ... другие маршруты админ-панели ...
 // --- Корректное определение URI для поддиректорий ---
 

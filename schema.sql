@@ -120,33 +120,3 @@ CREATE TABLE `navigation_items` (
   KEY `parent_id` (`parent_id`),
   CONSTRAINT `navigation_items_ibfk_1` FOREIGN KEY (`parent_id`) REFERENCES `navigation_items` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- Таблица для настроек чат-бота
-CREATE TABLE `chatbot_settings` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `api_key` varchar(255) DEFAULT NULL,
-  `model` varchar(255) DEFAULT 'gemini-2.0-flash',
-  `chatbot_name` varchar(255) DEFAULT 'Chatbot',
-  `welcome_message` text,
-  `bot_rules` text,
-  `allow_db_source` tinyint(1) NOT NULL DEFAULT '1',
-  `allow_pdf_source` tinyint(1) NOT NULL DEFAULT '1',
-  `message_length_mode` enum('short','detailed') NOT NULL DEFAULT 'short',
-  `fallback_email` varchar(255) DEFAULT NULL,
-  `is_enabled` tinyint(1) NOT NULL DEFAULT '0',
-  `button_color` varchar(7) DEFAULT '#007bff',
-  `button_position` varchar(20) DEFAULT 'bottom-right',
-  `button_size` varchar(10) DEFAULT 'medium',
-  `chat_window_styles` text,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- Таблица для сообщений чата
-CREATE TABLE `chat_messages` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `session_id` varchar(255) NOT NULL,
-  `sender` enum('user','bot') NOT NULL,
-  `message` text NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
