@@ -29,5 +29,3 @@ if (DEBUG) {
 // Устанавливаем часовой пояс
 date_default_timezone_set('UTC');
 
-// Абсолютный путь к корню проекта
-define('ROOT_PATH', dirname(__DIR__));
