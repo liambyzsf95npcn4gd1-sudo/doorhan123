@@ -57,28 +57,24 @@ document.addEventListener('DOMContentLoaded', function () {
         },
     });
 
-    const accordion = document.querySelector('.accordion');
+    const accordionItems = document.querySelectorAll('.accordion-item');
 
-    if (accordion) {
-        accordion.addEventListener('click', function (event) {
-            const header = event.target.closest('.accordion-header');
+    accordionItems.forEach(item => {
+        const header = item.querySelector('.accordion-header');
+        const content = item.querySelector('.accordion-content');
 
-            if (!header) {
-                return;
-            }
+        header.addEventListener('click', () => {
+            // Toggle the 'active' class on the accordion item
+            item.classList.toggle('active');
 
-            const accordionItem = header.parentElement;
-            const accordionContent = header.nextElementSibling;
-
-            accordionItem.classList.toggle('active');
-
-            if (accordionContent.style.maxHeight) {
-                accordionContent.style.maxHeight = null;
+            // Toggle the content's max-height
+            if (content.style.maxHeight) {
+                content.style.maxHeight = null;
             } else {
-                accordionContent.style.maxHeight = accordionContent.scrollHeight + 'px';
+                content.style.maxHeight = content.scrollHeight + 'px';
             }
         });
-    }
+    });
 
     // Cookie Consent
     const cookieBanner = document.getElementById('cookie-consent-banner');
