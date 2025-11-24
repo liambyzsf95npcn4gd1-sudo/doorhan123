@@ -1,5 +1,5 @@
 <?php
-// Модель для работы с новостями (блог) (Multi-language)
+// Модель для работы с новостями (блог) (Multi-language with Fallback)
 
 class Post {
     private $db;
@@ -12,9 +12,14 @@ class Post {
 
     public function getAll() {
         $sql = "SELECT p.id, p.status, p.created_at,
-                       pt.title, pt.slug, pt.content, pt.seo_title, pt.meta_description
+                       COALESCE(pt.title, pt_en.title) as title,
+                       COALESCE(pt.slug, pt_en.slug) as slug,
+                       COALESCE(pt.content, pt_en.content) as content,
+                       COALESCE(pt.seo_title, pt_en.seo_title) as seo_title,
+                       COALESCE(pt.meta_description, pt_en.meta_description) as meta_description
                 FROM posts p
-                LEFT JOIN post_translations pt ON p.id = pt.post_id AND pt.language_code = ?";
+                LEFT JOIN post_translations pt ON p.id = pt.post_id AND pt.language_code = ?
+                LEFT JOIN post_translations pt_en ON p.id = pt_en.post_id AND pt_en.language_code = 'en'";
         $stmt = $this->db->prepare($sql);
         $stmt->execute([$this->lang]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -33,9 +38,14 @@ class Post {
 
     public function getAllPublished($limit = 10, $offset = 0) {
         $sql = "SELECT p.id, p.status, p.created_at,
-                       pt.title, pt.slug, pt.content, pt.seo_title, pt.meta_description
+                       COALESCE(pt.title, pt_en.title) as title,
+                       COALESCE(pt.slug, pt_en.slug) as slug,
+                       COALESCE(pt.content, pt_en.content) as content,
+                       COALESCE(pt.seo_title, pt_en.seo_title) as seo_title,
+                       COALESCE(pt.meta_description, pt_en.meta_description) as meta_description
                 FROM posts p
                 LEFT JOIN post_translations pt ON p.id = pt.post_id AND pt.language_code = ?
+                LEFT JOIN post_translations pt_en ON p.id = pt_en.post_id AND pt_en.language_code = 'en'
                 WHERE p.status = 'published'
                 ORDER BY p.created_at DESC
                 LIMIT " . (int)$limit . " OFFSET " . (int)$offset;
@@ -51,21 +61,32 @@ class Post {
     }
 
     public function getBySlug($slug) {
-        $sql = "SELECT p.id, p.status, p.created_at,
-                       pt.title, pt.slug, pt.content, pt.seo_title, pt.meta_description
-                FROM posts p
-                JOIN post_translations pt ON p.id = pt.post_id
-                WHERE pt.slug = ? AND pt.language_code = ? AND p.status = 'published'";
-        $stmt = $this->db->prepare($sql);
-        $stmt->execute([$slug, $this->lang]);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        // Find ID first
+        $stmt = $this->db->prepare("
+            SELECT p.id
+            FROM posts p
+            LEFT JOIN post_translations pt ON p.id = pt.post_id AND pt.language_code = ?
+            LEFT JOIN post_translations pt_en ON p.id = pt_en.post_id AND pt_en.language_code = 'en'
+            WHERE (pt.slug = ? OR pt_en.slug = ?) AND p.status = 'published'
+        ");
+        $stmt->execute([$this->lang, $slug, $slug]);
+        $id = $stmt->fetchColumn();
+
+        if (!$id) return false;
+
+        return $this->getById($id);
     }
 
     public function getById($id) {
         $sql = "SELECT p.id, p.status, p.created_at,
-                       pt.title, pt.slug, pt.content, pt.seo_title, pt.meta_description
+                       COALESCE(pt.title, pt_en.title) as title,
+                       COALESCE(pt.slug, pt_en.slug) as slug,
+                       COALESCE(pt.content, pt_en.content) as content,
+                       COALESCE(pt.seo_title, pt_en.seo_title) as seo_title,
+                       COALESCE(pt.meta_description, pt_en.meta_description) as meta_description
                 FROM posts p
                 LEFT JOIN post_translations pt ON p.id = pt.post_id AND pt.language_code = ?
+                LEFT JOIN post_translations pt_en ON p.id = pt_en.post_id AND pt_en.language_code = 'en'
                 WHERE p.id = ?";
         $stmt = $this->db->prepare($sql);
         $stmt->execute([$this->lang, $id]);

@@ -27,6 +27,10 @@ class Language {
     public static function translate($key) {
         return self::$translations[$key] ?? $key;
     }
+
+    public static function getDirection() {
+        return self::$current_lang === 'ar' ? 'rtl' : 'ltr';
+    }
 }
 
 function __($key) {

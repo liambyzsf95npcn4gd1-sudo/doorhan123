@@ -1,5 +1,5 @@
 <?php
-// Модель для работы с категориями (Multi-language)
+// Модель для работы с категориями (Multi-language with Fallback)
 
 class Category {
     private $db;
@@ -12,9 +12,14 @@ class Category {
 
     public function getAll() {
         $sql = "SELECT c.id, c.parent_id,
-                       ct.name, ct.slug, ct.description, ct.seo_title, ct.meta_description
+                       COALESCE(ct.name, ct_en.name) as name,
+                       COALESCE(ct.slug, ct_en.slug) as slug,
+                       COALESCE(ct.description, ct_en.description) as description,
+                       COALESCE(ct.seo_title, ct_en.seo_title) as seo_title,
+                       COALESCE(ct.meta_description, ct_en.meta_description) as meta_description
                 FROM categories c
-                LEFT JOIN category_translations ct ON c.id = ct.category_id AND ct.language_code = ?";
+                LEFT JOIN category_translations ct ON c.id = ct.category_id AND ct.language_code = ?
+                LEFT JOIN category_translations ct_en ON c.id = ct_en.category_id AND ct_en.language_code = 'en'";
         $stmt = $this->db->prepare($sql);
         $stmt->execute([$this->lang]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -32,21 +37,32 @@ class Category {
     }
 
     public function getBySlug($slug) {
-        $sql = "SELECT c.id, c.parent_id,
-                       ct.name, ct.slug, ct.description, ct.seo_title, ct.meta_description
-                FROM categories c
-                JOIN category_translations ct ON c.id = ct.category_id
-                WHERE ct.slug = ? AND ct.language_code = ?";
-        $stmt = $this->db->prepare($sql);
-        $stmt->execute([$slug, $this->lang]);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        // Find ID first
+        $stmt = $this->db->prepare("
+            SELECT c.id
+            FROM categories c
+            LEFT JOIN category_translations ct ON c.id = ct.category_id AND ct.language_code = ?
+            LEFT JOIN category_translations ct_en ON c.id = ct_en.category_id AND ct_en.language_code = 'en'
+            WHERE (ct.slug = ? OR ct_en.slug = ?)
+        ");
+        $stmt->execute([$this->lang, $slug, $slug]);
+        $id = $stmt->fetchColumn();
+
+        if (!$id) return false;
+
+        return $this->getById($id);
     }
 
     public function getById($id) {
         $sql = "SELECT c.id, c.parent_id,
-                       ct.name, ct.slug, ct.description, ct.seo_title, ct.meta_description
+                       COALESCE(ct.name, ct_en.name) as name,
+                       COALESCE(ct.slug, ct_en.slug) as slug,
+                       COALESCE(ct.description, ct_en.description) as description,
+                       COALESCE(ct.seo_title, ct_en.seo_title) as seo_title,
+                       COALESCE(ct.meta_description, ct_en.meta_description) as meta_description
                 FROM categories c
                 LEFT JOIN category_translations ct ON c.id = ct.category_id AND ct.language_code = ?
+                LEFT JOIN category_translations ct_en ON c.id = ct_en.category_id AND ct_en.language_code = 'en'
                 WHERE c.id = ?";
         $stmt = $this->db->prepare($sql);
         $stmt->execute([$this->lang, $id]);
@@ -54,12 +70,21 @@ class Category {
     }
 
     public function getProductsByCategoryId($categoryId) {
+        // Also needs fallback for Product data!
         $sql = "SELECT p.id, p.status, p.created_at,
-                       pt.name, pt.slug, pt.content, pt.seo_title, pt.meta_description,
-                       pt.max_width, pt.max_height, pt.panel_thickness, pt.insulation
+                       COALESCE(pt.name, pt_en.name) as name,
+                       COALESCE(pt.slug, pt_en.slug) as slug,
+                       COALESCE(pt.content, pt_en.content) as content,
+                       COALESCE(pt.seo_title, pt_en.seo_title) as seo_title,
+                       COALESCE(pt.meta_description, pt_en.meta_description) as meta_description,
+                       COALESCE(pt.max_width, pt_en.max_width) as max_width,
+                       COALESCE(pt.max_height, pt_en.max_height) as max_height,
+                       COALESCE(pt.panel_thickness, pt_en.panel_thickness) as panel_thickness,
+                       COALESCE(pt.insulation, pt_en.insulation) as insulation
                 FROM products p
                 JOIN product_categories pc ON p.id = pc.product_id
                 LEFT JOIN product_translations pt ON p.id = pt.product_id AND pt.language_code = ?
+                LEFT JOIN product_translations pt_en ON p.id = pt_en.product_id AND pt_en.language_code = 'en'
                 WHERE pc.category_id = ? AND p.status = 'active'";
         $stmt = $this->db->prepare($sql);
         $stmt->execute([$this->lang, $categoryId]);

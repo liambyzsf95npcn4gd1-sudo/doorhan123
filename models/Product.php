@@ -1,5 +1,5 @@
 <?php
-// Модель для работы с товарами (Multi-language support)
+// Модель для работы с товарами (Multi-language support with Fallback)
 
 class Product {
     private $db;
@@ -12,10 +12,18 @@ class Product {
 
     public function getAll() {
         $sql = "SELECT p.id, p.status, p.created_at,
-                       pt.name, pt.slug, pt.content, pt.seo_title, pt.meta_description,
-                       pt.max_width, pt.max_height, pt.panel_thickness, pt.insulation
+                       COALESCE(pt.name, pt_en.name) as name,
+                       COALESCE(pt.slug, pt_en.slug) as slug,
+                       COALESCE(pt.content, pt_en.content) as content,
+                       COALESCE(pt.seo_title, pt_en.seo_title) as seo_title,
+                       COALESCE(pt.meta_description, pt_en.meta_description) as meta_description,
+                       COALESCE(pt.max_width, pt_en.max_width) as max_width,
+                       COALESCE(pt.max_height, pt_en.max_height) as max_height,
+                       COALESCE(pt.panel_thickness, pt_en.panel_thickness) as panel_thickness,
+                       COALESCE(pt.insulation, pt_en.insulation) as insulation
                 FROM products p
-                LEFT JOIN product_translations pt ON p.id = pt.product_id AND pt.language_code = ?";
+                LEFT JOIN product_translations pt ON p.id = pt.product_id AND pt.language_code = ?
+                LEFT JOIN product_translations pt_en ON p.id = pt_en.product_id AND pt_en.language_code = 'en'";
         $stmt = $this->db->prepare($sql);
         $stmt->execute([$this->lang]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -35,9 +43,14 @@ class Product {
 
     public function getAllActive($limit = 10, $offset = 0) {
         $sql = "SELECT p.id, p.status, p.created_at,
-                       pt.name, pt.slug, pt.content, pt.seo_title, pt.meta_description
+                       COALESCE(pt.name, pt_en.name) as name,
+                       COALESCE(pt.slug, pt_en.slug) as slug,
+                       COALESCE(pt.content, pt_en.content) as content,
+                       COALESCE(pt.seo_title, pt_en.seo_title) as seo_title,
+                       COALESCE(pt.meta_description, pt_en.meta_description) as meta_description
                 FROM products p
                 LEFT JOIN product_translations pt ON p.id = pt.product_id AND pt.language_code = ?
+                LEFT JOIN product_translations pt_en ON p.id = pt_en.product_id AND pt_en.language_code = 'en'
                 WHERE p.status = 'active'
                 ORDER BY p.created_at DESC
                 LIMIT " . (int)$limit . " OFFSET " . (int)$offset;
@@ -53,23 +66,36 @@ class Product {
     }
 
     public function getBySlug($slug) {
-        $sql = "SELECT p.id, p.status, p.created_at,
-                       pt.name, pt.slug, pt.content, pt.seo_title, pt.meta_description,
-                       pt.max_width, pt.max_height, pt.panel_thickness, pt.insulation
-                FROM products p
-                JOIN product_translations pt ON p.id = pt.product_id
-                WHERE pt.slug = ? AND pt.language_code = ? AND p.status = 'active'";
-        $stmt = $this->db->prepare($sql);
-        $stmt->execute([$slug, $this->lang]);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        // First find ID by checking both localized and English slug
+        $stmt = $this->db->prepare("
+            SELECT p.id
+            FROM products p
+            LEFT JOIN product_translations pt ON p.id = pt.product_id AND pt.language_code = ?
+            LEFT JOIN product_translations pt_en ON p.id = pt_en.product_id AND pt_en.language_code = 'en'
+            WHERE (pt.slug = ? OR pt_en.slug = ?) AND p.status = 'active'
+        ");
+        $stmt->execute([$this->lang, $slug, $slug]);
+        $id = $stmt->fetchColumn();
+
+        if (!$id) return false;
+
+        return $this->getById($id);
     }
 
     public function getById($id) {
         $sql = "SELECT p.id, p.status, p.created_at,
-                       pt.name, pt.slug, pt.content, pt.seo_title, pt.meta_description,
-                       pt.max_width, pt.max_height, pt.panel_thickness, pt.insulation
+                       COALESCE(pt.name, pt_en.name) as name,
+                       COALESCE(pt.slug, pt_en.slug) as slug,
+                       COALESCE(pt.content, pt_en.content) as content,
+                       COALESCE(pt.seo_title, pt_en.seo_title) as seo_title,
+                       COALESCE(pt.meta_description, pt_en.meta_description) as meta_description,
+                       COALESCE(pt.max_width, pt_en.max_width) as max_width,
+                       COALESCE(pt.max_height, pt_en.max_height) as max_height,
+                       COALESCE(pt.panel_thickness, pt_en.panel_thickness) as panel_thickness,
+                       COALESCE(pt.insulation, pt_en.insulation) as insulation
                 FROM products p
                 LEFT JOIN product_translations pt ON p.id = pt.product_id AND pt.language_code = ?
+                LEFT JOIN product_translations pt_en ON p.id = pt_en.product_id AND pt_en.language_code = 'en'
                 WHERE p.id = ?";
         $stmt = $this->db->prepare($sql);
         $stmt->execute([$this->lang, $id]);
@@ -82,20 +108,13 @@ class Product {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    /**
-     * Create product with translations
-     * $data needs to be an array keyed by language code:
-     * $data['en'] = ['name' => ..., 'slug' => ..., ...]
-     */
     public function create($status, $data) {
         $this->db->beginTransaction();
         try {
-            // 1. Insert into products
             $stmt = $this->db->prepare("INSERT INTO products (status) VALUES (?)");
             $stmt->execute([$status]);
             $productId = $this->db->lastInsertId();
 
-            // 2. Insert translations
             $stmt = $this->db->prepare("INSERT INTO product_translations (product_id, language_code, name, slug, content, seo_title, meta_description, max_width, max_height, panel_thickness, insulation) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
             foreach ($data as $lang => $fields) {
@@ -125,11 +144,9 @@ class Product {
     public function update($id, $status, $data) {
         $this->db->beginTransaction();
         try {
-            // 1. Update products status
             $stmt = $this->db->prepare("UPDATE products SET status = ? WHERE id = ?");
             $stmt->execute([$status, $id]);
 
-            // 2. Update translations (upsert logic)
             $stmt = $this->db->prepare("INSERT INTO product_translations (product_id, language_code, name, slug, content, seo_title, meta_description, max_width, max_height, panel_thickness, insulation) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE name=VALUES(name), slug=VALUES(slug), content=VALUES(content), seo_title=VALUES(seo_title), meta_description=VALUES(meta_description), max_width=VALUES(max_width), max_height=VALUES(max_height), panel_thickness=VALUES(panel_thickness), insulation=VALUES(insulation)");
 
             foreach ($data as $lang => $fields) {

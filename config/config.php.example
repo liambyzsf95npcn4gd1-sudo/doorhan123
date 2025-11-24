@@ -32,5 +32,5 @@ date_default_timezone_set('UTC');
 
 // Supported Languages
 // Add languages as needed. Keys should match folder names/URL prefixes.
-define('SUPPORTED_LANGUAGES', ['en', 'ru']);
+define('SUPPORTED_LANGUAGES', ['en', 'es', 'zh', 'fr', 'ar', 'pt', 'de', 'hi', 'id', 'ja', 'ko', 'it']);
 define('DEFAULT_LANGUAGE', 'en');
