@@ -2,14 +2,14 @@
 
 <section class="page-header">
     <div class="container">
-        <h1>Factories</h1>
+        <h1><?php echo __('factories_title'); ?></h1>
     </div>
 </section>
 
 <section class="section-padding">
     <div class="container">
-        <h1>Our Factories</h1>
-        <p>This is a placeholder for the factories page.</p>
+        <h1><?php echo __('factories_title'); ?></h1>
+        <p><?php echo __('factories_placeholder'); ?></p>
     </div>
 </section>
 

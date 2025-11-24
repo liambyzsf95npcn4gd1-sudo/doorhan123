@@ -2,14 +2,14 @@
 
 <section class="page-header">
     <div class="container">
-        <h1>Solutions</h1>
+        <h1><?php echo __('solutions_title'); ?></h1>
     </div>
 </section>
 
 <section class="section-padding">
     <div class="container">
-        <h1>Our Solutions</h1>
-        <p>This is a placeholder for the solutions page.</p>
+        <h1><?php echo __('solutions_title'); ?></h1>
+        <p><?php echo __('solutions_placeholder'); ?></p>
     </div>
 </section>
 

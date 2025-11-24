@@ -180,8 +180,8 @@ footer {
     border-radius: 8px;
     font-size: 16px;
     box-sizing: border-box; /* Important */
-    max-width: 600px; /* Limit max width for very wide screens */
 }
+/* Removed max-width: 600px to make inputs larger */
 .form-group textarea {
     min-height: 150px;
     resize: vertical;

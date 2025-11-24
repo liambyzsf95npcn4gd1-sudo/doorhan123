@@ -14,26 +14,25 @@
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
     
     <script src="<?php echo SITE_URL; ?>/assets/js/mobile-nav.js" defer></script>
-    <script src="<?php echo SITE_URL; ?>/assets/js/main.js" defer></script>
 </head>
 <body>
     <header class="sticky-header">
         <div class="container">
             <div class="header-flex">
                 <div class="logo">
-                    <a href="<?php echo SITE_URL; ?>/"><img src="<?php echo SITE_URL; ?>/assets/img/logo.png" alt="DoorHan International"></a>
+                    <a href="<?php echo url('/'); ?>"><img src="<?php echo SITE_URL; ?>/assets/img/logo.png" alt="DoorHan International"></a>
                 </div>
                 <nav class="main-nav">
                     <ul>
                         <?php if (isset($menuItems) && is_array($menuItems)): ?>
                             <?php foreach ($menuItems as $item): ?>
                                 <li class="nav-item <?php echo !empty($item['children']) ? 'has-dropdown' : ''; ?>">
-                                    <a href="<?php echo SITE_URL; ?><?php echo htmlspecialchars($item['url']); ?>"><?php echo htmlspecialchars($item['title']); ?></a>
+                                    <a href="<?php echo url($item['url']); ?>"><?php echo htmlspecialchars(__($item['title'])); ?></a>
                                     <?php if (!empty($item['children'])): ?>
                                         <div class="dropdown-menu">
                                             <ul>
                                                 <?php foreach ($item['children'] as $child): ?>
-                                                    <li><a href="<?php echo SITE_URL; ?><?php echo htmlspecialchars($child['url']); ?>"><?php echo htmlspecialchars($child['title']); ?></a></li>
+                                                    <li><a href="<?php echo url($child['url']); ?>"><?php echo htmlspecialchars(__($child['title'])); ?></a></li>
                                                 <?php endforeach; ?>
                                             </ul>
                                         </div>
@@ -44,10 +43,15 @@
                     </ul>
                 </nav>
                 <div class="header-right">
+                    <div class="lang-switcher">
+                        <?php foreach (SUPPORTED_LANGUAGES as $lang): ?>
+                            <a href="<?php echo SITE_URL . '/' . $lang; ?>" class="<?php echo Language::get() === $lang ? 'active' : ''; ?>"><?php echo strtoupper($lang); ?></a>
+                        <?php endforeach; ?>
+                    </div>
                     <div class="header-phone">
                         <a href="tel:+1-800-DOORHAN">+1-800-DOORHAN</a>
                     </div>
-                    <a href="<?php echo SITE_URL; ?>/contact" class="btn btn-primary">Find Dealer</a>
+                    <a href="<?php echo url('/contact'); ?>" class="btn btn-primary"><?php echo __('Find Dealer'); ?></a>
                 </div>
                 <button class="mobile-nav-toggle">
                     <span class="hamburger"></span>

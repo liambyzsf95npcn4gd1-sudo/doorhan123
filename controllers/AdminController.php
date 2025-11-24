@@ -1,45 +1,29 @@
 <?php
-// Контроллер для админ-панели
+// Контроллер для админ-панели (Updated for Multi-language)
 
 class AdminController {
 
     const MAX_LOGIN_ATTEMPTS = 5;
-    const LOCKOUT_TIME = 900; // 15 минут
+    const LOCKOUT_TIME = 900;
 
     public function __construct() {
-        // Генерация CSRF-токена
         if (empty($_SESSION['csrf_token'])) {
             $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
         }
     }
 
-    /**
-     * Проверка, авторизован ли администратор
-     */
     private function checkAuth() {
         if (!isset($_SESSION['user_id'])) {
-            header('Location: ' . SITE_URL . '/admin/login'); // <- Я поправил и здесь, на всякий случай
+            header('Location: ' . SITE_URL . '/admin/login');
             exit;
         }
     }
 
-    private function hasPermission($role) {
-        // Пока просто проверяем, залогинен ли пользователь.
-        // Можно расширить для проверки по $_SESSION['user_role']
-        return isset($_SESSION['user_id']);
-    }
-
-    /**
-     * Главная страница админ-панели
-     */
     public function dashboard() {
         $this->checkAuth();
         $this->view('admin/dashboard');
     }
 
-    /**
-     * Страница входа и обработка формы
-     */
     public function login() {
         if (isset($_SESSION['user_id'])) {
             header('Location: ' . SITE_URL . '/admin');
@@ -47,12 +31,10 @@ class AdminController {
         }
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Проверка CSRF-токена
             if (!isset($_POST['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
                 die('Ошибка валидации CSRF-токена');
             }
 
-            // Ограничение попыток входа
             if (isset($_SESSION['lockout_time']) && time() < $_SESSION['lockout_time']) {
                 $error = 'Слишком много неудачных попыток входа. Пожалуйста, попробуйте позже.';
             } else {
@@ -71,12 +53,9 @@ class AdminController {
                     $user = $stmt->fetch();
 
                     if ($user && password_verify($password, $user['password'])) {
-                        // Пересоздаем ID сессии для предотвращения фиксации сессии
                         session_regenerate_id(true);
-
                         unset($_SESSION['login_attempts']);
                         unset($_SESSION['lockout_time']);
-
                         $_SESSION['user_id'] = $user['id'];
                         $_SESSION['user_role'] = $user['role'];
                         header('Location: ' . SITE_URL . '/admin');
@@ -91,157 +70,19 @@ class AdminController {
         $this->view('admin/login', ['error' => $error ?? null, 'csrf_token' => $_SESSION['csrf_token']], false);
     }
 
-    /**
-     * Выход из системы
-     */
     public function logout() {
         $_SESSION = [];
-
-        // Получаем параметры cookie сессии, чтобы корректно их удалить
         $params = session_get_cookie_params();
-
-        // Отправляем cookie с истекшим сроком годности
         setcookie(session_name(), '', time() - 42000,
             $params["path"], $params["domain"],
             $params["secure"], $params["httponly"]
         );
-
         session_destroy();
-
-        // Этот редирект уже был правильным
         header('Location: ' . SITE_URL . '/admin/login');
         exit;
     }
 
-    /**
-     * Управление страницами
-     */
-    public function pages() {
-        $this->checkAuth();
-        $pageModel = new Page();
-        $pages = $pageModel->getAll();
-        $this->view('admin/pages/index', ['pages' => $pages]);
-    }
-
-    public function create_page() {
-        $this->checkAuth();
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            if (!hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
-                die('Ошибка валидации CSRF-токена');
-            }
-            $pageModel = new Page();
-            if ($pageModel->create($_POST['title'], $_POST['slug'], $_POST['content'], $_POST['seo_title'], $_POST['meta_description'])) {
-                Flash::set('Страница успешно создана');
-            } else {
-                Flash::set('Ошибка при создании страницы', 'error');
-            }
-            // ИСПРАВЛЕНО:
-            header('Location: ' . SITE_URL . '/admin/pages');
-            exit;
-        }
-        $this->view('admin/pages/form', ['csrf_token' => $_SESSION['csrf_token']]);
-    }
-
-    public function edit_page($params) {
-        $this->checkAuth();
-        $pageModel = new Page();
-        $page = $pageModel->getById($params['id']);
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            if (!hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
-                die('Ошибка валидации CSRF-токена');
-            }
-            if ($pageModel->update($params['id'], $_POST['title'], $_POST['slug'], $_POST['content'], $_POST['seo_title'], $_POST['meta_description'])) {
-                Flash::set('Страница успешно обновлена');
-            } else {
-                Flash::set('Ошибка при обновлении страницы', 'error');
-            }
-            // ИСПРАВЛЕНО:
-            header('Location: ' . SITE_URL . '/admin/pages');
-            exit;
-        }
-        $this->view('admin/pages/form', ['page' => $page, 'csrf_token' => $_SESSION['csrf_token']]);
-    }
-
-    public function delete_page($params) {
-        $this->checkAuth();
-        $pageModel = new Page();
-        if ($pageModel->delete($params['id'])) {
-            Flash::set('Страница успешно удалена');
-        } else {
-            Flash::set('Ошибка при удалении страницы', 'error');
-        }
-        // ИСПРАВЛЕНО:
-        header('Location: ' . SITE_URL . '/admin/pages');
-        exit;
-    }
-
-    /**
-     * Управление категориями
-     */
-    public function categories() {
-        $this->checkAuth();
-        $categoryModel = new Category();
-        $categories = $categoryModel->getAll();
-        $this->view('admin/categories/index', ['categories' => $categories]);
-    }
-
-    public function create_category() {
-        $this->checkAuth();
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            if (!hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
-                die('Ошибка валидации CSRF-токена');
-            }
-            $categoryModel = new Category();
-            // Set parent_id to NULL as it's no longer used from the form
-            if ($categoryModel->create($_POST['name'], $_POST['slug'], NULL, $_POST['description'], $_POST['seo_title'], $_POST['meta_description'])) {
-                Flash::set('Категория успешно создана');
-            } else {
-                Flash::set('Ошибка при создании категории', 'error');
-            }
-            // ИСПРАВЛЕНО:
-            header('Location: '. SITE_URL . '/admin/categories');
-            exit;
-        }
-        $this->view('admin/categories/form', ['csrf_token' => $_SESSION['csrf_token']]);
-    }
-
-    public function edit_category($params) {
-        $this->checkAuth();
-        $categoryModel = new Category();
-        $category = $categoryModel->getById($params['id']);
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            if (!hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
-                die('Ошибка валидации CSRF-токена');
-            }
-            // Set parent_id to NULL as it's no longer used from the form
-            if ($categoryModel->update($params['id'], $_POST['name'], $_POST['slug'], NULL, $_POST['description'], $_POST['seo_title'], $_POST['meta_description'])) {
-                Flash::set('Категория успешно обновлена');
-            } else {
-                Flash::set('Ошибка при обновлении категории', 'error');
-            }
-            // ИСПРАВЛЕНО:
-            header('Location: ' . SITE_URL . '/admin/categories');
-            exit;
-        }
-        $this->view('admin/categories/form', ['category' => $category, 'csrf_token' => $_SESSION['csrf_token']]);
-    }
-
-    public function delete_category($params) {
-        $this->checkAuth();
-        $categoryModel = new Category();
-        if ($categoryModel->delete($params['id'])) {
-            Flash::set('Категория успешно удалена');
-        } else {
-            Flash::set('Ошибка при удалении категории', 'error');
-        }
-        // ИСПРАВЛЕНО:
-        header('Location: ' . SITE_URL . '/admin/categories');
-        exit;
-    }
-
-    /**
-     * Управление товарами
-     */
+    // --- PRODUCTS ---
     public function products() {
         $this->checkAuth();
         $productModel = new Product();
@@ -258,8 +99,27 @@ class AdminController {
             if (!hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
                 die('Ошибка валидации CSRF-токена');
             }
+
             $productModel = new Product();
-            $productId = $productModel->create($_POST['name'], $_POST['slug'], $_POST['content'], $_POST['status'], $_POST['seo_title'], $_POST['meta_description']);
+            $status = $_POST['status'];
+
+            // Collect multi-language data
+            $langData = [];
+            foreach (SUPPORTED_LANGUAGES as $lang) {
+                $langData[$lang] = [
+                    'name' => $_POST['name'][$lang] ?? '',
+                    'slug' => $_POST['slug'][$lang] ?? '',
+                    'content' => $_POST['content'][$lang] ?? '',
+                    'seo_title' => $_POST['seo_title'][$lang] ?? '',
+                    'meta_description' => $_POST['meta_description'][$lang] ?? '',
+                    'max_width' => $_POST['max_width'][$lang] ?? '',
+                    'max_height' => $_POST['max_height'][$lang] ?? '',
+                    'panel_thickness' => $_POST['panel_thickness'][$lang] ?? '',
+                    'insulation' => $_POST['insulation'][$lang] ?? ''
+                ];
+            }
+
+            $productId = $productModel->create($status, $langData);
 
             if ($productId) {
                 if (isset($_POST['categories']) && is_array($_POST['categories'])) {
@@ -278,17 +138,36 @@ class AdminController {
     public function edit_product($params) {
         $this->checkAuth();
         $productModel = new Product();
-        $product = $productModel->getById($params['id']);
+        $product = $productModel->getById($params['id']); // Gets basic data (status, etc)
+        $translations = $productModel->getTranslations($params['id']); // Gets translations
+
         $categoryModel = new Category();
         $categories = $categoryModel->getAll();
         $product_categories = $productModel->getCategoryIds($params['id']);
-
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (!hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
                 die('Ошибка валидации CSRF-токена');
             }
-            if ($productModel->update($params['id'], $_POST['name'], $_POST['slug'], $_POST['content'], $_POST['status'], $_POST['seo_title'], $_POST['meta_description'])) {
+
+            $status = $_POST['status'];
+            // Collect multi-language data
+            $langData = [];
+            foreach (SUPPORTED_LANGUAGES as $lang) {
+                $langData[$lang] = [
+                    'name' => $_POST['name'][$lang] ?? '',
+                    'slug' => $_POST['slug'][$lang] ?? '',
+                    'content' => $_POST['content'][$lang] ?? '',
+                    'seo_title' => $_POST['seo_title'][$lang] ?? '',
+                    'meta_description' => $_POST['meta_description'][$lang] ?? '',
+                    'max_width' => $_POST['max_width'][$lang] ?? '',
+                    'max_height' => $_POST['max_height'][$lang] ?? '',
+                    'panel_thickness' => $_POST['panel_thickness'][$lang] ?? '',
+                    'insulation' => $_POST['insulation'][$lang] ?? ''
+                ];
+            }
+
+            if ($productModel->update($params['id'], $status, $langData)) {
                 if (isset($_POST['categories']) && is_array($_POST['categories'])) {
                     $productModel->setCategories($params['id'], $_POST['categories']);
                 }
@@ -301,6 +180,7 @@ class AdminController {
         }
         $this->view('admin/products/form', [
             'product' => $product,
+            'translations' => $translations,
             'categories' => $categories,
             'product_categories' => $product_categories,
             'csrf_token' => $_SESSION['csrf_token']
@@ -315,14 +195,171 @@ class AdminController {
         } else {
             Flash::set('Ошибка при удалении товара', 'error');
         }
-        // ИСПРАВЛЕНО:
         header('Location: ' . SITE_URL . '/admin/products');
         exit;
     }
 
-    /**
-     * Управление новостями
-     */
+    public function pages() { $this->checkAuth(); $pageModel = new Page(); $pages = $pageModel->getAll(); $this->view('admin/pages/index', ['pages' => $pages]); }
+    public function create_page() {
+        $this->checkAuth();
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (!hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
+                die('Ошибка валидации CSRF-токена');
+            }
+            $pageModel = new Page();
+            // Collect multi-language data
+            $langData = [];
+            foreach (SUPPORTED_LANGUAGES as $lang) {
+                $langData[$lang] = [
+                    'title' => $_POST['title'][$lang] ?? '',
+                    'slug' => $_POST['slug'][$lang] ?? '',
+                    'content' => $_POST['content'][$lang] ?? '',
+                    'seo_title' => $_POST['seo_title'][$lang] ?? '',
+                    'meta_description' => $_POST['meta_description'][$lang] ?? ''
+                ];
+            }
+
+            if ($pageModel->create($langData)) {
+                Flash::set('Страница успешно создана');
+            } else {
+                Flash::set('Ошибка при создании страницы', 'error');
+            }
+            header('Location: ' . SITE_URL . '/admin/pages');
+            exit;
+        }
+        $this->view('admin/pages/form', ['csrf_token' => $_SESSION['csrf_token']]);
+    }
+
+    public function edit_page($params) {
+        $this->checkAuth();
+        $pageModel = new Page();
+        $page = $pageModel->getById($params['id']);
+        $translations = $pageModel->getTranslations($params['id']);
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (!hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
+                die('Ошибка валидации CSRF-токена');
+            }
+
+            // Collect multi-language data
+            $langData = [];
+            foreach (SUPPORTED_LANGUAGES as $lang) {
+                $langData[$lang] = [
+                    'title' => $_POST['title'][$lang] ?? '',
+                    'slug' => $_POST['slug'][$lang] ?? '',
+                    'content' => $_POST['content'][$lang] ?? '',
+                    'seo_title' => $_POST['seo_title'][$lang] ?? '',
+                    'meta_description' => $_POST['meta_description'][$lang] ?? ''
+                ];
+            }
+
+            if ($pageModel->update($params['id'], $langData)) {
+                Flash::set('Страница успешно обновлена');
+            } else {
+                Flash::set('Ошибка при обновлении страницы', 'error');
+            }
+            header('Location: ' . SITE_URL . '/admin/pages');
+            exit;
+        }
+        $this->view('admin/pages/form', ['page' => $page, 'translations' => $translations, 'csrf_token' => $_SESSION['csrf_token']]);
+    }
+
+    public function delete_page($params) {
+        $this->checkAuth();
+        $pageModel = new Page();
+        if ($pageModel->delete($params['id'])) {
+            Flash::set('Страница успешно удалена');
+        } else {
+            Flash::set('Ошибка при удалении страницы', 'error');
+        }
+        header('Location: ' . SITE_URL . '/admin/pages');
+        exit;
+    }
+
+    public function categories() {
+        $this->checkAuth();
+        $categoryModel = new Category();
+        $categories = $categoryModel->getAll();
+        $this->view('admin/categories/index', ['categories' => $categories]);
+    }
+
+    public function create_category() {
+        $this->checkAuth();
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (!hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
+                die('Ошибка валидации CSRF-токена');
+            }
+            $categoryModel = new Category();
+
+            // Collect multi-language data
+            $langData = [];
+            foreach (SUPPORTED_LANGUAGES as $lang) {
+                $langData[$lang] = [
+                    'name' => $_POST['name'][$lang] ?? '',
+                    'slug' => $_POST['slug'][$lang] ?? '',
+                    'description' => $_POST['description'][$lang] ?? '',
+                    'seo_title' => $_POST['seo_title'][$lang] ?? '',
+                    'meta_description' => $_POST['meta_description'][$lang] ?? ''
+                ];
+            }
+
+            if ($categoryModel->create(NULL, $langData)) {
+                Flash::set('Категория успешно создана');
+            } else {
+                Flash::set('Ошибка при создании категории', 'error');
+            }
+            header('Location: '. SITE_URL . '/admin/categories');
+            exit;
+        }
+        $this->view('admin/categories/form', ['csrf_token' => $_SESSION['csrf_token']]);
+    }
+
+    public function edit_category($params) {
+        $this->checkAuth();
+        $categoryModel = new Category();
+        $category = $categoryModel->getById($params['id']);
+        $translations = $categoryModel->getTranslations($params['id']);
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (!hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
+                die('Ошибка валидации CSRF-токена');
+            }
+
+            // Collect multi-language data
+            $langData = [];
+            foreach (SUPPORTED_LANGUAGES as $lang) {
+                $langData[$lang] = [
+                    'name' => $_POST['name'][$lang] ?? '',
+                    'slug' => $_POST['slug'][$lang] ?? '',
+                    'description' => $_POST['description'][$lang] ?? '',
+                    'seo_title' => $_POST['seo_title'][$lang] ?? '',
+                    'meta_description' => $_POST['meta_description'][$lang] ?? ''
+                ];
+            }
+
+            if ($categoryModel->update($params['id'], NULL, $langData)) {
+                Flash::set('Категория успешно обновлена');
+            } else {
+                Flash::set('Ошибка при обновлении категории', 'error');
+            }
+            header('Location: ' . SITE_URL . '/admin/categories');
+            exit;
+        }
+        $this->view('admin/categories/form', ['category' => $category, 'translations' => $translations, 'csrf_token' => $_SESSION['csrf_token']]);
+    }
+
+    public function delete_category($params) {
+        $this->checkAuth();
+        $categoryModel = new Category();
+        if ($categoryModel->delete($params['id'])) {
+            Flash::set('Категория успешно удалена');
+        } else {
+            Flash::set('Ошибка при удалении категории', 'error');
+        }
+        header('Location: ' . SITE_URL . '/admin/categories');
+        exit;
+    }
+
     public function posts() {
         $this->checkAuth();
         $postModel = new Post();
@@ -337,12 +374,25 @@ class AdminController {
                 die('Ошибка валидации CSRF-токена');
             }
             $postModel = new Post();
-            if ($postModel->create($_POST['title'], $_POST['slug'], $_POST['content'], $_POST['status'], $_POST['seo_title'], $_POST['meta_description'])) {
+
+            // Collect multi-language data
+            $langData = [];
+            foreach (SUPPORTED_LANGUAGES as $lang) {
+                $langData[$lang] = [
+                    'title' => $_POST['title'][$lang] ?? '',
+                    'slug' => $_POST['slug'][$lang] ?? '',
+                    'content' => $_POST['content'][$lang] ?? '',
+                    'seo_title' => $_POST['seo_title'][$lang] ?? '',
+                    'meta_description' => $_POST['meta_description'][$lang] ?? ''
+                ];
+            }
+            $status = $_POST['status'];
+
+            if ($postModel->create($status, $langData)) {
                 Flash::set('Новость успешно создана');
             } else {
                 Flash::set('Ошибка при создании новости', 'error');
             }
-            // ИСПРАВЛЕНО:
             header('Location: ' . SITE_URL . '/admin/posts');
             exit;
         }
@@ -353,20 +403,35 @@ class AdminController {
         $this->checkAuth();
         $postModel = new Post();
         $post = $postModel->getById($params['id']);
+        $translations = $postModel->getTranslations($params['id']);
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (!hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
                 die('Ошибка валидации CSRF-токена');
             }
-            if ($postModel->update($params['id'], $_POST['title'], $_POST['slug'], $_POST['content'], $_POST['status'], $_POST['seo_title'], $_POST['meta_description'])) {
+
+            // Collect multi-language data
+            $langData = [];
+            foreach (SUPPORTED_LANGUAGES as $lang) {
+                $langData[$lang] = [
+                    'title' => $_POST['title'][$lang] ?? '',
+                    'slug' => $_POST['slug'][$lang] ?? '',
+                    'content' => $_POST['content'][$lang] ?? '',
+                    'seo_title' => $_POST['seo_title'][$lang] ?? '',
+                    'meta_description' => $_POST['meta_description'][$lang] ?? ''
+                ];
+            }
+            $status = $_POST['status'];
+
+            if ($postModel->update($params['id'], $status, $langData)) {
                 Flash::set('Новость успешно обновлена');
             } else {
                 Flash::set('Ошибка при обновлении новости', 'error');
             }
-            // ИСПРАВЛЕНО:
             header('Location: ' . SITE_URL . '/admin/posts');
             exit;
         }
-        $this->view('admin/posts/form', ['post' => $post, 'csrf_token' => $_SESSION['csrf_token']]);
+        $this->view('admin/posts/form', ['post' => $post, 'translations' => $translations, 'csrf_token' => $_SESSION['csrf_token']]);
     }
 
     public function delete_post($params) {
@@ -377,14 +442,10 @@ class AdminController {
         } else {
             Flash::set('Ошибка при удалении новости', 'error');
         }
-        // ИСПРАВЛЕНО:
         header('Location: ' . SITE_URL . '/admin/posts');
         exit;
     }
 
-    /**
-     * Управление сообщениями
-     */
     public function messages() {
         $this->checkAuth();
         $messageModel = new Message();
@@ -408,7 +469,6 @@ class AdminController {
         } else {
             Flash::set('Ошибка при удалении сообщения', 'error');
         }
-        // ИСПРАВЛЕНО:
         header('Location: ' . SITE_URL . '/admin/messages');
         exit;
     }
@@ -431,9 +491,6 @@ class AdminController {
         exit;
     }
 
-    /**
-     * Управление настройками
-     */
     public function settings() {
         $this->checkAuth();
         $db = Database::getInstance()->getConnection();
@@ -451,7 +508,6 @@ class AdminController {
             $stmt->execute([$_POST['contact_email'], 'contact_email']);
 
             Flash::set('Настройки успешно сохранены');
-            // ИСПРАВЛЕНО:
             header('Location: ' . SITE_URL . '/admin/settings');
             exit;
         }
@@ -459,12 +515,6 @@ class AdminController {
         $this->view('admin/settings', ['settings' => $settings, 'csrf_token' => $_SESSION['csrf_token']]);
     }
 
-    /**
-     * Загрузка вида
-     * @param string $view
-     * @param array $data
-     * @param bool $withLayout
-     */
     private function view($view, $data = [], $withLayout = true) {
         extract($data);
         if ($withLayout) {

@@ -384,6 +384,7 @@ img {
 
 .product-gallery .swiper-slide img {
     border-radius: 12px;
+    width: 100%; /* Ensure full width for responsiveness */
 }
 
 .spec-table {

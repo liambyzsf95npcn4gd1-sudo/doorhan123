@@ -1,0 +1,142 @@
+<?php
+return [
+    'Home' => 'Home',
+    'Products' => 'Products',
+    'News' => 'News',
+    'About' => 'About',
+    'Contact' => 'Contact',
+    'Privacy Policy' => 'Privacy Policy',
+    'Read More' => 'Read More',
+    'Learn More' => 'Learn More',
+    'Featured Products' => 'Featured Products',
+    'Latest News' => 'Latest News',
+    'Our Factories' => 'Our Factories',
+    'Questions' => 'Frequently Asked Questions',
+    'Request a Quote' => 'Request a Quote',
+    'Technical Specifications' => 'Technical Specifications',
+    'Max Width' => 'Max Width',
+    'Max Height' => 'Max Height',
+    'Panel Thickness' => 'Panel Thickness',
+    'Insulation' => 'Insulation',
+    'Go to website' => 'Go to website',
+    'Quality' => 'Quality',
+    'Innovation' => 'Innovation',
+    'Global Network' => 'Global Network',
+    'Find Dealer' => 'Find Dealer',
+    'Connect With Us' => 'Connect With Us',
+    'Quick Links' => 'Quick Links',
+    'Regional Websites' => 'Regional Websites',
+    'All rights reserved' => 'All rights reserved.',
+    'Factories' => 'Factories',
+    'Solutions' => 'Solutions',
+
+    // Countries
+    'Czech Republic' => 'Czech Republic',
+    'China' => 'China',
+    'UAE' => 'UAE',
+    'Germany' => 'Germany',
+    'Latvia' => 'Latvia',
+    'France' => 'France',
+
+    // Cookie
+    'cookie_message' => 'We use cookies to ensure you get the best experience on our website.',
+    'cookie_btn' => 'Got it!',
+
+    // Hero
+    'hero_title_1' => '30+ Years of Quality Gates & Automation',
+    'hero_btn_1' => 'Explore Products',
+    'hero_title_2' => 'Innovative Solutions for Every Need',
+    'hero_btn_2' => 'Discover Our Range',
+    'hero_title_3' => 'Global Leader in Doors and Automation',
+    'hero_btn_3' => 'Contact Us',
+
+    // About Section
+    'about_us_title' => 'About Us',
+    'quality_title' => 'Quality',
+    'quality_desc' => 'We are committed to providing the highest quality products, ensuring durability and reliability for all our customers.',
+    'innovation_title' => 'Innovation',
+    'innovation_desc' => 'Our team is constantly developing new and innovative solutions to meet the evolving needs of the market.',
+    'global_network_title' => 'Global Network',
+    'global_network_desc' => 'With a presence in over 30 countries, our global network ensures that we can serve customers worldwide.',
+
+    // Websites Section
+    'websites_title' => 'Go to following websites to make a purchase',
+    'cz_title' => 'Czech Republic',
+    'cz_item_1' => 'Sectional doors',
+    'cz_item_2' => 'Roller shutters',
+    'cn_title' => 'China',
+    'cn_item_1' => 'Industrial doors',
+    'cn_item_2' => 'Sliding gates',
+    'ae_title' => 'UAE',
+    'ae_item_1' => 'Garage doors',
+    'ae_item_2' => 'Automation',
+
+    // Featured/News Empty States
+    'no_featured_products' => 'No featured products available at this time.',
+    'no_news' => 'No recent news available.',
+
+    // FAQ
+    'faq_title' => 'Frequently Asked Questions',
+    'faq_q_1' => 'What types of doors do you offer?',
+    'faq_a_1' => 'We offer a wide range of doors, including sectional doors, roller shutters, sliding gates, industrial doors, and garage doors. We also provide automation solutions for all our products.',
+    'faq_q_2' => 'Do you provide installation services?',
+    'faq_a_2' => 'Yes, we have a network of certified dealers who can provide professional installation services. Contact us to find a dealer near you.',
+    'faq_q_3' => 'What is the warranty on your products?',
+    'faq_a_3' => 'All our products come with a standard warranty. The warranty period varies depending on the product. Please contact us for more details.',
+    'faq_q_4' => 'How can I get a quote?',
+    'faq_a_4' => 'You can request a quote by contacting us through our website or by calling our sales team. We are always ready to help you with your queries.',
+    'faq_q_5' => 'Are your products certified?',
+    'faq_a_5' => 'Yes, all our products are certified and comply with international quality standards. We are committed to providing our customers with safe and reliable products.',
+
+    // Factories
+    'factories_title' => 'Our Factories',
+    'dubai_title' => 'Dubai',
+    'dubai_desc' => 'Our state-of-the-art factory in Dubai produces a wide range of products for the Middle East and Africa.',
+    'czech_title' => 'Czech Republic',
+    'czech_desc' => 'Our factory in the Czech Republic is a key hub for our European operations, producing high-quality doors and components.',
+    'china_title' => 'China',
+    'china_desc' => 'Our factory in China is a major production center, manufacturing a wide range of products for the Asian market.',
+
+    // Contact
+    'contact_us_title' => 'Contact Us',
+    'send_message_title' => 'Send us a message',
+    'name_placeholder' => 'Your Name',
+    'email_placeholder' => 'Your Email',
+    'phone_placeholder' => 'Your Phone (optional)',
+    'message_placeholder' => 'Your Message',
+    'send_btn' => 'Send Message',
+    'contact_info_title' => 'Contact Information',
+    'address_label' => 'Address',
+    'phone_label' => 'Phone',
+    'email_label' => 'Email',
+    'address_value' => '123 DoorHan Way, Gate City, 12345',
+
+    // About Page
+    'about_doorhan_title' => 'About DoorHan',
+    'about_doorhan_desc' => 'DoorHan is a leading global manufacturer of gates, doors, and automation systems, offering innovative and reliable solutions for over 30 years.',
+    'mission_desc' => 'Our mission is to provide our customers with high-quality products that meet their needs and exceed their expectations. We are committed to innovation, quality, and customer satisfaction.',
+
+    // Placeholders
+    'factories_placeholder' => 'This is a placeholder for the factories page.',
+    'solutions_title' => 'Solutions',
+    'solutions_placeholder' => 'This is a placeholder for the solutions page.',
+
+    // Products / News / Category
+    'our_products_title' => 'Our Products',
+    'view_more' => 'View More',
+    'no_categories' => 'No product categories found.',
+    'product_not_found_title' => 'Product not found',
+    'product_not_found_desc' => 'The product you are looking for does not exist.',
+    'specifications_tab' => 'Specifications',
+    'send_request_btn' => 'Send Request',
+    'no_news_posts' => 'No news posts found.',
+    'previous_btn' => 'Previous',
+    'next_btn' => 'Next',
+    'products_in_category' => 'Products in this category',
+    'view_details' => 'View Details',
+
+    // Post
+    'post_not_found_title' => 'Post not found',
+    'post_not_found_desc' => 'The post you are looking for does not exist.',
+    'related_posts_title' => 'Related Posts',
+];

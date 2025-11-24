@@ -2,16 +2,16 @@
 
 <section class="page-header">
     <div class="container">
-        <h1>About Us</h1>
+        <h1><?php echo __('about_us_title'); ?></h1>
     </div>
 </section>
 
 <section class="section-padding">
     <div class="container">
-        <h1>About DoorHan</h1>
-        <p>DoorHan is a leading global manufacturer of gates, doors, and automation systems, offering innovative and reliable solutions for over 30 years.</p>
+        <h1><?php echo __('about_doorhan_title'); ?></h1>
+        <p><?php echo __('about_doorhan_desc'); ?></p>
         <img src="/assets/img/placeholder.jpg" alt="Placeholder Image">
-        <p>Our mission is to provide our customers with high-quality products that meet their needs and exceed their expectations. We are committed to innovation, quality, and customer satisfaction.</p>
+        <p><?php echo __('mission_desc'); ?></p>
         <img src="/assets/img/placeholder.jpg" alt="Placeholder Image">
     </div>
 </section>

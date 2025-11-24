@@ -12,27 +12,27 @@
                         <?php echo $post['content']; // HTML content from database ?>
                     </div>
                 <?php else: ?>
-                    <h1>Post not found</h1>
-                    <p>The post you are looking for does not exist.</p>
+                    <h1><?php echo __('post_not_found_title'); ?></h1>
+                    <p><?php echo __('post_not_found_desc'); ?></p>
                 <?php endif; ?>
             </article>
             <aside class="sidebar">
-                <h3>Related Posts</h3>
+                <h3><?php echo __('related_posts_title'); ?></h3>
                 <ul class="related-posts-list">
                     <li>
-                        <a href="<?php echo SITE_URL; ?>/news/news-title-2">
+                        <a href="<?php echo url('/news/news-title-2'); ?>">
                             <img src="<?php echo SITE_URL; ?>/assets/img/news2.jpg" alt="News 2">
                             <span>News Title 2</span>
                         </a>
                     </li>
                     <li>
-                        <a href="<?php echo SITE_URL; ?>/news/news-title-3">
+                        <a href="<?php echo url('/news/news-title-3'); ?>">
                             <img src="<?php echo SITE_URL; ?>/assets/img/news3.jpg" alt="News 3">
                             <span>News Title 3</span>
                         </a>
                     </li>
                     <li>
-                        <a href="<?php echo SITE_URL; ?>/news/news-title-4">
+                        <a href="<?php echo url('/news/news-title-4'); ?>">
                             <img src="<?php echo SITE_URL; ?>/assets/img/news4.jpg" alt="News 4">
                             <span>News Title 4</span>
                         </a>
