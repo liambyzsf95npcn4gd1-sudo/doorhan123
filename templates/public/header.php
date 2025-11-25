@@ -44,12 +44,24 @@
                 </nav>
                 <div class="header-right">
                     <div class="lang-switcher">
-                        <?php foreach (SUPPORTED_LANGUAGES as $lang): ?>
-                            <a href="<?php echo SITE_URL . '/' . $lang; ?>" class="<?php echo Language::get() === $lang ? 'active' : ''; ?>"><?php echo strtoupper($lang); ?></a>
-                        <?php endforeach; ?>
+                        <div class="lang-switcher-trigger">
+                            <img src="<?php echo SITE_URL; ?>/assets/img/icons/globe.svg" alt="Language">
+                        </div>
+                        <div class="lang-switcher-dropdown">
+                            <ul>
+                                <?php foreach (SUPPORTED_LANGUAGES as $lang): ?>
+                                    <li>
+                                        <a href="<?php echo SITE_URL . '/' . $lang . $current_uri; ?>" class="<?php echo Language::get() === $lang ? 'active' : ''; ?>">
+                                            <img src="<?php echo SITE_URL; ?>/assets/img/flags/<?php echo $lang; ?>.svg" alt="<?php echo strtoupper($lang); ?>">
+                                            <?php echo strtoupper($lang); ?>
+                                        </a>
+                                    </li>
+                                <?php endforeach; ?>
+                            </ul>
+                        </div>
                     </div>
-                    <div class="header-phone">
-                        <a href="tel:+1-800-DOORHAN">+1-800-DOORHAN</a>
+                    <div class="header-email">
+                        <a href="mailto:info@doorhan.com">info@doorhan.com</a>
                     </div>
                     <a href="<?php echo url('/contact'); ?>" class="btn btn-primary"><?php echo __('Find Dealer'); ?></a>
                 </div>

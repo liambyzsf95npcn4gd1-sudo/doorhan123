@@ -11,7 +11,7 @@ class Post {
     }
 
     public function getAll() {
-        $sql = "SELECT p.id, p.status, p.created_at,
+        $sql = "SELECT p.id, p.status, p.created_at, p.image, p.image2, p.image3,
                        COALESCE(pt.title, pt_en.title) as title,
                        COALESCE(pt.slug, pt_en.slug) as slug,
                        COALESCE(pt.content, pt_en.content) as content,
@@ -37,7 +37,7 @@ class Post {
     }
 
     public function getAllPublished($limit = 10, $offset = 0) {
-        $sql = "SELECT p.id, p.status, p.created_at,
+        $sql = "SELECT p.id, p.status, p.created_at, p.image, p.image2, p.image3,
                        COALESCE(pt.title, pt_en.title) as title,
                        COALESCE(pt.slug, pt_en.slug) as slug,
                        COALESCE(pt.content, pt_en.content) as content,
@@ -78,7 +78,7 @@ class Post {
     }
 
     public function getById($id) {
-        $sql = "SELECT p.id, p.status, p.created_at,
+        $sql = "SELECT p.id, p.status, p.created_at, p.image, p.image2, p.image3,
                        COALESCE(pt.title, pt_en.title) as title,
                        COALESCE(pt.slug, pt_en.slug) as slug,
                        COALESCE(pt.content, pt_en.content) as content,
@@ -93,15 +93,20 @@ class Post {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function create($status, $data) {
+    public function create($data, $langData) {
         $this->db->beginTransaction();
         try {
-            $stmt = $this->db->prepare("INSERT INTO posts (status) VALUES (?)");
-            $stmt->execute([$status]);
+            $stmt = $this->db->prepare("INSERT INTO posts (status, image, image2, image3) VALUES (:status, :image, :image2, :image3)");
+            $stmt->execute([
+                ':status' => $data['status'],
+                ':image' => $data['image'],
+                ':image2' => $data['image2'],
+                ':image3' => $data['image3']
+            ]);
             $postId = $this->db->lastInsertId();
 
             $stmt = $this->db->prepare("INSERT INTO post_translations (post_id, language_code, title, slug, content, seo_title, meta_description) VALUES (?, ?, ?, ?, ?, ?, ?)");
-            foreach ($data as $lang => $fields) {
+            foreach ($langData as $lang => $fields) {
                 $stmt->execute([
                     $postId,
                     $lang,
@@ -120,14 +125,25 @@ class Post {
         }
     }
 
-    public function update($id, $status, $data) {
+    public function update($id, $data, $langData) {
         $this->db->beginTransaction();
         try {
-            $stmt = $this->db->prepare("UPDATE posts SET status = ? WHERE id = ?");
-            $stmt->execute([$status, $id]);
+            // Get current images to avoid overwriting them with null
+            $currentPost = $this->getById($id);
+
+            $updateData = [
+                'id' => $id,
+                'status' => $data['status'],
+                'image' => isset($data['image']) ? $data['image'] : $currentPost['image'],
+                'image2' => isset($data['image2']) ? $data['image2'] : $currentPost['image2'],
+                'image3' => isset($data['image3']) ? $data['image3'] : $currentPost['image3']
+            ];
+
+            $stmt = $this->db->prepare("UPDATE posts SET status = :status, image = :image, image2 = :image2, image3 = :image3 WHERE id = :id");
+            $stmt->execute($updateData);
 
             $stmt = $this->db->prepare("INSERT INTO post_translations (post_id, language_code, title, slug, content, seo_title, meta_description) VALUES (?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE title=VALUES(title), slug=VALUES(slug), content=VALUES(content), seo_title=VALUES(seo_title), meta_description=VALUES(meta_description)");
-            foreach ($data as $lang => $fields) {
+            foreach ($langData as $lang => $fields) {
                 $stmt->execute([
                     $id,
                     $lang,

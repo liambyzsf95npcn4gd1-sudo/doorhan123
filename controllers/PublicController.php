@@ -6,7 +6,7 @@ class PublicController {
     /**
      * Отображение главной страницы
      */
-    public function home() {
+    public function home($params = [], $uri = '/') {
         $productModel = new Product();
         $postModel = new Post();
 
@@ -18,40 +18,40 @@ class PublicController {
             'latest_posts' => $latestNews,
             'seo_title' => __('Home') . ' | DoorHan',
             'meta_description' => 'DoorHan is a leading global manufacturer of gates, doors, and automation systems.'
-        ]);
+        ], $uri);
     }
 
-    public function about() {
+    public function about($params = [], $uri = '/') {
         $this->view('public/about', [
-            'seo_title' => __('About') . ' | DoorHan',
-            'meta_description' => 'Learn more about DoorHan.'
-        ]);
+            'seo_title' => __('About Us') . ' | DoorHan',
+            'meta_description' => 'Learn more about DoorHan, a leading manufacturer of garage doors, gates, and automation systems.'
+        ], $uri);
     }
 
-    public function privacyPolicy() {
+    public function privacyPolicy($params = [], $uri = '/') {
         $this->view('public/privacy-policy', [
             'seo_title' => __('Privacy Policy') . ' | DoorHan',
-            'meta_description' => 'Read our Privacy Policy.'
-        ]);
+            'meta_description' => 'Read our Privacy Policy to understand how we handle your data.'
+        ], $uri);
     }
 
-    public function products() {
+    public function products($params = [], $uri = '/') {
         $categoryModel = new Category();
-        $categories = $categoryModel->getAll(); // TODO: Update Category model to be language aware (handled in view mostly)
+        $categories = $categoryModel->getAll();
         $this->view('public/products', [
             'categories' => $categories,
-            'seo_title' => __('Products') . ' | DoorHan',
-            'meta_description' => 'Browse our wide range of products.'
-        ]);
+            'seo_title' => __('All Products') . ' | DoorHan',
+            'meta_description' => 'Browse our wide range of high-quality garage doors, gates, and automation systems.'
+        ], $uri);
     }
 
-    public function category($params) {
+    public function category($params, $uri = '/') {
         $categoryModel = new Category();
         $category = $categoryModel->getBySlug($params['slug']);
 
         if (!$category) {
             header("HTTP/1.0 404 Not Found");
-            $this->view('public/404');
+            $this->view('public/404', [], $uri);
             return;
         }
 
@@ -62,41 +62,44 @@ class PublicController {
             'products' => $products,
             'seo_title' => $category['seo_title'] ?? $category['name'],
             'meta_description' => $category['meta_description'] ?? ''
-        ]);
+        ], $uri);
     }
 
-    public function product($params) {
+    public function product($params, $uri = '/') {
         $productModel = new Product();
         $product = $productModel->getBySlug($params['slug']);
 
         if (!$product) {
             header("HTTP/1.0 404 Not Found");
-            $this->view('public/404');
+            $this->view('public/404', [], $uri);
             return;
         }
 
+        $images = $productModel->getImages($product['id']);
+
         $this->view('public/product', [
             'product' => $product,
+            'images' => $images,
             'seo_title' => $product['seo_title'] ?? $product['name'],
             'meta_description' => $product['meta_description'] ?? ''
-        ]);
+        ], $uri);
     }
 
-    public function factories() {
+    public function factories($params = [], $uri = '/') {
         $this->view('public/factories', [
             'seo_title' => __('Our Factories') . ' | DoorHan',
-            'meta_description' => 'Learn more about our state-of-the-art manufacturing facilities.'
-        ]);
+            'meta_description' => 'Learn more about our state-of-the-art manufacturing facilities and our global presence.'
+        ], $uri);
     }
 
-    public function solutions() {
+    public function solutions($params = [], $uri = '/') {
         $this->view('public/solutions', [
-            'seo_title' => 'Solutions | DoorHan',
-            'meta_description' => 'Discover our innovative solutions.'
-        ]);
+            'seo_title' => 'Innovative Solutions | DoorHan',
+            'meta_description' => 'Discover our innovative solutions for residential, commercial, and industrial applications.'
+        ], $uri);
     }
 
-    public function news() {
+    public function news($params = [], $uri = '/') {
         $postModel = new Post();
         $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
         $limit = 10;
@@ -110,18 +113,29 @@ class PublicController {
             'posts' => $posts,
             'currentPage' => $page,
             'totalPages' => $totalPages,
-            'seo_title' => __('News') . ' | DoorHan',
-            'meta_description' => 'Latest news from DoorHan.'
-        ]);
+            'seo_title' => __('News and Updates') . ' | DoorHan',
+            'meta_description' => 'Stay up-to-date with the latest news and announcements from DoorHan.'
+        ], $uri);
     }
 
-    public function post($params) {
+    public function post($params, $uri = '/') {
         $postModel = new Post();
         $post = $postModel->getBySlug($params['slug']);
-        $this->view('public/post', ['post' => $post]);
+
+        if (!$post) {
+            header("HTTP/1.0 404 Not Found");
+            $this->view('public/404', [], $uri);
+            return;
+        }
+
+        $this->view('public/post', [
+            'post' => $post,
+            'seo_title' => $post['seo_title'] ?? $post['title'],
+            'meta_description' => $post['meta_description'] ?? ''
+        ], $uri);
     }
 
-    public function contact() {
+    public function contact($params = [], $uri = '/') {
         if (empty($_SESSION['csrf_token'])) {
             $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
         }
@@ -159,12 +173,12 @@ class PublicController {
             'success' => $success ?? null,
             'error' => $error ?? null,
             'csrf_token' => $_SESSION['csrf_token'],
-            'seo_title' => __('Contact') . ' | DoorHan',
-            'meta_description' => 'Get in touch with DoorHan.'
-        ]);
+            'seo_title' => __('Contact Us') . ' | DoorHan',
+            'meta_description' => 'Get in touch with DoorHan for any inquiries or to find a dealer near you.'
+        ], $uri);
     }
 
-    public function sitemap() {
+    public function sitemap($params = [], $uri = '/') {
         header("Content-Type: application/xml; charset=utf-8");
 
         $urls = [];
@@ -183,12 +197,14 @@ class PublicController {
         echo '</urlset>';
     }
 
-    private function view($view, $data = []) {
+    private function view($view, $data = [], $uri = '/') {
         $navigationModel = new Navigation();
         $data['menuItems'] = $navigationModel->getMenuItems();
 
         $settingsModel = new Settings();
         $data['settings'] = $settingsModel->getAllSettings();
+
+        $data['current_uri'] = $uri;
 
         extract($data);
         require_once ROOT_PATH . '/templates/' . $view . '.php';

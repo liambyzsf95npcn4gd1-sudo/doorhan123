@@ -11,6 +11,7 @@ define('DB_NAME', 'doorhan');
 // Site Settings
 define('SITE_URL', 'http://localhost:8080'); // URL of the site
 define('ADMIN_EMAIL', 'admin@example.com'); // Admin email
+define('UPLOADS_DIR', '/public/assets/img/news/'); // Path for uploads
 
 // Debug Mode
 define('DEBUG', true); // Set to false for production

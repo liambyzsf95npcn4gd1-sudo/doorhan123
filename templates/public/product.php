@@ -3,18 +3,20 @@
 <section class="product-detail-section section-padding">
     <div class="container">
         <div class="product-detail-layout">
+            <?php if (!empty($images)): ?>
             <div class="product-gallery">
                 <div class="swiper-container gallery-slider">
                     <div class="swiper-wrapper">
-                        <div class="swiper-slide"><img src="<?php echo SITE_URL; ?>/assets/img/product1.jpg" alt="Product 1"></div>
-                        <div class="swiper-slide"><img src="<?php echo SITE_URL; ?>/assets/img/product1-2.jpg" alt="Product 1-2"></div>
-                        <div class="swiper-slide"><img src="<?php echo SITE_URL; ?>/assets/img/product1-3.jpg" alt="Product 1-3"></div>
+                        <?php foreach ($images as $image): ?>
+                        <div class="swiper-slide"><img src="<?php echo SITE_URL; ?>/assets/img/products/<?php echo htmlspecialchars($image['image_path']); ?>" alt="<?php echo htmlspecialchars($product['name']); ?>"></div>
+                        <?php endforeach; ?>
                     </div>
                     <div class="swiper-pagination"></div>
                     <div class="swiper-button-next"></div>
                     <div class="swiper-button-prev"></div>
                 </div>
             </div>
+            <?php endif; ?>
             <div class="product-info">
                 <?php if (!empty($product)): ?>
                     <h1><?php echo htmlspecialchars($product['name']); ?></h1>

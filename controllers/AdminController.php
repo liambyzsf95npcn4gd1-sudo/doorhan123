@@ -388,7 +388,18 @@ class AdminController {
             }
             $status = $_POST['status'];
 
-            if ($postModel->create($status, $langData)) {
+            $image = $this->handleUpload('image');
+            $image2 = $this->handleUpload('image2');
+            $image3 = $this->handleUpload('image3');
+
+            $data = [
+                'status' => $status,
+                'image' => $image,
+                'image2' => $image2,
+                'image3' => $image3
+            ];
+
+            if ($postModel->create($data, $langData)) {
                 Flash::set('Новость успешно создана');
             } else {
                 Flash::set('Ошибка при создании новости', 'error');
@@ -423,7 +434,18 @@ class AdminController {
             }
             $status = $_POST['status'];
 
-            if ($postModel->update($params['id'], $status, $langData)) {
+            $data = ['status' => $status];
+            if (!empty($_FILES['image']['name'])) {
+                $data['image'] = $this->handleUpload('image');
+            }
+            if (!empty($_FILES['image2']['name'])) {
+                $data['image2'] = $this->handleUpload('image2');
+            }
+            if (!empty($_FILES['image3']['name'])) {
+                $data['image3'] = $this->handleUpload('image3');
+            }
+
+            if ($postModel->update($params['id'], $data, $langData)) {
                 Flash::set('Новость успешно обновлена');
             } else {
                 Flash::set('Ошибка при обновлении новости', 'error');
@@ -524,5 +546,22 @@ class AdminController {
         if ($withLayout) {
             require_once ROOT_PATH . '/templates/admin/footer.php';
         }
+    }
+
+    private function handleUpload($fileKey) {
+        if (isset($_FILES[$fileKey]) && $_FILES[$fileKey]['error'] === UPLOAD_ERR_OK) {
+            $uploadDir = ROOT_PATH . UPLOADS_DIR;
+            if (!is_dir($uploadDir)) {
+                mkdir($uploadDir, 0777, true);
+            }
+
+            $fileName = uniqid() . '-' . basename($_FILES[$fileKey]['name']);
+            $targetPath = $uploadDir . $fileName;
+
+            if (move_uploaded_file($_FILES[$fileKey]['tmp_name'], $targetPath)) {
+                return 'news/' . $fileName;
+            }
+        }
+        return null;
     }
 }

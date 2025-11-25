@@ -7,7 +7,15 @@
                 <?php if (!empty($post)): ?>
                     <h1><?php echo htmlspecialchars($post['title']); ?></h1>
                     <span class="post-date"><?php echo date('F j, Y', strtotime($post['created_at'])); ?></span>
-                    <img src="<?php echo SITE_URL; ?>/assets/img/<?php echo htmlspecialchars($post['image'] ?? 'news-placeholder.jpg'); ?>" alt="<?php echo htmlspecialchars($post['title']); ?>" class="post-image">
+                    <?php if (!empty($post['image'])): ?>
+                    <img src="<?php echo SITE_URL; ?>/assets/img/news/<?php echo htmlspecialchars($post['image']); ?>" alt="<?php echo htmlspecialchars($post['title']); ?>" class="post-image">
+                    <?php endif; ?>
+                    <?php if (!empty($post['image2'])): ?>
+                    <img src="<?php echo SITE_URL; ?>/assets/img/news/<?php echo htmlspecialchars($post['image2']); ?>" alt="<?php echo htmlspecialchars($post['title']); ?>" class="post-image">
+                    <?php endif; ?>
+                    <?php if (!empty($post['image3'])): ?>
+                    <img src="<?php echo SITE_URL; ?>/assets/img/news/<?php echo htmlspecialchars($post['image3']); ?>" alt="<?php echo htmlspecialchars($post['title']); ?>" class="post-image">
+                    <?php endif; ?>
                     <div class="post-body">
                         <?php echo $post['content']; // HTML content from database ?>
                     </div>

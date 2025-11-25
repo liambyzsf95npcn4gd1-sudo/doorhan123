@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
     mobileNavToggle.addEventListener('click', function() {
         mainNav.classList.toggle('active');
         body.classList.toggle('mobile-nav-active');
+        mobileNavToggle.classList.toggle('active');
     });
 
     const dropdownToggles = document.querySelectorAll('.main-nav .has-dropdown > a');
