@@ -80,11 +80,13 @@ class Category {
                        COALESCE(pt.max_width, pt_en.max_width) as max_width,
                        COALESCE(pt.max_height, pt_en.max_height) as max_height,
                        COALESCE(pt.panel_thickness, pt_en.panel_thickness) as panel_thickness,
-                       COALESCE(pt.insulation, pt_en.insulation) as insulation
+                       COALESCE(pt.insulation, pt_en.insulation) as insulation,
+                       pi.image_path as image
                 FROM products p
                 JOIN product_categories pc ON p.id = pc.product_id
                 LEFT JOIN product_translations pt ON p.id = pt.product_id AND pt.language_code = ?
                 LEFT JOIN product_translations pt_en ON p.id = pt_en.product_id AND pt_en.language_code = 'en'
+                LEFT JOIN product_images pi ON p.id = pi.product_id AND pi.sort_order = 0
                 WHERE pc.category_id = ? AND p.status = 'active'";
         $stmt = $this->db->prepare($sql);
         $stmt->execute([$this->lang, $categoryId]);

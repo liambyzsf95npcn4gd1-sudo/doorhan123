@@ -233,8 +233,23 @@ class AdminController {
     public function edit_page($params) {
         $this->checkAuth();
         $pageModel = new Page();
-        $page = $pageModel->getById($params['id']);
-        $translations = $pageModel->getTranslations($params['id']);
+
+        // Handle 'about' slug specifically
+        if (isset($params['id']) && $params['id'] === 'about') {
+            $page = $pageModel->getBySlug('about');
+            if (!$page) {
+                // Handle case where 'about' page doesn't exist
+                Flash::set('Страница "О нас" не найдена.', 'error');
+                header('Location: ' . SITE_URL . '/admin/pages');
+                exit;
+            }
+            $pageId = $page['id'];
+        } else {
+            $pageId = $params['id'];
+        }
+
+        $page = $pageModel->getById($pageId);
+        $translations = $pageModel->getTranslations($pageId);
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (!hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {

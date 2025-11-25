@@ -47,10 +47,12 @@ class Product {
                        COALESCE(pt.slug, pt_en.slug) as slug,
                        COALESCE(pt.content, pt_en.content) as content,
                        COALESCE(pt.seo_title, pt_en.seo_title) as seo_title,
-                       COALESCE(pt.meta_description, pt_en.meta_description) as meta_description
+                       COALESCE(pt.meta_description, pt_en.meta_description) as meta_description,
+                       pi.image_path as image
                 FROM products p
                 LEFT JOIN product_translations pt ON p.id = pt.product_id AND pt.language_code = ?
                 LEFT JOIN product_translations pt_en ON p.id = pt_en.product_id AND pt_en.language_code = 'en'
+                LEFT JOIN product_images pi ON p.id = pi.product_id AND pi.sort_order = 0
                 WHERE p.status = 'active'
                 ORDER BY p.created_at DESC
                 LIMIT " . (int)$limit . " OFFSET " . (int)$offset;

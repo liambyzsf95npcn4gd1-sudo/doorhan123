@@ -68,7 +68,7 @@
                     <li><?php echo __('cz_item_1'); ?></li>
                     <li><?php echo __('cz_item_2'); ?></li>
                 </ul>
-                <a href="https://doorhan.cz" class="btn btn-primary" target="_blank"><?php echo __('go_to_website'); ?></a>
+                <a href="<?php echo $websites['cz']; ?>" class="btn btn-primary" target="_blank"><?php echo __('go_to_website'); ?></a>
             </div>
             <div class="card">
                 <img src="<?php echo SITE_URL; ?>/assets/img/cn.png" alt="China Flag">
@@ -77,7 +77,7 @@
                     <li><?php echo __('cn_item_1'); ?></li>
                     <li><?php echo __('cn_item_2'); ?></li>
                 </ul>
-                <a href="https://doorhan.cn" class="btn btn-primary" target="_blank"><?php echo __('go_to_website'); ?></a>
+                <a href="<?php echo $websites['cn']; ?>" class="btn btn-primary" target="_blank"><?php echo __('go_to_website'); ?></a>
             </div>
             <div class="card">
                 <img src="<?php echo SITE_URL; ?>/assets/img/ae.png" alt="UAE Flag">
@@ -86,7 +86,7 @@
                     <li><?php echo __('ae_item_1'); ?></li>
                     <li><?php echo __('ae_item_2'); ?></li>
                 </ul>
-                <a href="https://doorhan.ae" class="btn btn-primary" target="_blank"><?php echo __('go_to_website'); ?></a>
+                <a href="<?php echo $websites['ae']; ?>" class="btn btn-primary" target="_blank"><?php echo __('go_to_website'); ?></a>
             </div>
         </div>
     </div>
@@ -101,7 +101,7 @@
                 <?php foreach ($featured_products as $product): ?>
                     <div class="card product-card">
                         <a href="<?php echo url('/products/' . htmlspecialchars($product['slug'])); ?>">
-                            <img src="<?php echo SITE_URL; ?>/assets/img/<?php echo htmlspecialchars($product['image'] ?? 'product-placeholder.jpg'); ?>" alt="<?php echo htmlspecialchars($product['name']); ?>">
+                            <img src="<?php echo SITE_URL; ?>/assets/img/products/<?php echo htmlspecialchars($product['image'] ?? 'product-placeholder.jpg'); ?>" alt="<?php echo htmlspecialchars($product['name']); ?>">
                             <h3><?php echo htmlspecialchars($product['name']); ?></h3>
                         </a>
                         <p><?php echo htmlspecialchars(substr(strip_tags($product['content'] ?? ''), 0, 100)); ?>...</p>

@@ -10,7 +10,7 @@
             <?php foreach ($products as $product): ?>
                 <div class="card product-card">
                     <a href="<?php echo url('/products/' . htmlspecialchars($product['slug'])); ?>">
-                        <img src="<?php echo SITE_URL; ?>/assets/img/<?php echo htmlspecialchars($product['image'] ?? 'product-placeholder.jpg'); ?>" alt="<?php echo htmlspecialchars($product['name']); ?>">
+                        <img src="<?php echo SITE_URL; ?>/assets/img/products/<?php echo htmlspecialchars($product['image'] ?? 'product-placeholder.jpg'); ?>" alt="<?php echo htmlspecialchars($product['name']); ?>">
                         <h3><?php echo htmlspecialchars($product['name']); ?></h3>
                     </a>
                     <p><?php echo htmlspecialchars(substr(strip_tags($product['content']), 0, 100)); ?>...</p>

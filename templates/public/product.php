@@ -62,9 +62,12 @@
 
         <div id="quote-form" class="quote-form-section section-padding">
             <h2 class="text-center"><?php echo __('Request a Quote'); ?></h2>
-            <form class="quote-form">
+            <form class="quote-form" action="<?php echo url('/contact'); ?>" method="post">
+                <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
+                <input type="hidden" name="product_inquiry" value="<?php echo htmlspecialchars($product['name']); ?>">
                 <input type="text" name="name" placeholder="<?php echo __('name_placeholder'); ?>" required>
                 <input type="email" name="email" placeholder="<?php echo __('email_placeholder'); ?>" required>
+                <input type="tel" name="phone" placeholder="<?php echo __('phone_placeholder'); ?>">
                 <textarea name="message" placeholder="<?php echo __('message_placeholder'); ?>" required></textarea>
                 <button type="submit" class="btn btn-primary"><?php echo __('send_request_btn'); ?></button>
             </form>

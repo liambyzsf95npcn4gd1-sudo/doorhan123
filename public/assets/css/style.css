@@ -918,9 +918,12 @@ img {
 }
 
 .lang-switcher-dropdown {
-    display: none;
     position: absolute;
     top: 100%;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
     right: 0;
     background-color: var(--white-color);
     border-radius: 8px;
@@ -931,7 +934,9 @@ img {
 }
 
 .lang-switcher:hover .lang-switcher-dropdown {
-    display: block;
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
 }
 
 .lang-switcher-dropdown ul {

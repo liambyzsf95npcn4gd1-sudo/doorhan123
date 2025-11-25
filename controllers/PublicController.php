@@ -17,7 +17,12 @@ class PublicController {
             'featured_products' => $featuredProducts,
             'latest_posts' => $latestNews,
             'seo_title' => __('Home') . ' | DoorHan',
-            'meta_description' => 'DoorHan is a leading global manufacturer of gates, doors, and automation systems.'
+            'meta_description' => 'DoorHan is a leading global manufacturer of gates, doors, and automation systems.',
+            'websites' => [
+                'cz' => 'https://doorhan.cz',
+                'cn' => 'https://doorhan.cn',
+                'ae' => 'https://doorhan.ae'
+            ]
         ], $uri);
     }
 
@@ -148,6 +153,11 @@ class PublicController {
                 $email = filter_var(trim($_POST['email']), FILTER_SANITIZE_EMAIL);
                 $phone = htmlspecialchars(trim($_POST['phone']));
                 $message = htmlspecialchars(trim($_POST['message']));
+                $productInquiry = isset($_POST['product_inquiry']) ? htmlspecialchars(trim($_POST['product_inquiry'])) : null;
+
+                if ($productInquiry) {
+                    $message = "Product Inquiry: " . $productInquiry . "\n\n" . $message;
+                }
 
                 $errors = [];
                 if (empty($name)) $errors[] = "Name is required.";
