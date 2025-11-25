@@ -125,6 +125,11 @@ class AdminController {
                 if (isset($_POST['categories']) && is_array($_POST['categories'])) {
                     $productModel->setCategories($productId, $_POST['categories']);
                 }
+
+                if (!empty($_FILES['images']['name'][0])) {
+                    $this->handleProductImageUpload($_FILES['images'], $productId);
+                }
+
                 Flash::set('Товар успешно создан');
             } else {
                 Flash::set('Ошибка при создании товара', 'error');
@@ -140,6 +145,7 @@ class AdminController {
         $productModel = new Product();
         $product = $productModel->getById($params['id']); // Gets basic data (status, etc)
         $translations = $productModel->getTranslations($params['id']); // Gets translations
+        $images = $productModel->getImages($params['id']);
 
         $categoryModel = new Category();
         $categories = $categoryModel->getAll();
@@ -171,6 +177,11 @@ class AdminController {
                 if (isset($_POST['categories']) && is_array($_POST['categories'])) {
                     $productModel->setCategories($params['id'], $_POST['categories']);
                 }
+
+                if (!empty($_FILES['images']['name'][0])) {
+                    $this->handleProductImageUpload($_FILES['images'], $params['id']);
+                }
+
                 Flash::set('Товар успешно обновлен');
             } else {
                 Flash::set('Ошибка при обновлении товара', 'error');
@@ -183,6 +194,7 @@ class AdminController {
             'translations' => $translations,
             'categories' => $categories,
             'product_categories' => $product_categories,
+            'images' => $images,
             'csrf_token' => $_SESSION['csrf_token']
         ]);
     }
@@ -318,7 +330,9 @@ class AdminController {
                 ];
             }
 
-            if ($categoryModel->create(NULL, $langData)) {
+            $image = $this->handleUpload('image');
+
+            if ($categoryModel->create(NULL, $image, $langData)) {
                 Flash::set('Категория успешно создана');
             } else {
                 Flash::set('Ошибка при создании категории', 'error');
@@ -352,7 +366,9 @@ class AdminController {
                 ];
             }
 
-            if ($categoryModel->update($params['id'], NULL, $langData)) {
+            $image = !empty($_FILES['image']['name']) ? $this->handleUpload('image') : null;
+
+            if ($categoryModel->update($params['id'], NULL, $image, $langData)) {
                 Flash::set('Категория успешно обновлена');
             } else {
                 Flash::set('Ошибка при обновлении категории', 'error');
@@ -567,7 +583,7 @@ class AdminController {
         if (isset($_FILES[$fileKey]) && $_FILES[$fileKey]['error'] === UPLOAD_ERR_OK) {
             $uploadDir = ROOT_PATH . UPLOADS_DIR;
             if (!is_dir($uploadDir)) {
-                mkdir($uploadDir, 0777, true);
+                mkdir($uploadDir, 0755, true);
             }
 
             $fileName = uniqid() . '-' . basename($_FILES[$fileKey]['name']);
@@ -578,5 +594,25 @@ class AdminController {
             }
         }
         return null;
+    }
+
+    private function handleProductImageUpload($files, $productId) {
+        $uploadDir = ROOT_PATH . '/public/assets/img/products/';
+        if (!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0755, true);
+        }
+
+        $productModel = new Product();
+
+        foreach ($files['tmp_name'] as $key => $tmpName) {
+            if ($files['error'][$key] === UPLOAD_ERR_OK) {
+                $fileName = uniqid() . '-' . basename($files['name'][$key]);
+                $targetPath = $uploadDir . $fileName;
+
+                if (move_uploaded_file($tmpName, $targetPath)) {
+                    $productModel->addImage($productId, $fileName);
+                }
+            }
+        }
     }
 }

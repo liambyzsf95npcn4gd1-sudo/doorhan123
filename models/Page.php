@@ -77,15 +77,15 @@ class Page {
             $pageId = $this->db->lastInsertId();
 
             $stmt = $this->db->prepare("INSERT INTO page_translations (page_id, language_code, title, slug, content, seo_title, meta_description) VALUES (?, ?, ?, ?, ?, ?, ?)");
-            foreach ($data as $lang => $fields) {
+            foreach (SUPPORTED_LANGUAGES as $lang) {
                 $stmt->execute([
                     $pageId,
                     $lang,
-                    $fields['title'],
-                    $fields['slug'],
-                    $fields['content'],
-                    $fields['seo_title'],
-                    $fields['meta_description']
+                    $data['title'][$lang],
+                    $data['slug'][$lang],
+                    $data['content'][$lang],
+                    $data['seo_title'][$lang],
+                    $data['meta_description'][$lang]
                 ]);
             }
             $this->db->commit();

@@ -11,7 +11,7 @@ class Category {
     }
 
     public function getAll() {
-        $sql = "SELECT c.id, c.parent_id,
+        $sql = "SELECT c.id, c.parent_id, c.image,
                        COALESCE(ct.name, ct_en.name) as name,
                        COALESCE(ct.slug, ct_en.slug) as slug,
                        COALESCE(ct.description, ct_en.description) as description,
@@ -54,7 +54,7 @@ class Category {
     }
 
     public function getById($id) {
-        $sql = "SELECT c.id, c.parent_id,
+        $sql = "SELECT c.id, c.parent_id, c.image,
                        COALESCE(ct.name, ct_en.name) as name,
                        COALESCE(ct.slug, ct_en.slug) as slug,
                        COALESCE(ct.description, ct_en.description) as description,
@@ -93,11 +93,11 @@ class Category {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function create($parentId, $data) {
+    public function create($parentId, $image, $data) {
         $this->db->beginTransaction();
         try {
-            $stmt = $this->db->prepare("INSERT INTO categories (parent_id) VALUES (?)");
-            $stmt->execute([$parentId]);
+            $stmt = $this->db->prepare("INSERT INTO categories (parent_id, image) VALUES (?, ?)");
+            $stmt->execute([$parentId, $image]);
             $categoryId = $this->db->lastInsertId();
 
             $stmt = $this->db->prepare("INSERT INTO category_translations (category_id, language_code, name, slug, description, seo_title, meta_description) VALUES (?, ?, ?, ?, ?, ?, ?)");
@@ -120,11 +120,23 @@ class Category {
         }
     }
 
-    public function update($id, $parentId, $data) {
+    public function update($id, $parentId, $image, $data) {
         $this->db->beginTransaction();
         try {
-            $stmt = $this->db->prepare("UPDATE categories SET parent_id = ? WHERE id = ?");
-            $stmt->execute([$parentId, $id]);
+            // Build the update query dynamically
+            $sql = "UPDATE categories SET parent_id = ?";
+            $params = [$parentId];
+
+            if ($image !== null) {
+                $sql .= ", image = ?";
+                $params[] = $image;
+            }
+
+            $sql .= " WHERE id = ?";
+            $params[] = $id;
+
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute($params);
 
             $stmt = $this->db->prepare("INSERT INTO category_translations (category_id, language_code, name, slug, description, seo_title, meta_description) VALUES (?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE name=VALUES(name), slug=VALUES(slug), description=VALUES(description), seo_title=VALUES(seo_title), meta_description=VALUES(meta_description)");
             foreach ($data as $lang => $fields) {

@@ -8,8 +8,16 @@
     .lang-content.active { display: block; }
 </style>
 
-<form method="post">
+<form method="post" enctype="multipart/form-data">
     <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token, ENT_QUOTES, 'UTF-8'); ?>">
+
+    <div class="form-group">
+        <label for="image">Изображение</label>
+        <input type="file" name="image" id="image">
+        <?php if (isset($category) && $category['image']): ?>
+            <img src="<?php echo SITE_URL; ?>/assets/img/<?php echo htmlspecialchars($category['image']); ?>" alt="<?php echo htmlspecialchars($category['name']); ?>" width="100">
+        <?php endif; ?>
+    </div>
 
     <!-- Language Tabs -->
     <div class="lang-tabs">

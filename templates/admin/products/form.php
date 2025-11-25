@@ -6,6 +6,8 @@
     .lang-tab.active { background: #fff; font-weight: bold; border-bottom: 1px solid #fff; margin-bottom: -1px; }
     .lang-content { display: none; padding: 20px; border: 1px solid #ccc; border-top: none; background: #fff; }
     .lang-content.active { display: block; }
+    .image-gallery { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
+    .image-gallery img { max-width: 100px; max-height: 100px; }
 </style>
 
 <form method="post" enctype="multipart/form-data">
@@ -28,6 +30,18 @@
                 </option>
             <?php endforeach; ?>
         </select>
+    </div>
+
+    <div class="form-group">
+        <label for="images">Изображения</label>
+        <input type="file" name="images[]" id="images" multiple>
+        <?php if (isset($images) && !empty($images)): ?>
+            <div class="image-gallery">
+                <?php foreach ($images as $image): ?>
+                    <img src="<?php echo SITE_URL; ?>/assets/img/products/<?php echo htmlspecialchars($image['image_path']); ?>" alt="">
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
     </div>
 
     <!-- Language Tabs -->

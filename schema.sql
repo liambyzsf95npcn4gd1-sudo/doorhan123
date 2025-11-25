@@ -11,6 +11,7 @@ CREATE TABLE `categories` (
   `description` text,
   `seo_title` varchar(255) DEFAULT NULL,
   `meta_description` varchar(255) DEFAULT NULL,
+  `image` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `slug` (`slug`),
   KEY `parent_id` (`parent_id`),

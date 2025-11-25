@@ -27,9 +27,13 @@ class PublicController {
     }
 
     public function about($params = [], $uri = '/') {
+        $pageModel = new Page();
+        $page = $pageModel->getBySlug('about');
+
         $this->view('public/about', [
-            'seo_title' => __('About Us') . ' | DoorHan',
-            'meta_description' => 'Learn more about DoorHan, a leading manufacturer of garage doors, gates, and automation systems.'
+            'page' => $page,
+            'seo_title' => $page['seo_title'] ?? __('About Us') . ' | DoorHan',
+            'meta_description' => $page['meta_description'] ?? 'Learn more about DoorHan, a leading manufacturer of garage doors, gates, and automation systems.'
         ], $uri);
     }
 

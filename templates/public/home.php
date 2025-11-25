@@ -68,7 +68,7 @@
                     <li><?php echo __('cz_item_1'); ?></li>
                     <li><?php echo __('cz_item_2'); ?></li>
                 </ul>
-                <a href="<?php echo $websites['cz']; ?>" class="btn btn-primary" target="_blank"><?php echo __('go_to_website'); ?></a>
+                <a href="<?php echo $websites['cz']; ?>" class="btn btn-primary websites-section-btn" target="_blank"><?php echo __('go_to_website'); ?></a>
             </div>
             <div class="card">
                 <img src="<?php echo SITE_URL; ?>/assets/img/cn.png" alt="China Flag">
@@ -77,7 +77,7 @@
                     <li><?php echo __('cn_item_1'); ?></li>
                     <li><?php echo __('cn_item_2'); ?></li>
                 </ul>
-                <a href="<?php echo $websites['cn']; ?>" class="btn btn-primary" target="_blank"><?php echo __('go_to_website'); ?></a>
+                <a href="<?php echo $websites['cn']; ?>" class="btn btn-primary websites-section-btn" target="_blank"><?php echo __('go_to_website'); ?></a>
             </div>
             <div class="card">
                 <img src="<?php echo SITE_URL; ?>/assets/img/ae.png" alt="UAE Flag">
@@ -86,7 +86,7 @@
                     <li><?php echo __('ae_item_1'); ?></li>
                     <li><?php echo __('ae_item_2'); ?></li>
                 </ul>
-                <a href="<?php echo $websites['ae']; ?>" class="btn btn-primary" target="_blank"><?php echo __('go_to_website'); ?></a>
+                <a href="<?php echo $websites['ae']; ?>" class="btn btn-primary websites-section-btn" target="_blank"><?php echo __('go_to_website'); ?></a>
             </div>
         </div>
     </div>
