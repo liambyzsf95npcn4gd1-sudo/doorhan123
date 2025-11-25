@@ -6,9 +6,10 @@
     .lang-tab.active { background: #fff; font-weight: bold; border-bottom: 1px solid #fff; margin-bottom: -1px; }
     .lang-content { display: none; padding: 20px; border: 1px solid #ccc; border-top: none; background: #fff; }
     .lang-content.active { display: block; }
+    .current-img { max-width: 200px; max-height: 200px; margin-top: 10px; }
 </style>
 
-<form method="post">
+<form method="post" enctype="multipart/form-data">
     <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token, ENT_QUOTES, 'UTF-8'); ?>">
 
     <div class="form-group">
@@ -18,6 +19,32 @@
             <option value="published" <?php echo (isset($post) && $post['status'] == 'published') ? 'selected' : ''; ?>>Опубликовано</option>
         </select>
     </div>
+
+    <!-- Image Uploads -->
+    <div class="form-group">
+        <label for="image">Изображение 1 (главное)</label>
+        <input type="file" name="image" id="image">
+        <?php if (isset($post['image'])): ?>
+            <img src="<?php echo SITE_URL . UPLOADS_DIR . htmlspecialchars($post['image']); ?>" alt="Current Image 1" class="current-img">
+        <?php endif; ?>
+    </div>
+
+    <div class="form-group">
+        <label for="image2">Изображение 2</label>
+        <input type="file" name="image2" id="image2">
+         <?php if (isset($post['image2'])): ?>
+            <img src="<?php echo SITE_URL . UPLOADS_DIR . htmlspecialchars($post['image2']); ?>" alt="Current Image 2" class="current-img">
+        <?php endif; ?>
+    </div>
+
+    <div class="form-group">
+        <label for="image3">Изображение 3</label>
+        <input type="file" name="image3" id="image3">
+         <?php if (isset($post['image3'])): ?>
+            <img src="<?php echo SITE_URL . UPLOADS_DIR . htmlspecialchars($post['image3']); ?>" alt="Current Image 3" class="current-img">
+        <?php endif; ?>
+    </div>
+
 
     <!-- Language Tabs -->
     <div class="lang-tabs">

@@ -15,7 +15,7 @@
         <label for="image">Изображение</label>
         <input type="file" name="image" id="image">
         <?php if (isset($category) && $category['image']): ?>
-            <img src="<?php echo SITE_URL; ?>/assets/img/<?php echo htmlspecialchars($category['image']); ?>" alt="<?php echo htmlspecialchars($category['name']); ?>" width="100">
+            <img src="<?php echo SITE_URL . UPLOADS_DIR . htmlspecialchars($category['image']); ?>" alt="<?php echo htmlspecialchars($category['name']); ?>" width="100">
         <?php endif; ?>
     </div>
 

@@ -219,7 +219,7 @@ class AdminController {
                 die('Ошибка валидации CSRF-токена');
             }
             $pageModel = new Page();
-            // Collect multi-language data
+
             $langData = [];
             foreach (SUPPORTED_LANGUAGES as $lang) {
                 $langData[$lang] = [
@@ -280,7 +280,7 @@ class AdminController {
                 ];
             }
 
-            if ($pageModel->update($params['id'], $langData)) {
+            if ($pageModel->update($pageId, $langData)) {
                 Flash::set('Страница успешно обновлена');
             } else {
                 Flash::set('Ошибка при обновлении страницы', 'error');
@@ -330,7 +330,7 @@ class AdminController {
                 ];
             }
 
-            $image = $this->handleUpload('image');
+            $image = $this->handleFileUpload('image', 'categories');
 
             if ($categoryModel->create(NULL, $image, $langData)) {
                 Flash::set('Категория успешно создана');
@@ -366,7 +366,7 @@ class AdminController {
                 ];
             }
 
-            $image = !empty($_FILES['image']['name']) ? $this->handleUpload('image') : null;
+            $image = !empty($_FILES['image']['name']) ? $this->handleFileUpload('image', 'categories') : null;
 
             if ($categoryModel->update($params['id'], NULL, $image, $langData)) {
                 Flash::set('Категория успешно обновлена');
@@ -419,9 +419,9 @@ class AdminController {
             }
             $status = $_POST['status'];
 
-            $image = $this->handleUpload('image');
-            $image2 = $this->handleUpload('image2');
-            $image3 = $this->handleUpload('image3');
+            $image = $this->handleFileUpload('image', 'news');
+            $image2 = $this->handleFileUpload('image2', 'news');
+            $image3 = $this->handleFileUpload('image3', 'news');
 
             $data = [
                 'status' => $status,
@@ -467,13 +467,13 @@ class AdminController {
 
             $data = ['status' => $status];
             if (!empty($_FILES['image']['name'])) {
-                $data['image'] = $this->handleUpload('image');
+                $data['image'] = $this->handleFileUpload('image', 'news');
             }
             if (!empty($_FILES['image2']['name'])) {
-                $data['image2'] = $this->handleUpload('image2');
+                $data['image2'] = $this->handleFileUpload('image2', 'news');
             }
             if (!empty($_FILES['image3']['name'])) {
-                $data['image3'] = $this->handleUpload('image3');
+                $data['image3'] = $this->handleFileUpload('image3', 'news');
             }
 
             if ($postModel->update($params['id'], $data, $langData)) {
@@ -579,9 +579,12 @@ class AdminController {
         }
     }
 
-    private function handleUpload($fileKey) {
+    private function handleFileUpload($fileKey, $subdirectory) {
         if (isset($_FILES[$fileKey]) && $_FILES[$fileKey]['error'] === UPLOAD_ERR_OK) {
-            $uploadDir = ROOT_PATH . UPLOADS_DIR;
+            // Ensure subdirectory has a trailing slash
+            $subdirectory = rtrim($subdirectory, '/') . '/';
+            $uploadDir = ROOT_PATH . UPLOADS_DIR . $subdirectory;
+
             if (!is_dir($uploadDir)) {
                 mkdir($uploadDir, 0755, true);
             }
@@ -590,7 +593,7 @@ class AdminController {
             $targetPath = $uploadDir . $fileName;
 
             if (move_uploaded_file($_FILES[$fileKey]['tmp_name'], $targetPath)) {
-                return 'news/' . $fileName;
+                return $subdirectory . $fileName; // Return path relative to UPLOADS_DIR
             }
         }
         return null;

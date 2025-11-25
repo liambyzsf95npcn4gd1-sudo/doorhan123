@@ -110,6 +110,16 @@ class Product {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function addImage($productId, $imageName) {
+        // Find the highest sort_order for this product and add 1
+        $stmt = $this->db->prepare("SELECT MAX(sort_order) FROM product_images WHERE product_id = ?");
+        $stmt->execute([$productId]);
+        $sortOrder = ($stmt->fetchColumn() ?? -1) + 1;
+
+        $stmt = $this->db->prepare("INSERT INTO product_images (product_id, image_path, sort_order) VALUES (?, ?, ?)");
+        return $stmt->execute([$productId, $imageName, $sortOrder]);
+    }
+
     public function create($status, $data) {
         $this->db->beginTransaction();
         try {
