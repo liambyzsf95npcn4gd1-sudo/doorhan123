@@ -1,0 +1,437 @@
+--- New Category Creation ---
+POST Data: Array
+(
+    [csrf_token] => 9d9e4180aaa65a0a7a26b0bb2e5e94e506b228ab42bc1d72095eb0c9d838c8e2
+    [name] => Array
+        (
+            [en] => Test Category
+            [es] =>
+            [zh] =>
+            [fr] =>
+            [ar] =>
+            [pt] =>
+            [de] =>
+            [hi] =>
+            [id] =>
+            [ja] =>
+            [ko] =>
+            [it] =>
+        )
+
+    [slug] => Array
+        (
+            [en] => test-category
+            [es] =>
+            [zh] =>
+            [fr] =>
+            [ar] =>
+            [pt] =>
+            [de] =>
+            [hi] =>
+            [id] =>
+            [ja] =>
+            [ko] =>
+            [it] =>
+        )
+
+    [description] => Array
+        (
+            [en] =>
+            [es] =>
+            [zh] =>
+            [fr] =>
+            [ar] =>
+            [pt] =>
+            [de] =>
+            [hi] =>
+            [id] =>
+            [ja] =>
+            [ko] =>
+            [it] =>
+        )
+
+    [seo_title] => Array
+        (
+            [en] =>
+            [es] =>
+            [zh] =>
+            [fr] =>
+            [ar] =>
+            [pt] =>
+            [de] =>
+            [hi] =>
+            [id] =>
+            [ja] =>
+            [ko] =>
+            [it] =>
+        )
+
+    [meta_description] => Array
+        (
+            [en] =>
+            [es] =>
+            [zh] =>
+            [fr] =>
+            [ar] =>
+            [pt] =>
+            [de] =>
+            [hi] =>
+            [id] =>
+            [ja] =>
+            [ko] =>
+            [it] =>
+        )
+
+)
+
+FILES Data: Array
+(
+    [image] => Array
+        (
+            [name] => test_image.jpg
+            [full_path] => test_image.jpg
+            [type] => image/jpeg
+            [tmp_name] => /tmp/phpjye6Si
+            [error] => 0
+            [size] => 4
+        )
+
+)
+
+handleFileUpload Result: categories/6925a88d91f72-test_image.jpg
+--- New Category Creation ---
+POST Data: Array
+(
+    [csrf_token] => 0667d109263e80b8785317331227efcf7ad1f93aa45bcf64621f57497cfa3daa
+    [name] => Array
+        (
+            [en] => Test Category
+            [es] =>
+            [zh] =>
+            [fr] =>
+            [ar] =>
+            [pt] =>
+            [de] =>
+            [hi] =>
+            [id] =>
+            [ja] =>
+            [ko] =>
+            [it] =>
+        )
+
+    [slug] => Array
+        (
+            [en] => test-category
+            [es] =>
+            [zh] =>
+            [fr] =>
+            [ar] =>
+            [pt] =>
+            [de] =>
+            [hi] =>
+            [id] =>
+            [ja] =>
+            [ko] =>
+            [it] =>
+        )
+
+    [description] => Array
+        (
+            [en] =>
+            [es] =>
+            [zh] =>
+            [fr] =>
+            [ar] =>
+            [pt] =>
+            [de] =>
+            [hi] =>
+            [id] =>
+            [ja] =>
+            [ko] =>
+            [it] =>
+        )
+
+    [seo_title] => Array
+        (
+            [en] =>
+            [es] =>
+            [zh] =>
+            [fr] =>
+            [ar] =>
+            [pt] =>
+            [de] =>
+            [hi] =>
+            [id] =>
+            [ja] =>
+            [ko] =>
+            [it] =>
+        )
+
+    [meta_description] => Array
+        (
+            [en] =>
+            [es] =>
+            [zh] =>
+            [fr] =>
+            [ar] =>
+            [pt] =>
+            [de] =>
+            [hi] =>
+            [id] =>
+            [ja] =>
+            [ko] =>
+            [it] =>
+        )
+
+)
+
+FILES Data: Array
+(
+    [image] => Array
+        (
+            [name] => test_image.jpg
+            [full_path] => test_image.jpg
+            [type] => image/jpeg
+            [tmp_name] => /tmp/phpsHkpRb
+            [error] => 0
+            [size] => 4
+        )
+
+)
+
+handleFileUpload Result: categories/6925a8c7d1cf3-test_image.jpg
+--- Category Model Create ---
+Parent ID:
+Image: categories/6925a8c7d1cf3-test_image.jpg
+Data: Array
+(
+    [en] => Array
+        (
+            [name] => Test Category
+            [slug] => test-category
+            [description] =>
+            [seo_title] =>
+            [meta_description] =>
+        )
+
+    [es] => Array
+        (
+            [name] =>
+            [slug] =>
+            [description] =>
+            [seo_title] =>
+            [meta_description] =>
+        )
+
+    [zh] => Array
+        (
+            [name] =>
+            [slug] =>
+            [description] =>
+            [seo_title] =>
+            [meta_description] =>
+        )
+
+    [fr] => Array
+        (
+            [name] =>
+            [slug] =>
+            [description] =>
+            [seo_title] =>
+            [meta_description] =>
+        )
+
+    [ar] => Array
+        (
+            [name] =>
+            [slug] =>
+            [description] =>
+            [seo_title] =>
+            [meta_description] =>
+        )
+
+    [pt] => Array
+        (
+            [name] =>
+            [slug] =>
+            [description] =>
+            [seo_title] =>
+            [meta_description] =>
+        )
+
+    [de] => Array
+        (
+            [name] =>
+            [slug] =>
+            [description] =>
+            [seo_title] =>
+            [meta_description] =>
+        )
+
+    [hi] => Array
+        (
+            [name] =>
+            [slug] =>
+            [description] =>
+            [seo_title] =>
+            [meta_description] =>
+        )
+
+    [id] => Array
+        (
+            [name] =>
+            [slug] =>
+            [description] =>
+            [seo_title] =>
+            [meta_description] =>
+        )
+
+    [ja] => Array
+        (
+            [name] =>
+            [slug] =>
+            [description] =>
+            [seo_title] =>
+            [meta_description] =>
+        )
+
+    [ko] => Array
+        (
+            [name] =>
+            [slug] =>
+            [description] =>
+            [seo_title] =>
+            [meta_description] =>
+        )
+
+    [it] => Array
+        (
+            [name] =>
+            [slug] =>
+            [description] =>
+            [seo_title] =>
+            [meta_description] =>
+        )
+
+)
+
+Last Insert ID: 13
+Result: FAILED
+create_category method entered.
+create_category method entered.
+--- Category Model Create ---
+Parent ID:
+Image: categories/6925a99482ca8-test_image.jpg
+Data: Array
+(
+    [en] => Array
+        (
+            [name] => Test Category
+            [slug] => test-category
+            [description] =>
+            [seo_title] =>
+            [meta_description] =>
+        )
+
+    [es] => Array
+        (
+            [name] =>
+            [slug] =>
+            [description] =>
+            [seo_title] =>
+            [meta_description] =>
+        )
+
+    [zh] => Array
+        (
+            [name] =>
+            [slug] =>
+            [description] =>
+            [seo_title] =>
+            [meta_description] =>
+        )
+
+    [fr] => Array
+        (
+            [name] =>
+            [slug] =>
+            [description] =>
+            [seo_title] =>
+            [meta_description] =>
+        )
+
+    [ar] => Array
+        (
+            [name] =>
+            [slug] =>
+            [description] =>
+            [seo_title] =>
+            [meta_description] =>
+        )
+
+    [pt] => Array
+        (
+            [name] =>
+            [slug] =>
+            [description] =>
+            [seo_title] =>
+            [meta_description] =>
+        )
+
+    [de] => Array
+        (
+            [name] =>
+            [slug] =>
+            [description] =>
+            [seo_title] =>
+            [meta_description] =>
+        )
+
+    [hi] => Array
+        (
+            [name] =>
+            [slug] =>
+            [description] =>
+            [seo_title] =>
+            [meta_description] =>
+        )
+
+    [id] => Array
+        (
+            [name] =>
+            [slug] =>
+            [description] =>
+            [seo_title] =>
+            [meta_description] =>
+        )
+
+    [ja] => Array
+        (
+            [name] =>
+            [slug] =>
+            [description] =>
+            [seo_title] =>
+            [meta_description] =>
+        )
+
+    [ko] => Array
+        (
+            [name] =>
+            [slug] =>
+            [description] =>
+            [seo_title] =>
+            [meta_description] =>
+        )
+
+    [it] => Array
+        (
+            [name] =>
+            [slug] =>
+            [description] =>
+            [seo_title] =>
+            [meta_description] =>
+        )
+
+)
+
+Last Insert ID: 14

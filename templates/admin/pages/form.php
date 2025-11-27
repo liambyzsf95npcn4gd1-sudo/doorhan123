@@ -8,7 +8,7 @@
     .lang-content.active { display: block; }
 </style>
 
-<form method="post">
+<form method="post" enctype="multipart/form-data">
     <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token, ENT_QUOTES, 'UTF-8'); ?>">
 
     <!-- Language Tabs -->
@@ -49,6 +49,15 @@
         <div class="form-group">
             <label for="meta_description_<?php echo $lang; ?>">Meta Description (<?php echo $lang; ?>)</label>
             <input type="text" name="meta_description[<?php echo $lang; ?>]" id="meta_description_<?php echo $lang; ?>" value="<?php echo htmlspecialchars($t['meta_description'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
+        </div>
+
+        <div class="form-group">
+            <label for="image_<?php echo $lang; ?>">Изображение (<?php echo $lang; ?>)</label>
+            <input type="file" name="image[<?php echo $lang; ?>]" id="image_<?php echo $lang; ?>">
+            <?php if (!empty($t['image'])): ?>
+                <p>Текущее изображение: <?php echo htmlspecialchars($t['image'], ENT_QUOTES, 'UTF-8'); ?></p>
+                <img src="<?php echo SITE_URL; ?>/uploads/<?php echo htmlspecialchars($t['image'], ENT_QUOTES, 'UTF-8'); ?>" alt="Current Image" style="max-width: 200px;">
+            <?php endif; ?>
         </div>
     </div>
     <?php endforeach; ?>

@@ -16,7 +16,8 @@ class Page {
                        COALESCE(pt.slug, pt_en.slug) as slug,
                        COALESCE(pt.content, pt_en.content) as content,
                        COALESCE(pt.seo_title, pt_en.seo_title) as seo_title,
-                       COALESCE(pt.meta_description, pt_en.meta_description) as meta_description
+                       COALESCE(pt.meta_description, pt_en.meta_description) as meta_description,
+                       COALESCE(pt.image, pt_en.image) as image
                 FROM pages p
                 LEFT JOIN page_translations pt ON p.id = pt.page_id AND pt.language_code = ?
                 LEFT JOIN page_translations pt_en ON p.id = pt_en.page_id AND pt_en.language_code = 'en'";
@@ -59,7 +60,8 @@ class Page {
                        COALESCE(pt.slug, pt_en.slug) as slug,
                        COALESCE(pt.content, pt_en.content) as content,
                        COALESCE(pt.seo_title, pt_en.seo_title) as seo_title,
-                       COALESCE(pt.meta_description, pt_en.meta_description) as meta_description
+                       COALESCE(pt.meta_description, pt_en.meta_description) as meta_description,
+                       COALESCE(pt.image, pt_en.image) as image
                 FROM pages p
                 LEFT JOIN page_translations pt ON p.id = pt.page_id AND pt.language_code = ?
                 LEFT JOIN page_translations pt_en ON p.id = pt_en.page_id AND pt_en.language_code = 'en'
@@ -76,7 +78,7 @@ class Page {
             $stmt->execute();
             $pageId = $this->db->lastInsertId();
 
-            $stmt = $this->db->prepare("INSERT INTO page_translations (page_id, language_code, title, slug, content, seo_title, meta_description) VALUES (?, ?, ?, ?, ?, ?, ?)");
+            $stmt = $this->db->prepare("INSERT INTO page_translations (page_id, language_code, title, slug, content, seo_title, meta_description, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
             foreach ($data as $lang => $fields) {
                 $stmt->execute([
                     $pageId,
@@ -85,7 +87,8 @@ class Page {
                     $fields['slug'],
                     $fields['content'],
                     $fields['seo_title'],
-                    $fields['meta_description']
+                    $fields['meta_description'],
+                    $fields['image'] ?? null
                 ]);
             }
             $this->db->commit();
@@ -99,7 +102,7 @@ class Page {
     public function update($id, $data) {
         $this->db->beginTransaction();
         try {
-            $stmt = $this->db->prepare("INSERT INTO page_translations (page_id, language_code, title, slug, content, seo_title, meta_description) VALUES (?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE title=VALUES(title), slug=VALUES(slug), content=VALUES(content), seo_title=VALUES(seo_title), meta_description=VALUES(meta_description)");
+            $stmt = $this->db->prepare("INSERT INTO page_translations (page_id, language_code, title, slug, content, seo_title, meta_description, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE title=VALUES(title), slug=VALUES(slug), content=VALUES(content), seo_title=VALUES(seo_title), meta_description=VALUES(meta_description), image=VALUES(image)");
             foreach ($data as $lang => $fields) {
                 $stmt->execute([
                     $id,
@@ -108,7 +111,8 @@ class Page {
                     $fields['slug'],
                     $fields['content'],
                     $fields['seo_title'],
-                    $fields['meta_description']
+                    $fields['meta_description'],
+                    $fields['image'] ?? null
                 ]);
             }
             $this->db->commit();

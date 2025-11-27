@@ -53,6 +53,7 @@ CREATE TABLE `page_translations` (
     `content` TEXT,
     `seo_title` VARCHAR(255),
     `meta_description` VARCHAR(255),
+    `image` VARCHAR(255) DEFAULT NULL,
     UNIQUE KEY `page_lang_slug` (`language_code`, `slug`),
     UNIQUE KEY `page_lang_id` (`page_id`, `language_code`),
     CONSTRAINT `fk_page_trans` FOREIGN KEY (`page_id`) REFERENCES `pages` (`id`) ON DELETE CASCADE
