@@ -13,7 +13,12 @@
                 <?php foreach ($categories as $category): ?>
                     <div class="card product-card category-card">
                         <a href="<?php echo url('/products/category/' . htmlspecialchars($category['slug'])); ?>">
-                            <img src="<?php echo SITE_URL; ?>/assets/img/<?php echo htmlspecialchars($category['image'] ?? 'category-placeholder.jpg'); ?>" alt="<?php echo htmlspecialchars($category['name']); ?>">
+                            <?php
+                                $imgSrc = !empty($category['image'])
+                                    ? SITE_URL . UPLOADS_DIR . $category['image']
+                                    : SITE_URL . '/assets/img/category-placeholder.jpg';
+                            ?>
+                            <img src="<?php echo htmlspecialchars($imgSrc); ?>" alt="<?php echo htmlspecialchars($category['name']); ?>">
                             <h3><?php echo htmlspecialchars($category['name']); ?></h3>
                         </a>
                         <p><?php echo htmlspecialchars($category['meta_description'] ?? ''); ?></p>

@@ -583,7 +583,9 @@ class AdminController {
         if (isset($_FILES[$fileKey]) && $_FILES[$fileKey]['error'] === UPLOAD_ERR_OK) {
             // Ensure subdirectory has a trailing slash
             $subdirectory = rtrim($subdirectory, '/') . '/';
-            $uploadDir = ROOT_PATH . UPLOADS_DIR . $subdirectory;
+            // Adjust uploadDir to include /public because UPLOADS_DIR is now just /uploads/ (URL path)
+            // but we need to save to /app/public/uploads/ (Filesystem path)
+            $uploadDir = ROOT_PATH . '/public' . UPLOADS_DIR . $subdirectory;
 
             if (!is_dir($uploadDir)) {
                 mkdir($uploadDir, 0755, true);
