@@ -6,7 +6,7 @@ class PublicController {
     /**
      * Отображение главной страницы
      */
-    public function home() {
+    public function home($params = [], $uri = '/') {
         $productModel = new Product();
         $postModel = new Post();
 
@@ -16,56 +16,51 @@ class PublicController {
         $this->view('public/home', [
             'featured_products' => $featuredProducts,
             'latest_posts' => $latestNews,
-            'seo_title' => 'DoorHan International - Leading Manufacturer of Doors and Gates',
-            'meta_description' => 'DoorHan is a leading global manufacturer of gates, doors, and automation systems. We offer innovative and reliable solutions for your home and business.'
-        ]);
+            'seo_title' => __('Home') . ' | DoorHan',
+            'meta_description' => 'DoorHan is a leading global manufacturer of gates, doors, and automation systems.',
+            'websites' => [
+                'cz' => 'https://doorhan.cz',
+                'cn' => 'https://doorhan.cn',
+                'ae' => 'https://doorhan.ae'
+            ]
+        ], $uri);
     }
 
-    /**
-     * Отображение страницы "О нас"
-     */
-    public function about() {
+    public function about($params = [], $uri = '/') {
+        $pageModel = new Page();
+        $page = $pageModel->getBySlug('about');
+
         $this->view('public/about', [
-            'seo_title' => 'About Us | DoorHan',
-            'meta_description' => 'Learn more about DoorHan, a leading global manufacturer of gates, doors, and automation systems.'
-        ]);
+            'page' => $page,
+            'seo_title' => $page['seo_title'] ?? __('About Us') . ' | DoorHan',
+            'meta_description' => $page['meta_description'] ?? 'Learn more about DoorHan, a leading manufacturer of garage doors, gates, and automation systems.'
+        ], $uri);
     }
 
-    /**
-     * Отображение страницы "Политика конфиденциальности"
-     */
-    public function privacyPolicy() {
+    public function privacyPolicy($params = [], $uri = '/') {
         $this->view('public/privacy-policy', [
-            'seo_title' => 'Privacy Policy | DoorHan',
-            'meta_description' => 'Read our Privacy Policy to understand how we collect and use your data.'
-        ]);
+            'seo_title' => __('Privacy Policy') . ' | DoorHan',
+            'meta_description' => 'Read our Privacy Policy to understand how we handle your data.'
+        ], $uri);
     }
 
-    /**
-     * Отображение списка товаров
-     */
-    public function products() {
+    public function products($params = [], $uri = '/') {
         $categoryModel = new Category();
-        $categories = $categoryModel->getAll(); // Get all categories
+        $categories = $categoryModel->getAll();
         $this->view('public/products', [
             'categories' => $categories,
-            'seo_title' => 'All Product Categories | DoorHan',
-            'meta_description' => 'Browse our wide range of products, including sectional doors, roller shutters, high-speed doors, and more. Find the perfect solution for your needs.'
-        ]);
+            'seo_title' => __('All Products') . ' | DoorHan',
+            'meta_description' => 'Browse our wide range of high-quality garage doors, gates, and automation systems.'
+        ], $uri);
     }
 
-    /**
-     * Отображение страницы одной категории
-     * @param array $params
-     */
-    public function category($params) {
+    public function category($params, $uri = '/') {
         $categoryModel = new Category();
         $category = $categoryModel->getBySlug($params['slug']);
 
         if (!$category) {
-            // Handle category not found, maybe show a 404 page
             header("HTTP/1.0 404 Not Found");
-            $this->view('public/404'); // Assuming you have a 404 template
+            $this->view('public/404', [], $uri);
             return;
         }
 
@@ -76,50 +71,47 @@ class PublicController {
             'products' => $products,
             'seo_title' => $category['seo_title'] ?? $category['name'],
             'meta_description' => $category['meta_description'] ?? ''
-        ]);
+        ], $uri);
     }
 
-    /**
-     * Отображение страницы одного товара
-     * @param array $params
-     */
-    public function product($params) {
+    public function product($params, $uri = '/') {
         $productModel = new Product();
         $product = $productModel->getBySlug($params['slug']);
+
+        if (!$product) {
+            header("HTTP/1.0 404 Not Found");
+            $this->view('public/404', [], $uri);
+            return;
+        }
+
+        $images = $productModel->getImages($product['id']);
+
         $this->view('public/product', [
             'product' => $product,
+            'images' => $images,
             'seo_title' => $product['seo_title'] ?? $product['name'],
             'meta_description' => $product['meta_description'] ?? ''
-        ]);
+        ], $uri);
     }
 
-    /**
-     * Отображение страницы "Производство"
-     */
-    public function factories() {
+    public function factories($params = [], $uri = '/') {
         $this->view('public/factories', [
-            'seo_title' => 'Factories | DoorHan',
-            'meta_description' => 'Learn more about our state-of-the-art manufacturing facilities.'
-        ]);
+            'seo_title' => __('Our Factories') . ' | DoorHan',
+            'meta_description' => 'Learn more about our state-of-the-art manufacturing facilities and our global presence.'
+        ], $uri);
     }
 
-    /**
-     * Отображение страницы "Решения"
-     */
-    public function solutions() {
+    public function solutions($params = [], $uri = '/') {
         $this->view('public/solutions', [
-            'seo_title' => 'Solutions | DoorHan',
+            'seo_title' => 'Innovative Solutions | DoorHan',
             'meta_description' => 'Discover our innovative solutions for residential, commercial, and industrial applications.'
-        ]);
+        ], $uri);
     }
 
-    /**
-     * Отображение списка новостей
-     */
-    public function news() {
+    public function news($params = [], $uri = '/') {
         $postModel = new Post();
         $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-        $limit = 10; // Posts per page
+        $limit = 10;
         $offset = ($page - 1) * $limit;
 
         $posts = $postModel->getAllPublished($limit, $offset);
@@ -130,61 +122,57 @@ class PublicController {
             'posts' => $posts,
             'currentPage' => $page,
             'totalPages' => $totalPages,
-            'seo_title' => 'Latest News and Updates | DoorHan',
-            'meta_description' => 'Stay up-to-date with the latest news, events, and product announcements from DoorHan.'
-        ]);
+            'seo_title' => __('News and Updates') . ' | DoorHan',
+            'meta_description' => 'Stay up-to-date with the latest news and announcements from DoorHan.'
+        ], $uri);
     }
 
-    /**
-     * Отображение страницы одной новости
-     * @param array $params
-     */
-    public function post($params) {
+    public function post($params, $uri = '/') {
         $postModel = new Post();
         $post = $postModel->getBySlug($params['slug']);
-        $this->view('public/post', ['post' => $post]);
+
+        if (!$post) {
+            header("HTTP/1.0 404 Not Found");
+            $this->view('public/404', [], $uri);
+            return;
+        }
+
+        $this->view('public/post', [
+            'post' => $post,
+            'seo_title' => $post['seo_title'] ?? $post['title'],
+            'meta_description' => $post['meta_description'] ?? ''
+        ], $uri);
     }
 
-    /**
-     * Отображение страницы контактов и обработка формы
-     */
-    public function contact() {
-        
-        // ИСПРАВЛЕНО: Убедимся, что токен существует, *до* обработки формы
+    public function contact($params = [], $uri = '/') {
         if (empty($_SESSION['csrf_token'])) {
             $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
         }
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // CSRF check
             if (!isset($_POST['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
                 $error = "Invalid CSRF token.";
             } else {
-                // Sanitize and validate inputs
                 $name = htmlspecialchars(trim($_POST['name']));
                 $email = filter_var(trim($_POST['email']), FILTER_SANITIZE_EMAIL);
                 $phone = htmlspecialchars(trim($_POST['phone']));
                 $message = htmlspecialchars(trim($_POST['message']));
+                $productInquiry = isset($_POST['product_inquiry']) ? htmlspecialchars(trim($_POST['product_inquiry'])) : null;
+
+                if ($productInquiry) {
+                    $message = "Product Inquiry: " . $productInquiry . "\n\n" . $message;
+                }
 
                 $errors = [];
-                if (empty($name)) {
-                    $errors[] = "Name is required.";
-                }
-                if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                    $errors[] = "Invalid email format.";
-                }
-                if (empty($message)) {
-                    $errors[] = "Message is required.";
-                }
+                if (empty($name)) $errors[] = "Name is required.";
+                if (!filter_var($email, FILTER_VALIDATE_EMAIL)) $errors[] = "Invalid email format.";
+                if (empty($message)) $errors[] = "Message is required.";
 
                 if (empty($errors)) {
                     $messageModel = new Message();
                     if ($messageModel->save($name, $email, $phone, $message)) {
                         $success = "Your message has been sent successfully!";
-                        // Unset form data to prevent re-submission
                         unset($_POST);
-                        
-                        // ИСПРАВЛЕНО: Регенерируем токен после успешной отправки
                         $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
                     } else {
                         $error = "There was an error sending your message.";
@@ -195,48 +183,25 @@ class PublicController {
             }
         }
 
-        // ИСПРАВЛЕНО: Удалена повторная генерация токена отсюда
-        
         $this->view('public/contact', [
             'success' => $success ?? null,
             'error' => $error ?? null,
             'csrf_token' => $_SESSION['csrf_token'],
-            'seo_title' => 'Contact Us | DoorHan',
-            'meta_description' => 'Get in touch with DoorHan. We are here to help you with any questions you may have about our products and services.'
-        ]);
+            'seo_title' => __('Contact Us') . ' | DoorHan',
+            'meta_description' => 'Get in touch with DoorHan for any inquiries or to find a dealer near you.'
+        ], $uri);
     }
 
-    /**
-     * Генерация sitemap.xml
-     */
-    public function sitemap() {
+    public function sitemap($params = [], $uri = '/') {
         header("Content-Type: application/xml; charset=utf-8");
 
         $urls = [];
-        $base_url = SITE_URL;
+        $base_url = SITE_URL; // Should account for language
 
         // Static pages
         $urls[] = $base_url . '/';
         $urls[] = $base_url . '/about';
-        $urls[] = $base_url . '/products';
-        $urls[] = $base_url . '/factories';
-        $urls[] = $base_url . '/solutions';
-        $urls[] = $base_url . '/news';
-        $urls[] = $base_url . '/contact';
-
-        // Products
-        $productModel = new Product();
-        $products = $productModel->getAllActive();
-        foreach ($products as $product) {
-            $urls[] = $base_url . '/products/' . $product['slug'];
-        }
-
-        // Posts
-        $postModel = new Post();
-        $posts = $postModel->getAllPublished();
-        foreach ($posts as $post) {
-            $urls[] = $base_url . '/news/' . $post['slug'];
-        }
+        // ... (Update sitemap logic to include languages later)
 
         echo '<?xml version="1.0" encoding="UTF-8"?>';
         echo '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
@@ -246,19 +211,14 @@ class PublicController {
         echo '</urlset>';
     }
 
-    /**
-     * Загрузка вида
-     * @param string $view
-     * @param array $data
-     */
-    private function view($view, $data = []) {
-        // Fetch navigation menu for all views
+    private function view($view, $data = [], $uri = '/') {
         $navigationModel = new Navigation();
         $data['menuItems'] = $navigationModel->getMenuItems();
 
-        // Fetch site settings for all views
         $settingsModel = new Settings();
         $data['settings'] = $settingsModel->getAllSettings();
+
+        $data['current_uri'] = $uri;
 
         extract($data);
         require_once ROOT_PATH . '/templates/' . $view . '.php';

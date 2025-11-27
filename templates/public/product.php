@@ -3,55 +3,57 @@
 <section class="product-detail-section section-padding">
     <div class="container">
         <div class="product-detail-layout">
+            <?php if (!empty($images)): ?>
             <div class="product-gallery">
                 <div class="swiper-container gallery-slider">
                     <div class="swiper-wrapper">
-                        <div class="swiper-slide"><img src="<?php echo SITE_URL; ?>/assets/img/product1.jpg" alt="Product 1"></div>
-                        <div class="swiper-slide"><img src="<?php echo SITE_URL; ?>/assets/img/product1-2.jpg" alt="Product 1-2"></div>
-                        <div class="swiper-slide"><img src="<?php echo SITE_URL; ?>/assets/img/product1-3.jpg" alt="Product 1-3"></div>
+                        <?php foreach ($images as $image): ?>
+                        <div class="swiper-slide"><img src="<?php echo SITE_URL; ?>/assets/img/products/<?php echo htmlspecialchars($image['image_path']); ?>" alt="<?php echo htmlspecialchars($product['name']); ?>"></div>
+                        <?php endforeach; ?>
                     </div>
                     <div class="swiper-pagination"></div>
                     <div class="swiper-button-next"></div>
                     <div class="swiper-button-prev"></div>
                 </div>
             </div>
+            <?php endif; ?>
             <div class="product-info">
                 <?php if (!empty($product)): ?>
                     <h1><?php echo htmlspecialchars($product['name']); ?></h1>
                     <div class="product-description">
                         <?php echo $product['content']; // HTML content from database ?>
                     </div>
-                    <a href="#quote-form" class="btn btn-primary">Request a Quote</a>
+                    <a href="#quote-form" class="btn btn-primary"><?php echo __('Request a Quote'); ?></a>
                 <?php else: ?>
-                    <h1>Product not found</h1>
-                    <p>The product you are looking for does not exist.</p>
+                    <h1><?php echo __('product_not_found_title'); ?></h1>
+                    <p><?php echo __('product_not_found_desc'); ?></p>
                 <?php endif; ?>
             </div>
         </div>
 
         <div class="product-tabs">
             <ul class="nav nav-tabs">
-                <li class="active"><a data-toggle="tab" href="#specifications">Specifications</a></li>
+                <li class="active"><a data-toggle="tab" href="#specifications"><?php echo __('specifications_tab'); ?></a></li>
             </ul>
             <div class="tab-content">
                 <div id="specifications" class="tab-pane active">
-                    <h3>Technical Specifications</h3>
+                    <h3><?php echo __('Technical Specifications'); ?></h3>
                     <table class="spec-table">
                         <tr>
-                            <td>Max Width</td>
-                            <td>6000 mm</td>
+                            <td><?php echo __('Max Width'); ?></td>
+                            <td><?php echo htmlspecialchars($product['max_width'] ?? 'N/A'); ?></td>
                         </tr>
                         <tr>
-                            <td>Max Height</td>
-                            <td>3000 mm</td>
+                            <td><?php echo __('Max Height'); ?></td>
+                            <td><?php echo htmlspecialchars($product['max_height'] ?? 'N/A'); ?></td>
                         </tr>
                         <tr>
-                            <td>Panel Thickness</td>
-                            <td>40 mm</td>
+                            <td><?php echo __('Panel Thickness'); ?></td>
+                            <td><?php echo htmlspecialchars($product['panel_thickness'] ?? 'N/A'); ?></td>
                         </tr>
                         <tr>
-                            <td>Insulation</td>
-                            <td>Polyurethane foam</td>
+                            <td><?php echo __('Insulation'); ?></td>
+                            <td><?php echo htmlspecialchars($product['insulation'] ?? 'N/A'); ?></td>
                         </tr>
                     </table>
                 </div>
@@ -59,12 +61,15 @@
         </div>
 
         <div id="quote-form" class="quote-form-section section-padding">
-            <h2 class="text-center">Request a Quote</h2>
-            <form class="quote-form">
-                <input type="text" name="name" placeholder="Your Name" required>
-                <input type="email" name="email" placeholder="Your Email" required>
-                <textarea name="message" placeholder="Your Message" required></textarea>
-                <button type="submit" class="btn btn-primary">Send Request</button>
+            <h2 class="text-center"><?php echo __('Request a Quote'); ?></h2>
+            <form class="quote-form" action="<?php echo url('/contact'); ?>" method="post">
+                <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
+                <input type="hidden" name="product_inquiry" value="<?php echo htmlspecialchars($product['name']); ?>">
+                <input type="text" name="name" placeholder="<?php echo __('name_placeholder'); ?>" required>
+                <input type="email" name="email" placeholder="<?php echo __('email_placeholder'); ?>" required>
+                <input type="tel" name="phone" placeholder="<?php echo __('phone_placeholder'); ?>">
+                <textarea name="message" placeholder="<?php echo __('message_placeholder'); ?>" required></textarea>
+                <button type="submit" class="btn btn-primary"><?php echo __('send_request_btn'); ?></button>
             </form>
         </div>
     </div>

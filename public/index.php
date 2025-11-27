@@ -21,7 +21,7 @@ session_name('SITE_SESSID');
 $isHttps = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on';
 session_set_cookie_params([
     'lifetime' => 0, // Сессионный cookie, истекает при закрытии браузера.
-    'path' => '/doorhan/public/',
+    'path' => '/',
     'domain' => '', // Укажите ваш домен для production. Например, '.yourdomain.com'
     'secure' => $isHttps, // Отправлять cookie только по HTTPS.
     'httponly' => true, // Запретить доступ к cookie сессии через JavaScript.
@@ -47,6 +47,8 @@ spl_autoload_register(function ($class_name) {
     }
 });
 
+// Load Language helper
+require_once ROOT_PATH . '/core/Language.php';
 
 $router = new Router();
 
@@ -122,6 +124,24 @@ if (empty($uri)) {
     $uri = '/' . $uri;
 }
 
+// --- Обработка языка ---
+$parts = explode('/', trim($uri, '/'));
+$lang = DEFAULT_LANGUAGE;
+
+if (!empty($parts[0]) && in_array($parts[0], SUPPORTED_LANGUAGES)) {
+    $lang = array_shift($parts);
+    Language::set($lang);
+
+    // Пересобираем URI без языка
+    $uri = '/' . implode('/', $parts);
+} else {
+    Language::set(DEFAULT_LANGUAGE);
+}
+
+// Если URI стал пустым после удаления языка, это корень
+if ($uri === '') {
+    $uri = '/';
+}
+
 // --- Диспетчеризация ---
-// Маршруты УЖЕ БЫЛИ добавлены выше, дублировать их не нужно.
 $router->dispatch($uri);

@@ -2,7 +2,7 @@
 
 <section class="page-header">
     <div class="container">
-        <h1>Our Products</h1>
+        <h1><?php echo __('our_products_title'); ?></h1>
     </div>
 </section>
 
@@ -12,16 +12,16 @@
             <?php if (!empty($categories)): ?>
                 <?php foreach ($categories as $category): ?>
                     <div class="card product-card category-card">
-                        <a href="<?php echo SITE_URL; ?>/products/category/<?php echo htmlspecialchars($category['slug']); ?>">
+                        <a href="<?php echo url('/products/category/' . htmlspecialchars($category['slug'])); ?>">
                             <img src="<?php echo SITE_URL; ?>/assets/img/<?php echo htmlspecialchars($category['image'] ?? 'category-placeholder.jpg'); ?>" alt="<?php echo htmlspecialchars($category['name']); ?>">
                             <h3><?php echo htmlspecialchars($category['name']); ?></h3>
                         </a>
                         <p><?php echo htmlspecialchars($category['meta_description'] ?? ''); ?></p>
-                        <a href="<?php echo SITE_URL; ?>/products/category/<?php echo htmlspecialchars($category['slug']); ?>" class="btn btn-secondary">View More</a>
+                        <a href="<?php echo url('/products/category/' . htmlspecialchars($category['slug'])); ?>" class="btn btn-secondary"><?php echo __('view_more'); ?></a>
                     </div>
                 <?php endforeach; ?>
             <?php else: ?>
-                <p>No product categories found.</p>
+                <p><?php echo __('no_categories'); ?></p>
             <?php endif; ?>
         </div>
     </div>

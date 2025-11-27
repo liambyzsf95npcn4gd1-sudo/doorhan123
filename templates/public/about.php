@@ -2,17 +2,20 @@
 
 <section class="page-header">
     <div class="container">
-        <h1>About Us</h1>
+        <h1><?php echo htmlspecialchars($page['title'] ?? __('About Us')); ?></h1>
     </div>
 </section>
 
-<section class="section-padding">
+<section class="about-page-section section-padding">
     <div class="container">
-        <h1>About DoorHan</h1>
-        <p>DoorHan is a leading global manufacturer of gates, doors, and automation systems, offering innovative and reliable solutions for over 30 years.</p>
-        <img src="/assets/img/placeholder.jpg" alt="Placeholder Image">
-        <p>Our mission is to provide our customers with high-quality products that meet their needs and exceed their expectations. We are committed to innovation, quality, and customer satisfaction.</p>
-        <img src="/assets/img/placeholder.jpg" alt="Placeholder Image">
+        <div class="about-page-content">
+            <?php if (!empty($page['image'])): ?>
+                <img src="<?php echo SITE_URL; ?>/uploads/<?php echo htmlspecialchars($page['image']); ?>" alt="<?php echo htmlspecialchars($page['title']); ?>" class="about-page-image">
+            <?php endif; ?>
+            <div class="about-page-text">
+                <?php echo $page['content'] ?? '<p>' . __('about_us_placeholder') . '</p>'; ?>
+            </div>
+        </div>
     </div>
 </section>
 

@@ -5,3 +5,4 @@ logs/
 npm_output.log
 doorhan.db
 php_server.log
+public/uploads/

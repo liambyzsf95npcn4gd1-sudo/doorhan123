@@ -21,7 +21,9 @@ class Router {
                 $args = array_filter($matches, 'is_string', ARRAY_FILTER_USE_KEY);
 
                 $controller = new $controller();
-                $controller->$method($args);
+
+                // Pass both args and the raw URI to the method
+                $controller->$method($args, $uri);
                 return;
             }
         }
