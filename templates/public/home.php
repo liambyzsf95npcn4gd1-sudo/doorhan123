@@ -126,7 +126,7 @@
                 <?php foreach ($latest_posts as $post): ?>
                     <div class="card">
                         <a href="<?php echo url('/news/' . htmlspecialchars($post['slug'])); ?>">
-                            <img src="<?php echo !empty($post['image']) ? SITE_URL . '/uploads/' . htmlspecialchars($post['image']) : SITE_URL . '/assets/img/news-placeholder.jpg'; ?>" alt="<?php echo htmlspecialchars($post['title']); ?>">
+                            <img src="<?php echo !empty($post['image']) ? SITE_URL . UPLOADS_DIR . htmlspecialchars($post['image']) : SITE_URL . '/assets/img/news-placeholder.jpg'; ?>" alt="<?php echo htmlspecialchars($post['title']); ?>">
                         </a>
                         <h3><?php echo htmlspecialchars($post['title']); ?></h3>
                         <p><?php echo htmlspecialchars(substr(strip_tags($post['content'] ?? ''), 0, 100)); ?>...</p>
