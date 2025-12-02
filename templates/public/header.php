@@ -16,6 +16,34 @@
     <script src="<?php echo SITE_URL; ?>/assets/js/mobile-nav.js" defer></script>
 </head>
 <body>
+    <div class="top-bar">
+        <div class="container">
+            <div class="top-bar-flex">
+                <div class="header-email">
+                    <a href="mailto:info@doorhan.com">info@doorhan.com</a>
+                </div>
+                <div class="lang-switcher">
+                    <div class="lang-switcher-trigger">
+                        <img src="<?php echo SITE_URL; ?>/assets/img/icons/globe.svg" alt="Language" class="globe-icon">
+                        <img src="<?php echo SITE_URL; ?>/assets/img/flags/<?php echo Language::get(); ?>.svg" alt="<?php echo strtoupper(Language::get()); ?>" class="current-flag">
+                        <span class="current-lang-code"><?php echo strtoupper(Language::get()); ?></span>
+                    </div>
+                    <div class="lang-switcher-dropdown">
+                        <ul>
+                            <?php foreach (SUPPORTED_LANGUAGES as $lang): ?>
+                                <li>
+                                    <a href="<?php echo SITE_URL . '/' . $lang . $current_uri; ?>" class="<?php echo Language::get() === $lang ? 'active' : ''; ?>">
+                                        <img src="<?php echo SITE_URL; ?>/assets/img/flags/<?php echo $lang; ?>.svg" alt="<?php echo strtoupper($lang); ?>">
+                                        <?php echo strtoupper($lang); ?>
+                                    </a>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <header class="sticky-header">
         <div class="container">
             <div class="header-flex">
@@ -43,26 +71,6 @@
                     </ul>
                 </nav>
                 <div class="header-right">
-                    <div class="lang-switcher">
-                        <div class="lang-switcher-trigger">
-                            <img src="<?php echo SITE_URL; ?>/assets/img/icons/globe.svg" alt="Language">
-                        </div>
-                        <div class="lang-switcher-dropdown">
-                            <ul>
-                                <?php foreach (SUPPORTED_LANGUAGES as $lang): ?>
-                                    <li>
-                                        <a href="<?php echo SITE_URL . '/' . $lang . $current_uri; ?>" class="<?php echo Language::get() === $lang ? 'active' : ''; ?>">
-                                            <img src="<?php echo SITE_URL; ?>/assets/img/flags/<?php echo $lang; ?>.svg" alt="<?php echo strtoupper($lang); ?>">
-                                            <?php echo strtoupper($lang); ?>
-                                        </a>
-                                    </li>
-                                <?php endforeach; ?>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="header-email">
-                        <a href="mailto:info@doorhan.com">info@doorhan.com</a>
-                    </div>
                     <a href="<?php echo url('/contact'); ?>" class="btn btn-primary"><?php echo __('Find Dealer'); ?></a>
                 </div>
                 <button class="mobile-nav-toggle">

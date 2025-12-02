@@ -968,3 +968,47 @@ img {
     width: 20px;
     margin-right: 10px;
 }
+
+/* Top Bar */
+.top-bar {
+    background-color: #0f172a;
+    padding: 8px 0;
+    color: #fff;
+    font-size: 14px;
+}
+.top-bar-flex {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 30px;
+}
+.top-bar .header-email {
+    display: flex;
+    align-items: center;
+}
+.top-bar .lang-switcher {
+    margin-right: 0;
+}
+.lang-switcher-trigger {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #fff;
+}
+.lang-switcher-trigger img.globe-icon {
+    width: 16px;
+    height: 16px;
+    filter: invert(1);
+}
+.lang-switcher-trigger img.current-flag {
+    width: 20px;
+    height: auto;
+    filter: none;
+}
+.current-lang-code {
+    font-weight: 600;
+}
+/* Ensure sticky header works under top bar */
+.sticky-header {
+    top: 0;
+}
