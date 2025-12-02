@@ -665,7 +665,11 @@ img {
 }
 
 .websites-section-btn {
+<<<<<<< Updated upstream
     width: 100%;
+=======
+
+>>>>>>> Stashed changes
     text-align: center;
 }
 
@@ -936,6 +940,12 @@ img {
     padding: 10px 0;
     z-index: 1000;
     min-width: 150px;
+<<<<<<< Updated upstream
+=======
+  z-index: 9999; /* высокое значение */
+  top: 0;
+  left: 0;
+>>>>>>> Stashed changes
 }
 
 .lang-switcher:hover .lang-switcher-dropdown {
@@ -968,3 +978,50 @@ img {
     width: 20px;
     margin-right: 10px;
 }
+<<<<<<< Updated upstream
+=======
+
+/* Top Bar */
+.top-bar {
+    background-color: #0f172a;
+    padding: 8px 0;
+    color: #fff;
+    font-size: 14px;
+}
+.top-bar-flex {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 30px;
+}
+.top-bar .header-email {
+    display: flex;
+    align-items: center;
+}
+.top-bar .lang-switcher {
+    margin-right: 0;
+}
+.lang-switcher-trigger {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #fff;
+}
+.lang-switcher-trigger img.globe-icon {
+    width: 16px;
+    height: 16px;
+    filter: invert(1);
+}
+.lang-switcher-trigger img.current-flag {
+    width: 20px;
+    height: auto;
+    filter: none;
+}
+.current-lang-code {
+    font-weight: 600;
+}
+/* Ensure sticky header works under top bar */
+.sticky-header {
+    top: 0;
+}
+>>>>>>> Stashed changes
