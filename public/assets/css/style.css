@@ -936,6 +936,9 @@ img {
     padding: 10px 0;
     z-index: 1000;
     min-width: 150px;
+    z-index: 9999; /* высокое значение */
+    top: 0;
+    left: 0;
 }
 
 .lang-switcher:hover .lang-switcher-dropdown {
