@@ -9,6 +9,8 @@
                     <span class="post-date"><?php echo date('F j, Y', strtotime($post['created_at'])); ?></span>
                     <?php if (!empty($post['image'])): ?>
                     <img src="<?php echo SITE_URL; ?>/uploads/<?php echo htmlspecialchars($post['image']); ?>" alt="<?php echo htmlspecialchars($post['title']); ?>" class="post-image">
+                    <?php else: ?>
+                    <img src="<?php echo SITE_URL; ?>/assets/img/news-placeholder.jpg" alt="<?php echo htmlspecialchars($post['title']); ?>" class="post-image">
                     <?php endif; ?>
                     <?php if (!empty($post['image2'])): ?>
                     <img src="<?php echo SITE_URL; ?>/uploads/<?php echo htmlspecialchars($post['image2']); ?>" alt="<?php echo htmlspecialchars($post['title']); ?>" class="post-image">
