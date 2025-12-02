@@ -665,11 +665,7 @@ img {
 }
 
 .websites-section-btn {
-<<<<<<< Updated upstream
     width: 100%;
-=======
-
->>>>>>> Stashed changes
     text-align: center;
 }
 
@@ -940,12 +936,6 @@ img {
     padding: 10px 0;
     z-index: 1000;
     min-width: 150px;
-<<<<<<< Updated upstream
-=======
-  z-index: 9999; /* высокое значение */
-  top: 0;
-  left: 0;
->>>>>>> Stashed changes
 }
 
 .lang-switcher:hover .lang-switcher-dropdown {
@@ -978,8 +968,6 @@ img {
     width: 20px;
     margin-right: 10px;
 }
-<<<<<<< Updated upstream
-=======
 
 /* Top Bar */
 .top-bar {
@@ -1024,4 +1012,3 @@ img {
 .sticky-header {
     top: 0;
 }
->>>>>>> Stashed changes

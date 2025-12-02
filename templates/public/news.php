@@ -13,11 +13,7 @@
                 <?php foreach ($posts as $post): ?>
                     <div class="card news-card">
                         <a href="<?php echo url('/news/' . htmlspecialchars($post['slug'])); ?>">
-<<<<<<< Updated upstream
-                            <img src="<?php echo SITE_URL; ?>/uploads/<?php echo htmlspecialchars($post['image'] ?? 'news-placeholder.jpg'); ?>" alt="<?php echo htmlspecialchars($post['title']); ?>">
-=======
                             <img src="<?php echo !empty($post['image']) ? SITE_URL . UPLOADS_DIR . htmlspecialchars($post['image']) : SITE_URL . '/assets/img/news-placeholder.jpg'; ?>" alt="<?php echo htmlspecialchars($post['title']); ?>">
->>>>>>> Stashed changes
                         </a>
                         <div class="news-card-content">
                             <span class="news-date"><?php echo date('F j, Y', strtotime($post['created_at'])); ?></span>

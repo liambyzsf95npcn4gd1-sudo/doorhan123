@@ -68,11 +68,7 @@
                     <li><?php echo __('cz_item_1'); ?></li>
                     <li><?php echo __('cz_item_2'); ?></li>
                 </ul>
-<<<<<<< Updated upstream
                 <a href="<?php echo $websites['cz']; ?>" class="btn btn-primary websites-section-btn" target="_blank"><?php echo __('go_to_website'); ?></a>
-=======
-                <a href="<?php echo $websites['cz']; ?>" class="btn btn-primary websites-section-btn" target="_blank">Go to WebSite</a>
->>>>>>> Stashed changes
             </div>
             <div class="card">
                 <img src="<?php echo SITE_URL; ?>/assets/img/cn.png" alt="China Flag">
@@ -81,11 +77,7 @@
                     <li><?php echo __('cn_item_1'); ?></li>
                     <li><?php echo __('cn_item_2'); ?></li>
                 </ul>
-<<<<<<< Updated upstream
                 <a href="<?php echo $websites['cn']; ?>" class="btn btn-primary websites-section-btn" target="_blank"><?php echo __('go_to_website'); ?></a>
-=======
-                <a href="<?php echo $websites['cn']; ?>" class="btn btn-primary websites-section-btn" target="_blank">Go to WebSite</a>
->>>>>>> Stashed changes
             </div>
             <div class="card">
                 <img src="<?php echo SITE_URL; ?>/assets/img/ae.png" alt="UAE Flag">
@@ -94,11 +86,7 @@
                     <li><?php echo __('ae_item_1'); ?></li>
                     <li><?php echo __('ae_item_2'); ?></li>
                 </ul>
-<<<<<<< Updated upstream
                 <a href="<?php echo $websites['ae']; ?>" class="btn btn-primary websites-section-btn" target="_blank"><?php echo __('go_to_website'); ?></a>
-=======
-                <a href="<?php echo $websites['ae']; ?>" class="btn btn-primary websites-section-btn" target="_blank">Go to WebSite</a>
->>>>>>> Stashed changes
             </div>
         </div>
     </div>
@@ -138,11 +126,7 @@
                 <?php foreach ($latest_posts as $post): ?>
                     <div class="card">
                         <a href="<?php echo url('/news/' . htmlspecialchars($post['slug'])); ?>">
-<<<<<<< Updated upstream
-                            <img src="<?php echo SITE_URL; ?>/assets/img/<?php echo htmlspecialchars($post['image'] ?? 'news-placeholder.jpg'); ?>" alt="<?php echo htmlspecialchars($post['title']); ?>">
-=======
                             <img src="<?php echo !empty($post['image']) ? SITE_URL . UPLOADS_DIR . htmlspecialchars($post['image']) : SITE_URL . '/assets/img/news-placeholder.jpg'; ?>" alt="<?php echo htmlspecialchars($post['title']); ?>">
->>>>>>> Stashed changes
                         </a>
                         <h3><?php echo htmlspecialchars($post['title']); ?></h3>
                         <p><?php echo htmlspecialchars(substr(strip_tags($post['content'] ?? ''), 0, 100)); ?>...</p>
