@@ -13,19 +13,17 @@ if (file_exists('../config/config.php')) {
 }
 
 // --- Безопасная инициализация сессии ---
-// Используем более безопасное, пользовательское имя сессии для предотвращения фиксации сессии.
-// Префикс __Secure- требует, чтобы для cookie был установлен флаг 'secure'.
 session_name('SITE_SESSID');
 
 // Устанавливаем параметры cookie сессии для повышения безопасности.
 $isHttps = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on';
 session_set_cookie_params([
-    'lifetime' => 0, // Сессионный cookie, истекает при закрытии браузера.
+    'lifetime' => 0,
     'path' => '/',
-    'domain' => '', // Укажите ваш домен для production. Например, '.yourdomain.com'
-    'secure' => $isHttps, // Отправлять cookie только по HTTPS.
-    'httponly' => true, // Запретить доступ к cookie сессии через JavaScript.
-    'samesite' => 'Lax' // Снижает риск CSRF-атак. 'Strict' более безопасен, но может повлиять на удобство использования.
+    'domain' => '',
+    'secure' => $isHttps,
+    'httponly' => true,
+    'samesite' => 'Lax'
 ]);
 
 // Запускаем сессию.
@@ -49,6 +47,9 @@ spl_autoload_register(function ($class_name) {
 
 // Load Language helper
 require_once ROOT_PATH . '/core/Language.php';
+
+// Initialize Language (loads from DB)
+Language::init();
 
 $router = new Router();
 
@@ -93,31 +94,26 @@ $router->add('/admin/messages/delete/{id}', 'AdminController', 'delete_message')
 $router->add('/admin/messages/export', 'AdminController', 'export_messages');
 $router->add('/admin/settings', 'AdminController', 'settings');
 
-// ... другие маршруты админ-панели ...
 // --- Корректное определение URI для поддиректорий ---
-
-// 1. Получаем путь к скрипту (e.g., /doorhan/public/index.php)
 $scriptName = $_SERVER['SCRIPT_NAME'];
-
-// 2. Получаем директорию, в которой он находится (e.g., /doorhan/public)
 $basePath = dirname($scriptName);
-
-// 3. Если мы в корне, basePath будет '\' или '/', нормализуем
 if ($basePath === '/' || $basePath === '\\') {
     $basePath = '';
 }
-
-// 4. Получаем полный запрошенный URI (e.g., /doorhan/public/about?query=1)
 $requestUri = $_SERVER['REQUEST_URI'];
-
-// 5. Отсекаем query string
 $requestUri = strtok($requestUri, '?');
 
-// 6. Получаем URI относительно приложения, удаляя basePath
-// (e.g., /doorhan/public/about -> /about)
-$uri = substr($requestUri, strlen($basePath));
+// Check if requestUri starts with basePath
+// This logic is fragile if basePath is substring of other path but assuming typical setup:
+// e.g. /app/public/index.php -> basePath = /app/public
+// requestUri = /app/public/en/about
+if (strpos($requestUri, $basePath) === 0) {
+    $uri = substr($requestUri, strlen($basePath));
+} else {
+    // If we can't strip base path correctly, fallback
+    $uri = $requestUri;
+}
 
-// 7. Убедимся, что URI начинается со / (если он не пустой)
 if (empty($uri)) {
     $uri = '/';
 } elseif ($uri[0] !== '/') {
@@ -126,19 +122,23 @@ if (empty($uri)) {
 
 // --- Обработка языка ---
 $parts = explode('/', trim($uri, '/'));
-$lang = DEFAULT_LANGUAGE;
+// Ensure parts is valid array even for '/'
+if (empty($parts)) $parts = [];
 
-if (!empty($parts[0]) && in_array($parts[0], SUPPORTED_LANGUAGES)) {
+$lang = DEFAULT_LANGUAGE;
+$supported_languages = Language::getAll(); // Fetch from DB
+
+if (!empty($parts[0]) && in_array($parts[0], $supported_languages)) {
     $lang = array_shift($parts);
     Language::set($lang);
 
     // Пересобираем URI без языка
     $uri = '/' . implode('/', $parts);
 } else {
+    // If no language in URL, set default (or fallback)
     Language::set(DEFAULT_LANGUAGE);
 }
 
-// Если URI стал пустым после удаления языка, это корень
 if ($uri === '') {
     $uri = '/';
 }

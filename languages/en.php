@@ -50,6 +50,9 @@ return [
     'hero_btn_2' => 'Discover Our Range',
     'hero_title_3' => 'Global Leader in Doors and Automation',
     'hero_btn_3' => 'Contact Us',
+    'Catalog' => 'Catalog',
+    'Our Projects' => 'Our Projects',
+    'GLOBAL GEOGRAPHY' => 'GLOBAL GEOGRAPHY',
 
     // About Section
     'about_us_title' => 'About Us',
@@ -76,7 +79,7 @@ return [
     'no_featured_products' => 'No featured products available at this time.',
     'no_news' => 'No recent news available.',
 
-    // FAQ
+    // FAQ (Now in DB, but keys might be used elsewhere or legacy)
     'faq_title' => 'Frequently Asked Questions',
     'faq_q_1' => 'What types of doors do you offer?',
     'faq_a_1' => 'We offer a wide range of doors, including sectional doors, roller shutters, sliding gates, industrial doors, and garage doors. We also provide automation solutions for all our products.',
@@ -111,6 +114,7 @@ return [
     'phone_label' => 'Phone',
     'email_label' => 'Email',
     'address_value' => '123 DoorHan Way, Gate City, 12345',
+    'address_placeholder' => '123 DoorHan Way, Gate City, 12345',
 
     // About Page
     'about_doorhan_title' => 'About DoorHan',
@@ -140,4 +144,30 @@ return [
     'post_not_found_title' => 'Post not found',
     'post_not_found_desc' => 'The post you are looking for does not exist.',
     'related_posts_title' => 'Related Posts',
+
+    // Missing Keys
+    'Gates' => 'Gates',
+    'Automation' => 'Automation',
+    'Partners' => 'Partners',
+    'Technical Support' => 'Technical Support',
+    'About Company' => 'About Company',
+    'No FAQs available.' => 'No FAQs available.',
+    'System Solutions' => 'System Solutions',
+    'Comprehensive approach to automation and protection of objects of any scale.' => 'Comprehensive approach to automation and protection of objects of any scale.',
+    'Realized Objects' => 'Realized Objects',
+    'Realized Projects' => 'Realized Projects', // Just in case
+    'SCALE. EXPERIENCE. INNOVATION.' => 'SCALE. EXPERIENCE. INNOVATION.',
+    'DoorHan is 30 factories worldwide and a full production cycle, covering all stages: from aluminum casting to final assembly of control systems.' => 'DoorHan is 30 factories worldwide and a full production cycle, covering all stages: from aluminum casting to final assembly of control systems.',
+    'We create solutions that define industry standards for decades to come, ensuring safety and comfort for millions of people.' => 'We create solutions that define industry standards for decades to come, ensuring safety and comfort for millions of people.',
+    'More about company' => 'More about company',
+    'DISCUSS A PROJECT' => 'DISCUSS A PROJECT',
+    'Let\'s connect' => 'Let\'s connect',
+    'Your Name' => 'Your Name',
+    'Phone' => 'Phone',
+    'Email' => 'Email',
+    'Message' => 'Message',
+    'SEND REQUEST' => 'SEND REQUEST',
+    'By clicking the button, you agree to the personal data processing policy' => 'By clicking the button, you agree to the personal data processing policy',
+    'Support Center' => 'Support Center',
+    'FAQ' => 'FAQ',
 ];

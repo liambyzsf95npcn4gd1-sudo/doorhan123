@@ -9,13 +9,16 @@ class PublicController {
     public function home($params = [], $uri = '/') {
         $productModel = new Product();
         $postModel = new Post();
+        $faqModel = new Faq();
 
         $featuredProducts = $productModel->getAllActive(4);
         $latestNews = $postModel->getAllPublished(3);
+        $faqs = $faqModel->getAllActive();
 
         $this->view('public/home', [
             'featured_products' => $featuredProducts,
             'latest_posts' => $latestNews,
+            'faqs' => $faqs,
             'seo_title' => __('Home') . ' | DoorHan',
             'meta_description' => 'DoorHan is a leading global manufacturer of gates, doors, and automation systems.',
             'websites' => [

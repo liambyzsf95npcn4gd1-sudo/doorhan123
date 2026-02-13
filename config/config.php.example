@@ -11,7 +11,7 @@ define('DB_NAME', 'doorhan');
 // Site Settings
 define('SITE_URL', 'http://localhost:8080'); // URL of the site
 define('ADMIN_EMAIL', 'admin@example.com'); // Admin email
-define('UPLOADS_DIR', '/public/uploads/'); // Path for uploads
+define('UPLOADS_DIR', '/uploads/'); // Path for uploads relative to public
 
 // Debug Mode
 define('DEBUG', true); // Set to false for production
@@ -32,6 +32,6 @@ if (DEBUG) {
 date_default_timezone_set('UTC');
 
 // Supported Languages
-// Add languages as needed. Keys should match folder names/URL prefixes.
-define('SUPPORTED_LANGUAGES', ['en', 'es', 'zh', 'fr', 'ar', 'pt', 'de', 'hi', 'id', 'ja', 'ko', 'it']);
+// Now managed via database 'languages' table.
+// 'DEFAULT_LANGUAGE' is used for URL routing (e.g. /en/product vs /product)
 define('DEFAULT_LANGUAGE', 'en');

@@ -239,61 +239,25 @@ require_once ROOT_PATH . '/templates/public/header.php';
 
             <!-- Accordion Items -->
             <div class="lg:col-span-8 space-y-0 reveal" style="transition-delay: 200ms;">
-                <details class="group border-b border-gray-200 py-10">
-                    <summary class="flex justify-between items-center cursor-pointer list-none">
-                        <h3 class="text-xl md:text-2xl font-bold uppercase tracking-tight text-gray-900 pr-8 transition-colors group-hover:text-doorhan-blue"><?php echo __('How to become an official dealer?'); ?></h3>
-                        <span class="text-doorhan-blue transition-transform duration-500 group-open:rotate-45 shrink-0">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                            </svg>
-                        </span>
-                    </summary>
-                    <div class="mt-8 text-gray-600 text-lg leading-relaxed font-medium max-w-3xl">
-                        <?php echo __('Fill out the application form on our website or contact a regional representative. We provide a full package of dealer support: regular training at the DoorHan Academy, exhibition samples, marketing materials, and a personal manager.'); ?>
-                    </div>
-                </details>
-
-                <details class="group border-b border-gray-200 py-10">
-                    <summary class="flex justify-between items-center cursor-pointer list-none">
-                        <h3 class="text-xl md:text-2xl font-bold uppercase tracking-tight text-gray-900 pr-8 transition-colors group-hover:text-doorhan-blue"><?php echo __('Where is the production located?'); ?></h3>
-                        <span class="text-doorhan-blue transition-transform duration-500 group-open:rotate-45 shrink-0">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                            </svg>
-                        </span>
-                    </summary>
-                    <div class="mt-8 text-gray-600 text-lg leading-relaxed font-medium max-w-3xl">
-                         <?php echo __('DoorHan main production clusters are located in Russia, China, and the Czech Republic. 30 factories worldwide allow us to ensure uninterrupted supplies and localized service in 40+ countries.'); ?>
-                    </div>
-                </details>
-
-                <details class="group border-b border-gray-200 py-10">
-                    <summary class="flex justify-between items-center cursor-pointer list-none">
-                        <h3 class="text-xl md:text-2xl font-bold uppercase tracking-tight text-gray-900 pr-8 transition-colors group-hover:text-doorhan-blue"><?php echo __('Production time for custom orders?'); ?></h3>
-                        <span class="text-doorhan-blue transition-transform duration-500 group-open:rotate-45 shrink-0">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                            </svg>
-                        </span>
-                    </summary>
-                    <div class="mt-8 text-gray-600 text-lg leading-relaxed font-medium max-w-3xl">
-                        <?php echo __('Production terms for custom items start from 14 working days. The exact time depends on the chosen configuration, complexity of the engineering solution, and current production line load.'); ?>
-                    </div>
-                </details>
-
-                <details class="group border-b border-gray-200 py-10">
-                    <summary class="flex justify-between items-center cursor-pointer list-none">
-                        <h3 class="text-xl md:text-2xl font-bold uppercase tracking-tight text-gray-900 pr-8 transition-colors group-hover:text-doorhan-blue"><?php echo __('Do you provide installation supervision?'); ?></h3>
-                        <span class="text-doorhan-blue transition-transform duration-500 group-open:rotate-45 shrink-0">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                            </svg>
-                        </span>
-                    </summary>
-                    <div class="mt-8 text-gray-600 text-lg leading-relaxed font-medium max-w-3xl">
-                        <?php echo __('Yes, our technical specialists carry out installation supervision at facilities of any complexity worldwide. The service includes monitoring compliance with installation technology, checking commissioning works, and training customer personnel.'); ?>
-                    </div>
-                </details>
+                <?php if (!empty($faqs)): ?>
+                    <?php foreach ($faqs as $faq): ?>
+                        <details class="group border-b border-gray-200 py-10">
+                            <summary class="flex justify-between items-center cursor-pointer list-none">
+                                <h3 class="text-xl md:text-2xl font-bold uppercase tracking-tight text-gray-900 pr-8 transition-colors group-hover:text-doorhan-blue"><?php echo htmlspecialchars($faq['question']); ?></h3>
+                                <span class="text-doorhan-blue transition-transform duration-500 group-open:rotate-45 shrink-0">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                    </svg>
+                                </span>
+                            </summary>
+                            <div class="mt-8 text-gray-600 text-lg leading-relaxed font-medium max-w-3xl">
+                                <?php echo nl2br(htmlspecialchars($faq['answer'])); ?>
+                            </div>
+                        </details>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <p class="text-gray-500"><?php echo __('No FAQs available.'); ?></p>
+                <?php endif; ?>
             </div>
         </div>
     </section>
