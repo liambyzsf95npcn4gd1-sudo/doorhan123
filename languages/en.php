@@ -43,7 +43,8 @@ return [
     'cookie_btn' => 'Got it!',
 
     // Hero
-    'hero_title_1' => '30+ Years of Quality Gates & Automation',
+    'hero_title_1' => 'ENGINEERING<br>SOLUTIONS<br>OF THE FUTURE',
+    'hero_desc_1' => 'Comprehensive systems for industry and private housing construction. Technological superiority in every detail.',
     'hero_btn_1' => 'Explore Products',
     'hero_title_2' => 'Innovative Solutions for Every Need',
     'hero_btn_2' => 'Discover Our Range',
