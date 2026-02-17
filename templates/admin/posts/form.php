@@ -48,14 +48,14 @@
 
     <!-- Language Tabs -->
     <div class="lang-tabs">
-        <?php foreach (SUPPORTED_LANGUAGES as $index => $lang): ?>
+        <?php foreach (Language::getAll() as $index => $lang): ?>
             <div class="lang-tab <?php echo $index === 0 ? 'active' : ''; ?>" onclick="showTab('<?php echo $lang; ?>')">
                 <?php echo strtoupper($lang); ?>
             </div>
         <?php endforeach; ?>
     </div>
 
-    <?php foreach (SUPPORTED_LANGUAGES as $index => $lang):
+    <?php foreach (Language::getAll() as $index => $lang):
         $t = $translations[$lang] ?? [];
     ?>
     <div id="tab-<?php echo $lang; ?>" class="lang-content <?php echo $index === 0 ? 'active' : ''; ?>">
@@ -99,7 +99,7 @@ function showTab(lang) {
     document.getElementById('tab-' + lang).classList.add('active');
 
     const tabs = document.querySelectorAll('.lang-tab');
-    const langs = <?php echo json_encode(SUPPORTED_LANGUAGES); ?>;
+    const langs = <?php echo json_encode(Language::getAll()); ?>;
     const index = langs.indexOf(lang);
     if(index >= 0 && tabs[index]) tabs[index].classList.add('active');
 }

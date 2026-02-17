@@ -1,205 +1,265 @@
-<?php require_once ROOT_PATH . '/templates/public/header.php'; ?>
+<?php
+if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+$csrf_token = $_SESSION['csrf_token'];
+require_once ROOT_PATH . '/templates/public/header.php';
+?>
 
-<section class="hero-slider">
-    <div class="swiper-container">
-        <div class="swiper-wrapper">
-            <div class="swiper-slide" style="background-image: url('<?php echo SITE_URL; ?>/assets/img/home/slide1.jpg');">
-                <div class="container">
-                    <div class="hero-content">
-                        <h1><?php echo __('hero_title_1'); ?></h1>
-                        <a href="<?php echo url('/products'); ?>" class="btn btn-primary"><?php echo __('hero_btn_1'); ?></a>
-                    </div>
-                </div>
-            </div>
-            <div class="swiper-slide" style="background-image: url('<?php echo SITE_URL; ?>/assets/img/home/slide2.jpg');">
-                <div class="container">
-                    <div class="hero-content">
-                        <h1><?php echo __('hero_title_2'); ?></h1>
-                        <a href="<?php echo url('/products'); ?>" class="btn btn-primary"><?php echo __('hero_btn_2'); ?></a>
-                    </div>
-                </div>
-            </div>
-            <div class="swiper-slide" style="background-image: url('<?php echo SITE_URL; ?>/assets/img/home/slide3.jpg');">
-                <div class="container">
-                    <div class="hero-content">
-                        <h1><?php echo __('hero_title_3'); ?></h1>
-                        <a href="<?php echo url('/contact'); ?>" class="btn btn-primary"><?php echo __('hero_btn_3'); ?></a>
-                    </div>
+    <!-- Hero Section -->
+    <section class="relative h-screen flex items-center overflow-hidden">
+        <!-- Background Asset -->
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=2070"
+                 class="w-full h-full object-cover grayscale opacity-50" alt="Industrial Hub">
+            <div class="absolute inset-0 bg-gradient-to-r from-black/90 via-black/40 to-transparent"></div>
+        </div>
+
+        <div class="relative z-10 max-w-[1440px] mx-auto px-6 lg:px-12 w-full">
+            <div class="max-w-4xl fade-in-up">
+                <h1 class="text-6xl lg:text-8xl font-black tracking-tighter uppercase leading-[0.9] mb-10 text-white">
+                    <?php echo __('hero_title_1') ?: 'ENGINEERING<br>SOLUTIONS<br>OF THE FUTURE'; ?>
+                </h1>
+                <p class="text-xl text-white/60 max-w-xl mb-12 font-medium leading-relaxed">
+                    <?php echo __('hero_desc_1') ?: 'Comprehensive systems for industry and private housing construction. Technological superiority in every detail.'; ?>
+                </p>
+                <div class="flex flex-col sm:flex-row gap-5">
+                    <a href="<?php echo url('/products'); ?>" class="doorhan-blue hover:bg-blue-700 text-white px-12 py-5 font-black text-xs uppercase tracking-widest transition-all text-center">
+                        <?php echo __('Catalog'); ?>
+                    </a>
+                    <a href="#projects" class="border border-white/20 hover:bg-white hover:text-black text-white px-12 py-5 font-black text-xs uppercase tracking-widest transition-all text-center">
+                        <?php echo __('Our Projects'); ?>
+                    </a>
                 </div>
             </div>
         </div>
-        <div class="swiper-pagination"></div>
-        <div class="swiper-button-next"></div>
-        <div class="swiper-button-prev"></div>
-    </div>
-</section>
+    </section>
 
-<section class="about-us-section section-padding">
-    <div class="container">
-        <h2 class="text-center"><?php echo __('about_us_title'); ?></h2>
-        <div class="grid-3-col">
-            <div class="card text-center">
-                <img src="<?php echo SITE_URL; ?>/assets/img/quality.svg" alt="Quality Icon" class="card-icon">
-                <h3><?php echo __('quality_title'); ?></h3>
-                <p><?php echo __('quality_desc'); ?></p>
-            </div>
-            <div class="card text-center">
-                <img src="<?php echo SITE_URL; ?>/assets/img/innovation.svg" alt="Innovation Icon" class="card-icon">
-                <h3><?php echo __('innovation_title'); ?></h3>
-                <p><?php echo __('innovation_desc'); ?></p>
-            </div>
-            <div class="card text-center">
-                <img src="<?php echo SITE_URL; ?>/assets/img/global-network.svg" alt="Global Network Icon" class="card-icon">
-                <h3><?php echo __('global_network_title'); ?></h3>
-                <p><?php echo __('global_network_desc'); ?></p>
-            </div>
+    <!-- Global Geography Headline -->
+    <div class="bg-white py-20 px-6 lg:px-12">
+        <div class="max-w-[1440px] mx-auto text-center reveal">
+            <h2 class="text-[#111827] text-sm md:text-base font-black uppercase tracking-[0.5em] mb-6">
+                <?php echo __('GLOBAL GEOGRAPHY'); ?>
+            </h2>
+            <div class="h-1 w-24 bg-doorhan-blue mx-auto"></div>
         </div>
     </div>
-</section>
 
-<section class="websites-section section-padding bg-light">
-    <div class="container">
-        <h2 class="text-center"><?php echo __('websites_title'); ?></h2>
-        <div class="grid-3-col">
-            <div class="card">
-                <img src="<?php echo SITE_URL; ?>/assets/img/cz.png" alt="Czech Republic Flag">
-                <h3><?php echo __('cz_title'); ?></h3>
-                <ul>
-                    <li><?php echo __('cz_item_1'); ?></li>
-                    <li><?php echo __('cz_item_2'); ?></li>
-                </ul>
-                <a href="<?php echo $websites['cz']; ?>" class="btn btn-primary websites-section-btn" target="_blank">Go to website</a>
+    <!-- Global Presence (Interactive Panels) -->
+    <section class="h-[70vh] flex flex-col lg:flex-row overflow-hidden border-y border-white/5">
+        <!-- China -->
+        <a href="<?php echo $websites['cn'] ?? '#'; ?>" target="_blank" class="location-panel relative flex-1 h-full min-h-[300px] overflow-hidden group cursor-pointer block">
+            <img src="https://images.unsplash.com/photo-1541888946425-d81bb19480c5?q=80&w=1500" class="absolute inset-0 w-full h-full object-cover grayscale transition-all duration-700 group-hover:grayscale-0 group-hover:scale-110" alt="China Factory">
+            <div class="absolute inset-0 bg-red-900/20 group-hover:bg-transparent transition-colors"></div>
+            <div class="absolute inset-0 bg-black/40 p-12 flex flex-col justify-end">
+                <span class="text-doorhan-blue font-black text-[10px] uppercase tracking-widest mb-2">Manufacturing</span>
+                <h3 class="text-4xl font-black uppercase tracking-tight text-white">Suzhou, China</h3>
             </div>
-            <div class="card">
-                <img src="<?php echo SITE_URL; ?>/assets/img/cn.png" alt="China Flag">
-                <h3><?php echo __('cn_title'); ?></h3>
-                <ul>
-                    <li><?php echo __('cn_item_1'); ?></li>
-                    <li><?php echo __('cn_item_2'); ?></li>
-                </ul>
-                <a href="<?php echo $websites['cn']; ?>" class="btn btn-primary websites-section-btn" target="_blank">Go to website</a>
+        </a>
+        <!-- Czechia -->
+        <a href="<?php echo $websites['cz'] ?? '#'; ?>" target="_blank" class="location-panel relative flex-1 h-full min-h-[300px] overflow-hidden group cursor-pointer border-x border-white/10 block">
+            <img src="https://images.unsplash.com/photo-1517420812314-8b17177f59c7?q=80&w=1500" class="absolute inset-0 w-full h-full object-cover grayscale transition-all duration-700 group-hover:grayscale-0 group-hover:scale-110" alt="Czech Plant">
+            <div class="absolute inset-0 bg-blue-900/20 group-hover:bg-transparent transition-colors"></div>
+            <div class="absolute inset-0 bg-black/40 p-12 flex flex-col justify-end">
+                <span class="text-doorhan-blue font-black text-[10px] uppercase tracking-widest mb-2">European Hub</span>
+                <h3 class="text-4xl font-black uppercase tracking-tight text-white">Kadan, Czechia</h3>
             </div>
-            <div class="card">
-                <img src="<?php echo SITE_URL; ?>/assets/img/ae.png" alt="UAE Flag">
-                <h3><?php echo __('ae_title'); ?></h3>
-                <ul>
-                    <li><?php echo __('ae_item_1'); ?></li>
-                    <li><?php echo __('ae_item_2'); ?></li>
-                </ul>
-                <a href="<?php echo $websites['ae']; ?>" class="btn btn-primary websites-section-btn" target="_blank">Go to website</a>
+        </a>
+        <!-- Dubai -->
+        <a href="<?php echo $websites['ae'] ?? '#'; ?>" target="_blank" class="location-panel relative flex-1 h-full min-h-[300px] overflow-hidden group cursor-pointer block">
+            <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=1500" class="absolute inset-0 w-full h-full object-cover grayscale transition-all duration-700 group-hover:grayscale-0 group-hover:scale-110" alt="Dubai Hub">
+            <div class="absolute inset-0 bg-yellow-900/20 group-hover:bg-transparent transition-colors"></div>
+            <div class="absolute inset-0 bg-black/40 p-12 flex flex-col justify-end">
+                <span class="text-doorhan-blue font-black text-[10px] uppercase tracking-widest mb-2">Logistics Center</span>
+                <h3 class="text-4xl font-black uppercase tracking-tight text-white">Dubai, UAE</h3>
+            </div>
+        </a>
+    </section>
+
+    <!-- Product Catalog -->
+    <section id="products" class="py-32 px-6 lg:px-12 bg-white text-black">
+        <div class="max-w-[1440px] mx-auto">
+            <div class="mb-20 flex flex-col md:flex-row md:items-end justify-between">
+                <div>
+                    <span class="text-doorhan-blue font-black text-[11px] uppercase tracking-[0.4em] mb-4 block">Product Ecosystem</span>
+                    <h2 class="text-5xl lg:text-7xl font-black tracking-tighter uppercase leading-none text-[#111827]"><?php echo __('System Solutions'); ?></h2>
+                </div>
+                <p class="text-gray-500 max-w-sm mt-8 md:mt-0 font-medium"><?php echo __('Comprehensive approach to automation and protection of objects of any scale.'); ?></p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <?php if (!empty($featured_products)): ?>
+                    <?php foreach ($featured_products as $product): ?>
+                        <div class="group relative aspect-square overflow-hidden bg-gray-100 cursor-pointer block">
+                            <a href="<?php echo url('/products/' . htmlspecialchars($product['slug'])); ?>" class="absolute inset-0 z-20"></a>
+                            <!-- Using Product Image -->
+                            <img src="<?php echo SITE_URL; ?>/assets/img/products/<?php echo htmlspecialchars($product['image'] ?? 'product-placeholder.jpg'); ?>"
+                                 class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                                 alt="<?php echo htmlspecialchars($product['name']); ?>">
+
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none"></div>
+                            <div class="absolute bottom-0 left-0 p-8 w-full pointer-events-none">
+                                <h3 class="text-3xl font-black text-white uppercase tracking-tight"><?php echo htmlspecialchars($product['name']); ?></h3>
+                                <div class="h-[2px] w-0 bg-doorhan-blue mt-4 group-hover:w-full transition-all duration-500"></div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <p class="col-span-3 text-center text-gray-500"><?php echo __('no_featured_products'); ?></p>
+                <?php endif; ?>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<section class="featured-products-section section-padding">
-    <div class="container">
-        <h2 class="text-center"><?php echo __('featured_products_title'); ?></h2>
-        <div class="grid-4-col">
+    <!-- Realized Projects (Mapped from News) -->
+    <section id="projects" class="relative py-40 overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?q=80&w=2000" class="w-full h-full object-cover" alt="Large Projects">
+            <div class="absolute inset-0 bg-black/70"></div>
+        </div>
+        <div class="relative z-10 max-w-[1440px] mx-auto px-6 lg:px-12 text-center">
+            <h2 class="text-5xl lg:text-9xl font-black tracking-tighter uppercase mb-12 opacity-100 text-white"><?php echo __('Realized Objects'); ?></h2>
             
-            <?php if (!empty($featured_products)): ?>
-                <?php foreach ($featured_products as $product): ?>
-                    <div class="card product-card">
-                        <a href="<?php echo url('/products/' . htmlspecialchars($product['slug'])); ?>">
-                            <img src="<?php echo SITE_URL; ?>/assets/img/products/<?php echo htmlspecialchars($product['image'] ?? 'product-placeholder.jpg'); ?>" alt="<?php echo htmlspecialchars($product['name']); ?>">
-                            <h3><?php echo htmlspecialchars($product['name']); ?></h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-24">
+                <?php if (!empty($latest_posts)): ?>
+                    <?php foreach ($latest_posts as $post): ?>
+                        <a href="<?php echo url('/news/' . htmlspecialchars($post['slug'])); ?>" class="bg-white/5 backdrop-blur-md p-10 border border-white/10 text-left hover:bg-white/10 transition-all cursor-pointer block group">
+                            <h4 class="text-doorhan-blue font-black text-sm uppercase mb-4 tracking-widest"><?php echo __('News'); ?></h4>
+                            <p class="text-2xl font-bold uppercase tracking-tight text-white group-hover:text-doorhan-blue transition-colors"><?php echo htmlspecialchars($post['title']); ?></p>
                         </a>
-                        <p><?php echo htmlspecialchars(substr(strip_tags($product['content'] ?? ''), 0, 100)); ?>...</p>
-                        <a href="<?php echo url('/products/' . htmlspecialchars($product['slug'])); ?>" class="btn btn-secondary"><?php echo __('Learn More'); ?></a>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <p class="col-span-3 text-center text-white/50"><?php echo __('no_news'); ?></p>
+                <?php endif; ?>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section: About Company (Asymmetric Layout) -->
+    <section id="about" class="py-32 px-6 lg:px-12 bg-[#F9FAFB] text-black overflow-hidden">
+        <div class="max-w-[1440px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <!-- Text Content -->
+            <div class="reveal">
+                <span class="text-doorhan-blue font-black text-[11px] uppercase tracking-[0.4em] mb-6 block">Legacy & Future</span>
+                <h2 class="text-4xl lg:text-6xl font-black tracking-tighter uppercase leading-none mb-10 text-gray-900">
+                    <?php echo __('SCALE. EXPERIENCE. INNOVATION.'); ?>
+                </h2>
+                <div class="space-y-6 text-gray-600 font-medium leading-relaxed max-w-lg">
+                    <p class="text-lg">
+                        <?php echo __('DoorHan is 30 factories worldwide and a full production cycle, covering all stages: from aluminum casting to final assembly of control systems.'); ?>
+                    </p>
+                    <p>
+                        <?php echo __('We create solutions that define industry standards for decades to come, ensuring safety and comfort for millions of people.'); ?>
+                    </p>
+                </div>
+                <div class="mt-12">
+                    <a href="<?php echo url('/about'); ?>" class="inline-flex items-center text-[11px] font-black uppercase tracking-widest text-doorhan-blue border-b-2 border-doorhan-blue pb-2 group">
+                        <?php echo __('More about company'); ?>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Overlapping composition -->
+            <div class="relative reveal lg:pl-12" style="transition-delay: 200ms;">
+                <!-- Main Large Photo -->
+                <div class="aspect-[3/4] overflow-hidden shadow-2xl rounded-sm">
+                    <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=2070"
+                         class="w-full h-full object-cover" alt="Factory Floor">
+                </div>
+                <!-- Accent Overlapping Photo -->
+                <div class="absolute -bottom-12 -left-6 lg:-left-12 w-1/2 aspect-square overflow-hidden border-[10px] border-white shadow-xl rounded-sm z-10 hidden sm:block">
+                    <img src="https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?q=80&w=800"
+                         class="w-full h-full object-cover" alt="Engineer Detail">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section: Contact Form (Minimalist Architectural) -->
+    <section id="contact" class="py-32 px-6 lg:px-12 bg-[#0B1120] text-white">
+        <div class="max-w-[1440px] mx-auto text-center">
+            <div class="reveal inline-block mb-16">
+                <span class="text-doorhan-blue font-black text-[11px] uppercase tracking-[0.4em] mb-4 block">Let's connect</span>
+                <h2 class="text-4xl lg:text-7xl font-black tracking-tighter uppercase text-white"><?php echo __('DISCUSS A PROJECT'); ?></h2>
+            </div>
+
+            <form action="<?php echo url('/contact'); ?>" method="post" class="max-w-2xl mx-auto space-y-12 reveal" style="transition-delay: 200ms;">
+                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token); ?>">
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">
+                    <div class="relative">
+                        <input type="text" name="name" id="name" required class="w-full bg-transparent border-b border-white/20 py-4 outline-none focus:border-doorhan-blue transition-colors text-lg peer text-white" placeholder=" ">
+                        <label for="name" class="absolute top-4 left-0 text-white/40 uppercase text-[10px] font-black tracking-widest transition-all peer-focus:-top-4 peer-focus:text-doorhan-blue peer-[:not(:placeholder-shown)]:-top-4"><?php echo __('Your Name'); ?></label>
                     </div>
-                <?php endforeach; ?>
-            <?php else: ?>
-                <p class="text-center" style="grid-column: 1 / -1;"><?php echo __('no_featured_products'); ?></p>
-            <?php endif; ?>
-
-        </div>
-    </div>
-</section>
-
-<section class="news-section section-padding">
-    <div class="container">
-        <h2 class="text-center"><?php echo __('latest_news_title'); ?></h2>
-        
-        <div class="grid-3-col news-carousel">
-            
-            <?php if (!empty($latest_posts)): ?>
-                <?php foreach ($latest_posts as $post): ?>
-                    <div class="card">
-                        <a href="<?php echo url('/news/' . htmlspecialchars($post['slug'])); ?>">
-                            <img src="<?php echo !empty($post['image']) ? SITE_URL . UPLOADS_DIR . htmlspecialchars($post['image']) : SITE_URL . '/assets/img/news-placeholder.jpg'; ?>" alt="<?php echo htmlspecialchars($post['title']); ?>">
-                        </a>
-                        <h3><?php echo htmlspecialchars($post['title']); ?></h3>
-                        <p><?php echo htmlspecialchars(substr(strip_tags($post['content'] ?? ''), 0, 100)); ?>...</p>
-                        <a href="<?php echo url('/news/' . htmlspecialchars($post['slug'])); ?>"><?php echo __('Read More'); ?></a>
+                    <div class="relative">
+                        <input type="tel" name="phone" id="phone" required class="w-full bg-transparent border-b border-white/20 py-4 outline-none focus:border-doorhan-blue transition-colors text-lg peer text-white" placeholder=" ">
+                        <label for="phone" class="absolute top-4 left-0 text-white/40 uppercase text-[10px] font-black tracking-widest transition-all peer-focus:-top-4 peer-focus:text-doorhan-blue peer-[:not(:placeholder-shown)]:-top-4"><?php echo __('Phone'); ?></label>
                     </div>
-                <?php endforeach; ?>
-            <?php else: ?>
-                 <p class="text-center" style="grid-column: 1 / -1;"><?php echo __('no_news'); ?></p>
-            <?php endif; ?>
+                </div>
+                <div class="relative text-left">
+                    <input type="email" name="email" id="email" required class="w-full bg-transparent border-b border-white/20 py-4 outline-none focus:border-doorhan-blue transition-colors text-lg peer text-white" placeholder=" ">
+                    <label for="email" class="absolute top-4 left-0 text-white/40 uppercase text-[10px] font-black tracking-widest transition-all peer-focus:-top-4 peer-focus:text-doorhan-blue peer-[:not(:placeholder-shown)]:-top-4"><?php echo __('Email'); ?></label>
+                </div>
 
+                <!-- Hidden message field for simplicity if contact logic requires it, but template doesn't show it.
+                     The ContactController requires 'message'. I should add it or hardcode a default?
+                     "Message is required." in controller.
+                     I will add a Message field. The template didn't show it, but form logic requires it.
+                     I'll add it to be safe and functional. -->
+                <div class="relative text-left">
+                    <textarea name="message" id="message" required class="w-full bg-transparent border-b border-white/20 py-4 outline-none focus:border-doorhan-blue transition-colors text-lg peer text-white h-24 resize-none" placeholder=" "></textarea>
+                    <label for="message" class="absolute top-4 left-0 text-white/40 uppercase text-[10px] font-black tracking-widest transition-all peer-focus:-top-4 peer-focus:text-doorhan-blue peer-[:not(:placeholder-shown)]:-top-4"><?php echo __('Message'); ?></label>
+                </div>
+
+                <div class="pt-8">
+                    <button type="submit" class="w-full bg-white text-[#0B1120] hover:bg-doorhan-blue hover:text-white px-12 py-6 font-black text-xs uppercase tracking-[0.3em] transition-all transform hover:scale-[1.02]">
+                        <?php echo __('SEND REQUEST'); ?>
+                    </button>
+                    <p class="mt-8 text-[10px] text-white/30 uppercase tracking-widest font-bold">
+                        <?php echo __('By clicking the button, you agree to the personal data processing policy'); ?>
+                    </p>
+                </div>
+            </form>
         </div>
-    </div>
-</section>
+    </section>
 
-<section class="questions-section section-padding bg-light">
-    <div class="container">
-        <h2 class="text-center"><?php echo __('faq_title'); ?></h2>
-        <div class="accordion">
-            <div class="accordion-item">
-                <button class="accordion-header"><?php echo __('faq_q_1'); ?></button>
-                <div class="accordion-content">
-                    <p><?php echo __('faq_a_1'); ?></p>
-                </div>
+    <!-- FAQ Section (Swiss Style Accordion) -->
+    <section id="faq" class="py-40 px-6 lg:px-12 bg-white text-black">
+        <div class="max-w-[1440px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16">
+            <!-- Title -->
+            <div class="lg:col-span-4 reveal">
+                <span class="text-doorhan-blue font-black text-[11px] uppercase tracking-[0.4em] mb-6 block">Support Center</span>
+                <h2 class="text-4xl lg:text-5xl font-black tracking-tighter uppercase leading-none text-gray-900">
+                    <?php echo __('FAQ'); ?>
+                </h2>
             </div>
-            <div class="accordion-item">
-                <button class="accordion-header"><?php echo __('faq_q_2'); ?></button>
-                <div class="accordion-content">
-                    <p><?php echo __('faq_a_2'); ?></p>
-                </div>
-            </div>
-            <div class="accordion-item">
-                <button class="accordion-header"><?php echo __('faq_q_3'); ?></button>
-                <div class="accordion-content">
-                    <p><?php echo __('faq_a_3'); ?></p>
-                </div>
-            </div>
-            <div class="accordion-item">
-                <button class="accordion-header"><?php echo __('faq_q_4'); ?></button>
-                <div class="accordion-content">
-                    <p><?php echo __('faq_a_4'); ?></p>
-                </div>
-            </div>
-            <div class="accordion-item">
-                <button class="accordion-header"><?php echo __('faq_q_5'); ?></button>
-                <div class="accordion-content">
-                    <p><?php echo __('faq_a_5'); ?></p>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
 
-<section class="factories-section section-padding">
-    <div class="container">
-        <h2 class="text-center"><?php echo __('factories_title'); ?></h2>
-        <div class="grid-3-col">
-            <div class="card text-center">
-                <img src="<?php echo SITE_URL; ?>/assets/img/dubai.jpg" alt="Dubai Factory" class="factory-img">
-                <h3><?php echo __('dubai_title'); ?></h3>
-                <p><?php echo __('dubai_desc'); ?></p>
-            </div>
-            <div class="card text-center">
-                <img src="<?php echo SITE_URL; ?>/assets/img/czech.jpg" alt="Czech Factory" class="factory-img">
-                <h3><?php echo __('czech_title'); ?></h3>
-                <p><?php echo __('czech_desc'); ?></p>
-            </div>
-            <div class="card text-center">
-                <img src="<?php echo SITE_URL; ?>/assets/img/china.jpg" alt="China Factory" class="factory-img">
-                <h3><?php echo __('china_title'); ?></h3>
-                <p><?php echo __('china_desc'); ?></p>
+            <!-- Accordion Items -->
+            <div class="lg:col-span-8 space-y-0 reveal" style="transition-delay: 200ms;">
+                <?php if (!empty($faqs)): ?>
+                    <?php foreach ($faqs as $faq): ?>
+                        <details class="group border-b border-gray-200 py-10">
+                            <summary class="flex justify-between items-center cursor-pointer list-none">
+                                <h3 class="text-xl md:text-2xl font-bold uppercase tracking-tight text-gray-900 pr-8 transition-colors group-hover:text-doorhan-blue"><?php echo htmlspecialchars($faq['question']); ?></h3>
+                                <span class="text-doorhan-blue transition-transform duration-500 group-open:rotate-45 shrink-0">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                    </svg>
+                                </span>
+                            </summary>
+                            <div class="mt-8 text-gray-600 text-lg leading-relaxed font-medium max-w-3xl">
+                                <?php echo nl2br(htmlspecialchars($faq['answer'])); ?>
+                            </div>
+                        </details>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <p class="text-gray-500"><?php echo __('No FAQs available.'); ?></p>
+                <?php endif; ?>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
 <?php require_once ROOT_PATH . '/templates/public/footer.php'; ?>

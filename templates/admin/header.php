@@ -14,6 +14,7 @@
             <ul>
                 <li><a href="<?php echo SITE_URL; ?>/admin">Главная</a></li>
                 <li><a href="<?php echo SITE_URL; ?>/admin/pages">Страницы</a></li>
+                <li><a href="<?php echo SITE_URL; ?>/admin/pages/edit/about">О компании</a></li>
                 <li><a href="<?php echo SITE_URL; ?>/admin/categories">Категории</a></li>
                 <li><a href="<?php echo SITE_URL; ?>/admin/products">Товары</a></li>
                 <li><a href="<?php echo SITE_URL; ?>/admin/posts">Новости</a></li>
