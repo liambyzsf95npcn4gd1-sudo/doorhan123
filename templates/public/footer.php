@@ -1,5 +1,3 @@
-    </main>
-
     <!-- Footer -->
     <footer class="bg-gray-900 pt-32 pb-16 px-6 lg:px-12 border-t border-white/5 relative z-10">
         <div class="max-w-[1440px] mx-auto">
@@ -29,7 +27,7 @@
                 <div>
                     <h5 class="text-doorhan-blue font-black text-[10px] uppercase tracking-widest mb-10"><?php echo __('Contact'); ?></h5>
                     <p class="text-sm font-bold mb-4 text-white">info@doorhan.com</p>
-                    <p class="text-xs text-white/30 mt-6 leading-relaxed uppercase tracking-wider"><?php echo __('address_placeholder'); // Using a placeholder or hardcoded generic address if not available ?></p>
+                    <p class="text-xs text-white/30 mt-6 leading-relaxed uppercase tracking-wider"><?php echo __('address_value'); ?></p>
 
                     <!-- Regional Sites (moved here to preserve access) -->
                     <div class="mt-8">

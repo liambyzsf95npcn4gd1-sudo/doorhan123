@@ -1,3 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC&display=swap');
+
+html[lang="zh"] body {
+    font-family: 'Noto Sans SC', sans-serif;
+}
+
 :root {
     --primary-color: #0055A5; /* DoorHan Blue */
     --secondary-color: #0055A5;

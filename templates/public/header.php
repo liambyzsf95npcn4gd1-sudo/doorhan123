@@ -9,6 +9,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="<?php echo SITE_URL; ?>/assets/css/style.css">
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
@@ -16,6 +17,9 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
+        }
+        html[lang="zh"] body {
+            font-family: 'Noto Sans SC', sans-serif;
         }
         .doorhan-blue { background-color: #0055A5; }
         .text-doorhan-blue { color: #0055A5; }
@@ -100,27 +104,50 @@
                     </svg>
                 </button>
 
-                <!-- Search Icon -->
-                <button class="hidden md:block text-white hover:text-doorhan-blue transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                    </svg>
-                </button>
+                <!-- Language Switcher (Dynamic Dropdown) -->
+                <div class="hidden md:block relative group border-l border-white/20 pl-8" x-data="{ langOpen: false }">
+                    <button @click="langOpen = !langOpen" @click.away="langOpen = false" class="flex items-center space-x-2 text-[10px] font-black tracking-[0.2em] text-white hover:text-doorhan-blue transition-colors uppercase focus:outline-none">
+                         <?php
+                            $currentLangCode = Language::get();
+                            $langs = Language::getLanguages();
+                            $currentLang = $langs[$currentLangCode] ?? ['name' => 'English', 'flag' => '🇺🇸'];
+                        ?>
+                        <span class="text-lg leading-none"><?php echo $currentLang['flag']; ?></span>
+                        <span><?php echo $currentLangCode; ?></span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
 
-                <!-- Language Switcher -->
-                <div class="hidden md:flex items-center space-x-3 text-[10px] font-black tracking-[0.2em] border-l border-white/20 pl-8">
-                    <?php
-                    $langs = defined('SUPPORTED_LANGUAGES') ? SUPPORTED_LANGUAGES : ['en', 'ru'];
-                    $currentLang = Language::get();
-                    $links = [];
-                    foreach ($langs as $lang) {
-                         $isActive = ($lang === $currentLang);
-                         $class = $isActive ? 'text-white' : 'text-white/40 hover:text-white cursor-pointer transition-colors';
-                         $url = SITE_URL . '/' . $lang . (isset($current_uri) ? $current_uri : '');
-                         $links[] = '<a href="' . $url . '" class="' . $class . '">' . strtoupper($lang) . '</a>';
-                    }
-                    echo implode('<span class="text-white/20">|</span>', $links);
-                    ?>
+                    <!-- Dropdown -->
+                    <div x-show="langOpen"
+                         x-transition:enter="transition ease-out duration-100"
+                         x-transition:enter-start="transform opacity-0 scale-95"
+                         x-transition:enter-end="transform opacity-100 scale-100"
+                         x-transition:leave="transition ease-in duration-75"
+                         x-transition:leave-start="transform opacity-100 scale-100"
+                         x-transition:leave-end="transform opacity-0 scale-95"
+                         class="absolute right-0 mt-2 w-48 bg-[#0B1120] border border-white/10 shadow-2xl rounded-sm py-1 z-50 max-h-64 overflow-y-auto custom-scrollbar">
+                        <?php foreach ($langs as $code => $lang): ?>
+                            <?php
+                            $isActive = ($code === $currentLangCode);
+                            $defaultLang = defined('DEFAULT_LANGUAGE') ? DEFAULT_LANGUAGE : 'en';
+                            $prefix = ($code === $defaultLang) ? '' : '/' . $code;
+                            $targetUrl = SITE_URL . $prefix . ($current_uri === '/' ? '' : $current_uri);
+                            ?>
+                            <a href="<?php echo $targetUrl; ?>" class="block px-4 py-3 text-xs text-white hover:bg-white/5 hover:text-doorhan-blue flex items-center justify-between transition-colors <?php echo $isActive ? 'bg-white/5 text-doorhan-blue' : ''; ?>">
+                                <div class="flex items-center space-x-3">
+                                    <span class="text-lg leading-none"><?php echo $lang['flag']; ?></span>
+                                    <span class="uppercase tracking-wider font-bold"><?php echo $lang['name']; ?></span>
+                                </div>
+                                <?php if ($isActive): ?>
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                    </svg>
+                                <?php endif; ?>
+                            </a>
+                        <?php endforeach; ?>
+                    </div>
                 </div>
             </div>
         </div>
@@ -133,7 +160,7 @@
              x-transition:leave="transition ease-in duration-150"
              x-transition:leave-start="opacity-100 translate-y-0"
              x-transition:leave-end="opacity-0 -translate-y-2"
-             class="xl:hidden absolute top-full left-0 w-full bg-[#0B1120] border-b border-white/10 p-6 shadow-2xl">
+             class="xl:hidden absolute top-full left-0 w-full bg-[#0B1120] border-b border-white/10 p-6 shadow-2xl max-h-[80vh] overflow-y-auto">
             <nav class="flex flex-col space-y-4 text-sm font-bold uppercase tracking-widest text-center">
                 <?php if (isset($menuItems) && is_array($menuItems)): ?>
                     <?php foreach ($menuItems as $item): ?>
@@ -147,16 +174,24 @@
                         <?php endif; ?>
                     <?php endforeach; ?>
                 <?php endif; ?>
+
                 <!-- Mobile Lang Switcher -->
-                <div class="flex justify-center items-center space-x-4 pt-4 border-t border-white/10 mt-4">
-                     <?php
-                     foreach ($langs as $lang) {
-                         $isActive = ($lang === $currentLang);
-                         $class = $isActive ? 'text-white' : 'text-white/40';
-                         $url = SITE_URL . '/' . $lang . (isset($current_uri) ? $current_uri : '');
-                         echo '<a href="' . $url . '" class="' . $class . '">' . strtoupper($lang) . '</a>';
-                     }
-                     ?>
+                <div class="pt-6 border-t border-white/10 mt-6">
+                    <p class="text-[10px] text-white/40 mb-4 uppercase tracking-[0.2em]">Select Language</p>
+                    <div class="grid grid-cols-2 gap-3">
+                        <?php foreach ($langs as $code => $lang): ?>
+                             <?php
+                                $isActive = ($code === $currentLangCode);
+                                $defaultLang = defined('DEFAULT_LANGUAGE') ? DEFAULT_LANGUAGE : 'en';
+                                $prefix = ($code === $defaultLang) ? '' : '/' . $code;
+                                $targetUrl = SITE_URL . $prefix . ($current_uri === '/' ? '' : $current_uri);
+                            ?>
+                            <a href="<?php echo $targetUrl; ?>" class="flex items-center space-x-2 p-3 rounded border border-white/5 hover:border-white/20 hover:bg-white/5 transition-all <?php echo $isActive ? 'bg-white/10 border-doorhan-blue/50 text-white' : 'text-white/60'; ?>">
+                                <span class="text-xl"><?php echo $lang['flag']; ?></span>
+                                <span class="text-xs font-bold uppercase"><?php echo $code; ?></span>
+                            </a>
+                        <?php endforeach; ?>
+                    </div>
                 </div>
             </nav>
         </div>

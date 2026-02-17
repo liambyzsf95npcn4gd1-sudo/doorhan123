@@ -128,7 +128,14 @@ if (empty($uri)) {
 $parts = explode('/', trim($uri, '/'));
 $lang = DEFAULT_LANGUAGE;
 
-if (!empty($parts[0]) && in_array($parts[0], SUPPORTED_LANGUAGES)) {
+// Initialize Language system (this will trigger DB connection)
+try {
+    Language::getInstance();
+} catch (Exception $e) {
+    // If DB is not ready, we proceed with defaults
+}
+
+if (!empty($parts[0]) && Language::isSupported($parts[0])) {
     $lang = array_shift($parts);
     Language::set($lang);
 
