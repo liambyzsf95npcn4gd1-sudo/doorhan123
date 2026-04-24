@@ -356,7 +356,7 @@ class AdminController {
 
             // Collect multi-language data
             $langData = [];
-            foreach (SUPPORTED_LANGUAGES as $lang) {
+            foreach (Language::getAll() as $lang) {
                 $langData[$lang] = [
                     'name' => $_POST['name'][$lang] ?? '',
                     'slug' => $_POST['slug'][$lang] ?? '',
@@ -454,7 +454,7 @@ class AdminController {
 
             // Collect multi-language data
             $langData = [];
-            foreach (SUPPORTED_LANGUAGES as $lang) {
+            foreach (Language::getAll() as $lang) {
                 $langData[$lang] = [
                     'title' => $_POST['title'][$lang] ?? '',
                     'slug' => $_POST['slug'][$lang] ?? '',

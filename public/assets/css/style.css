@@ -1,10 +1,10 @@
 :root {
     --primary-color: #0055A5; /* DoorHan Blue */
     --secondary-color: #0055A5;
-    --text-color: #E5E7EB; /* Light gray text for readability on dark */
+    --text-color: #333333; /* Dark text for readability on light */
     --white-color: #FFFFFF;
-    --bg-color: #0B1120; /* Main Dark Background */
-    --card-bg: #1F2937; /* Card Background */
+    --bg-color: #FFFFFF; /* Light Background */
+    --card-bg: #F5F5F5; /* Card Background */
     --dark-orange: #004488;
 }
 
@@ -88,7 +88,7 @@ img {
    but kept/updated for legacy support of inner pages if they reuse classes */
 
 .sticky-header {
-    background-color: rgba(0,0,0,0.8);
+    background-color: rgba(255,255,255,0.95);
     backdrop-filter: blur(10px);
 }
 
@@ -313,7 +313,7 @@ img {
 
 /* Websites Section */
 .bg-light {
-    background-color: #111827;
+    background-color: #F0F4F8;
 }
 
 /* Featured Products */
@@ -325,9 +325,9 @@ img {
 
 /* Page Header */
 .page-header {
-    background-color: #000000;
+    background-color: #E8EEF4;
     padding: 80px 0;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
+    border-bottom: 1px solid rgba(0,0,0,0.1);
 }
 
 .page-header h1 {

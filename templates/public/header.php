@@ -8,22 +8,22 @@
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&family=Noto+Sans+SC:wght@300;400;500;700;900&family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="<?php echo SITE_URL; ?>/assets/css/style.css">
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
 
     <style>
         body {
-            font-family: 'Inter', 'Noto Sans SC', sans-serif;
+            font-family: 'Inter', 'Noto Sans SC', 'Noto Sans JP', sans-serif;
         }
         .doorhan-blue { background-color: #0055A5; }
         .text-doorhan-blue { color: #0055A5; }
 
         /* Custom scrollbar */
         ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #0B1120; }
-        ::-webkit-scrollbar-thumb { background: #1E293B; border-radius: 4px; }
+        ::-webkit-scrollbar-track { background: #F5F5F5; }
+        ::-webkit-scrollbar-thumb { background: #CCCCCC; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #0055A5; }
 
         /* Location Panel Expansion */
@@ -65,20 +65,20 @@
         }
     </style>
 </head>
-<body class="antialiased bg-[#0B1120] text-white">
+<body class="antialiased bg-white text-gray-800">
 
     <!-- Header -->
-    <header class="fixed top-0 w-full z-50 backdrop-blur-md bg-black/80 border-b border-white/10" x-data="{ mobileMenuOpen: false }">
+    <header class="fixed top-0 w-full z-50 backdrop-blur-md bg-white/95 border-b border-gray-200 shadow-sm" x-data="{ mobileMenuOpen: false }">
         <div class="max-w-[1440px] mx-auto px-6 lg:px-12 py-5 flex items-center justify-between">
             <!-- Logo -->
-            <a href="<?php echo url('/'); ?>" class="text-2xl font-black tracking-tighter text-white uppercase">DOORHAN</a>
+            <a href="<?php echo url('/'); ?>" class="text-2xl font-black tracking-tighter text-[#0055A5] uppercase">DOORHAN</a>
 
             <!-- Navigation (Desktop) -->
             <nav class="hidden xl:flex items-center space-x-10 text-[11px] font-bold uppercase tracking-[0.15em]">
                 <?php if (isset($menuItems) && is_array($menuItems)): ?>
                     <?php foreach ($menuItems as $item): ?>
                         <div class="relative group">
-                            <a href="<?php echo url($item['url']); ?>" class="hover:text-doorhan-blue transition-colors text-white block py-2"><?php echo htmlspecialchars(__($item['title'])); ?></a>
+                            <a href="<?php echo url($item['url']); ?>" class="hover:text-doorhan-blue transition-colors text-gray-700 block py-2"><?php echo htmlspecialchars(__($item['title'])); ?></a>
                             <?php if (!empty($item['children'])): ?>
                                 <div class="absolute top-full left-0 bg-[#0B1120] border border-white/10 py-2 min-w-[200px] hidden group-hover:block shadow-xl">
                                     <?php foreach ($item['children'] as $child): ?>
